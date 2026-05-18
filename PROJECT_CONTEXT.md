@@ -5,8 +5,7 @@ This document serves as the central context and architectural overview for the w
 ## Overview
 - **Purpose**: Wedding website for the user and their partner.
 - **Tech Stack**: PayloadCMS v3 (Next.js app router integrated).
-- **Hosting**: Vercel (using Cloudflare D1 for Database and R2 for Storage/Receipt Uploads).
-- **Privacy**: Publicly indexable (No robots.txt restrictions).
+- **Hosting**: Cloudflare Pages (Full Cloudflare Ecosystem: Pages, D1, R2).
 
 ## UI / UX Design
 - **Single Page Architecture**: Instead of traditional navigation to separate pages, the site will consist of one main page displaying multiple **Cards** (representing Home, Tentative, Dresscode, RSVP, Wishlist).
@@ -18,7 +17,7 @@ The website will serve content dynamically based on three different visitor vari
 2. **Bride-side**
 3. **Public/Friends**
 
-**Mechanism**: Deployed across 3 separate subdomains (e.g., `groom.`, `bride.`, and root). Content variations for sections like **Tentative** and **Dresscode** will be handled globally via environment variables (`.env`) injected at build/runtime for each respective subdomain.
+**Mechanism**: Deployed as a single Cloudflare Pages project. Content variations for sections like **Tentative** and **Dresscode** will be handled dynamically at runtime by reading the `host` header (e.g., if the URL is `groom.domain.com`, serve the groom's tentative schedule). This avoids the need for multiple deployments or environment variables.
 
 ## Content Management (CMS)
 Only specific features will utilize CMS collections:
