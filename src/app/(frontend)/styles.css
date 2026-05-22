@@ -12,7 +12,8 @@
     color: white;
   }
 
-  p {
+  p,
+  li {
     @apply text-3xl;
   }
 }

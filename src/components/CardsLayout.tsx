@@ -2,64 +2,66 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Plus, Calendar, MapPin, Shirt, Mail, ListTodo, Gift, Heart } from 'lucide-react'
+import { X } from 'lucide-react'
 
-const cards = [
+// Import Section Components
+import About from './sections/About'
+import DateDay from './sections/DateDay'
+import Venue from './sections/Venue'
+import RSVP from './sections/RSVP'
+import Dresscode from './sections/Dresscode'
+import Tentative from './sections/Tentative'
+import Wishlist from './sections/Wishlist'
+
+const sections = [
   {
     id: 'about',
+    number: '01',
     title: 'About Us',
-    color: '#4d5530',
-    text: '#cd9e3f',
-    span: 'col-span-2 md:col-span-1 md:row-span-2',
-    icon: Heart,
+    color: '#fdf6e2', // Soft Cream
+    text: '#2d3b25', // Deep Forest Text
   },
   {
     id: 'date',
+    number: '02',
     title: 'Date & Day',
-    color: '#cad4b1',
-    text: '#4d5530',
-    span: 'col-span-1',
-    icon: Calendar,
+    color: '#cad4b1', // Sage Green
+    text: '#2d3b25',
   },
   {
     id: 'venue',
+    number: '03',
     title: 'Venue',
-    color: '#aab588',
-    text: '#ffffff',
-    span: 'col-span-1',
-    icon: MapPin,
+    color: '#aab588', // Soft Olive
+    text: '#fdf6e2',
   },
   {
     id: 'rsvp',
+    number: '04',
     title: 'RSVP',
-    color: '#ddacaa',
-    text: '#ffffff',
-    span: 'col-span-1',
-    icon: Mail,
+    color: '#ddacaa', // Soft Dusty Rose
+    text: '#3c2c2a',
   },
   {
     id: 'dresscode',
+    number: '05',
     title: 'Dresscode',
-    color: '#d9beb3',
-    text: '#5c4e48',
-    span: 'col-span-1',
-    icon: Shirt,
+    color: '#d9beb3', // Pastel Terracotta
+    text: '#4a3c36',
   },
   {
     id: 'tentative',
+    number: '06',
     title: 'Tentative',
-    color: '#77655d',
-    text: '#ffffff',
-    span: 'col-span-1',
-    icon: ListTodo,
+    color: '#ebdcd5', // Pale Warm Gray
+    text: '#4a3c36',
   },
   {
     id: 'wishlist',
+    number: '07',
     title: 'Our Wishlist',
-    color: '#9c6065',
-    text: '#ffffff',
-    span: 'col-span-1',
-    icon: Gift,
+    color: '#ebd7d8', // Light Champagne Rose
+    text: '#4f3133',
   },
 ]
 
@@ -69,7 +71,7 @@ export function CardsLayout() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [fromRect, setFromRect] = useState<CardRect | null>(null)
   const [isClosing, setIsClosing] = useState(false)
-  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
     document.body.style.overflow = selectedId ? 'hidden' : ''
@@ -79,7 +81,7 @@ export function CardsLayout() {
   }, [selectedId])
 
   function handleOpen(id: string) {
-    const el = cardRefs.current[id]
+    const el = linkRefs.current[id]
     if (!el) return
     const rect = el.getBoundingClientRect()
     setFromRect({ top: rect.top, left: rect.left, width: rect.width, height: rect.height })
@@ -91,7 +93,7 @@ export function CardsLayout() {
     setIsClosing(true)
   }
 
-  const selected = cards.find((c) => c.id === selectedId)
+  const selected = sections.find((s) => s.id === selectedId)
 
   const getModalTarget = useCallback((): CardRect => {
     const vw = window.innerWidth
@@ -102,109 +104,40 @@ export function CardsLayout() {
   }, [])
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 flex items-center justify-center font-sans overflow-x-hidden pt-12 md:pt-8">
-      <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-auto md:grid-rows-2 gap-4 sm:gap-6 w-full max-w-6xl mx-auto h-auto md:h-[80vh] min-h-[600px]">
-        {cards.map((card) => {
-          // Render "About Us" specifically as an image + text (no card background)
-          if (card.id === 'about') {
-            return (
-              <div
-                key={card.id}
-                className={`${card.span} flex flex-col items-center justify-center cursor-pointer group relative`}
-                onClick={() => !selectedId && handleOpen(card.id)}
-                ref={(el) => {
-                  cardRefs.current[card.id] = el
-                }}
-                style={{
-                  opacity: selectedId === card.id ? 0 : 1,
-                  transition: 'opacity 0.05s',
-                  pointerEvents: selectedId ? 'none' : 'auto',
-                }}
-              >
-                {/* Brush-stroke clipped image */}
-                <div
-                  className="relative mb-4 transition-transform duration-300 group-hover:scale-[1.03]"
-                  style={{ width: '220px', height: '240px' }}
-                >
-                  {/* Hidden SVG — custom brush-stroke clip path by user */}
-                  <svg width="0" height="0" style={{ position: 'absolute' }}>
-                    <defs>
-                      <clipPath id="brush-stroke-mask" clipPathUnits="objectBoundingBox">
-                        <path
-                          d="M0.703112 0.705272 C1.014261 0.664218 0.959470 0.467897 0.771536 0.421973 C1.009790 0.316710 0.990013 0.153558 0.700642 0.182986 C0.712681 -0.065811 0.468789 -0.014981 0.435795 0.102729 C0.310393 -0.098666 0.066362 0.104986 0.245030 0.337943 C-0.034760 0.140740 0.020466 0.359551 0.016453 0.415730 C0.040530 0.554173 0.062600 0.704655 0.180979 0.821027 C0.235153 0.885233 0.367576 0.963483 0.449840 0.969502 C0.541055 0.996975 0.886776 1.053155 0.700642 0.704655 L0.698790 0.703112 Z"
-                          fill="black"
-                        />
-                      </clipPath>
-                    </defs>
-                  </svg>
+    <div className="min-h-screen flex items-center justify-center font-sans overflow-x-hidden p-6 md:p-12">
+      {/* Center Layout for Text Menu */}
+      <div className="flex flex-col items-center justify-center space-y-10 w-full max-w-lg mx-auto py-12">
+        {/* Soft decorative divider line */}
+        <div className="w-12 h-px bg-amber-200/40" />
 
-                  {/* Image clipped by the brush-stroke path */}
-                  <div className="absolute inset-0" style={{ clipPath: 'url(#brush-stroke-mask)' }}>
-                    <div
-                      className="w-full h-full flex items-center justify-center text-white/50 text-sm"
-                      style={{ backgroundColor: card.color }}
-                    >
-                      Image
-                    </div>
-                  </div>
-
-                  {/* Soft painterly edge overlay — subtle feathering effect */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      clipPath: 'url(#brush-stroke-mask)',
-                      background:
-                        'radial-gradient(ellipse at 70% 25%, rgba(255,255,255,0.12) 0%, transparent 65%)',
-                    }}
-                  />
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl font-display" style={{ color: card.text }}>
-                  {card.title}
-                </h1>
-              </div>
-            )
-          }
-
-          // Render normal cards
-          return (
-            <div
-              key={card.id}
+        {/* Minimalist Vertical Column Menu */}
+        <div className="flex flex-col space-y-4 w-full select-none">
+          {sections.map((section) => (
+            <button
+              key={section.id}
               ref={(el) => {
-                cardRefs.current[card.id] = el
+                linkRefs.current[section.id] = el
               }}
-              onClick={() => !selectedId && handleOpen(card.id)}
-              className={`${card.span} relative rounded-4xl p-6 cursor-pointer shadow-lg hover:scale-[1.02] transition-transform flex flex-col items-center justify-between overflow-hidden`}
+              onClick={() => !selectedId && handleOpen(section.id)}
+              disabled={selectedId !== null}
+              className="group relative flex items-center justify-center py-3 text-center border-b border-transparent focus:outline-none transition-all duration-300 w-full"
               style={{
-                backgroundColor: card.color,
-                opacity: selectedId === card.id ? 0 : 1,
-                transition: 'opacity 0.05s',
+                opacity: selectedId === section.id ? 0 : 1,
                 pointerEvents: selectedId ? 'none' : 'auto',
               }}
             >
-              <div className="card-grain" />
-              <div className="absolute top-4 right-4 bg-white/20 rounded-full p-1 z-10">
-                <Plus className="w-5 h-5" style={{ color: card.text }} />
-              </div>
-              <div className="grow flex items-center justify-center w-full">
-                <card.icon
-                  className="w-16 h-16 sm:w-24 sm:h-24 opacity-80"
-                  strokeWidth={1.5}
-                  style={{ color: card.text }}
-                />
-              </div>
-              <h2
-                className="text-2xl sm:text-3xl font-display text-center z-10"
-                style={{ color: card.text }}
-              >
-                {card.title}
-              </h2>
-            </div>
-          )
-        })}
+              {/* Section Title */}
+              <span className="text-7xl sm:text-8xl tracking-wide font-light transition-all duration-300 text-black group-hover:text-yellow-800 group-hover:scale-105">
+                {section.title}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="w-12 h-px bg-amber-200/40" />
       </div>
 
-      {/* The "flying card" — renders in a portal-like fixed layer, IS the card */}
+      {/* The 3D Y-Axis Flip Flying Card Portal */}
       <AnimatePresence
         onExitComplete={() => {
           setSelectedId(null)
@@ -215,7 +148,7 @@ export function CardsLayout() {
         {selectedId && selected && fromRect && !isClosing && (
           <motion.div
             key="flying-card"
-            className="fixed z-50 overflow-hidden"
+            className="fixed z-50 overflow-hidden shadow-2xl border border-white/10"
             style={{
               backgroundColor: selected.color,
               transformPerspective: 1400,
@@ -228,6 +161,8 @@ export function CardsLayout() {
               width: fromRect.width,
               height: fromRect.height,
               rotateY: 0,
+              opacity: 0,
+              scale: 0.85,
             }}
             animate={(() => {
               const t = getModalTarget()
@@ -237,69 +172,77 @@ export function CardsLayout() {
                 width: t.width,
                 height: t.height,
                 rotateY: 180,
+                opacity: 1,
+                scale: 1,
                 borderRadius: '3rem',
               }
             })()}
-            exit={(() => {
-              return {
-                top: fromRect.top,
-                left: fromRect.left,
-                width: fromRect.width,
-                height: fromRect.height,
-                rotateY: 0,
-                borderRadius: '2rem',
-                transition: { ease: [0.7, 0, 0.84, 0], duration: 0.45 },
-              }
-            })()}
+            exit={{
+              top: fromRect.top,
+              left: fromRect.left,
+              width: fromRect.width,
+              height: fromRect.height,
+              rotateY: 0,
+              opacity: 0,
+              scale: 0.85,
+              borderRadius: '2rem',
+              transition: { ease: [0.7, 0, 0.84, 0], duration: 0.45 },
+            }}
             transition={{
-              // Apple-style: fast start, slow natural settle (ease-out expo)
-              ease: [0.16, 1, 0.3, 1],
-              duration: 0.65,
+              ease: [0.16, 1, 0.3, 1], // Expo-out curve
+              duration: 0.7,
             }}
           >
-            {/* Grain texture overlay on modal */}
-            <div className="card-grain" />
+            {/* Soft Paper Grain Texture Overlay */}
+            <div className="card-grain opacity-80" />
 
-            {/* Backdrop dimmer behind everything */}
+            {/* Dark Blurred Backdrop behind the active card */}
             <motion.div
-              className="fixed inset-0 -z-10 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 -z-10 bg-black/55 backdrop-blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{ pointerEvents: 'none' }}
             />
 
-            {/* Close button — only visible when modal has settled */}
+            {/* Close Button - Fades in gently after 3D card settles */}
             <motion.button
               onClick={handleClose}
-              className="absolute top-6 left-6 p-2 bg-black/10 hover:bg-black/25 rounded-full transition-colors z-20"
+              className="absolute top-6 left-6 p-2.5 bg-black/5 hover:bg-black/10 rounded-full transition-colors z-20 focus:outline-none"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: 0.7 }}
               exit={{ opacity: 0 }}
-              transition={{ delay: 0.35, duration: 0.15 }}
+              transition={{ delay: 0.4, duration: 0.2 }}
             >
-              <X className="w-6 h-6" style={{ color: selected.text }} />
+              <X className="w-5 h-5" style={{ color: selected.text }} />
             </motion.button>
 
-            {/* Content: hidden during flip, fades in after arrival, fades out immediately on close */}
+            {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
             <motion.div
-              className="p-8 sm:p-12 h-full flex flex-col overflow-y-auto"
+              className="p-8 sm:p-12 h-full flex flex-col justify-start overflow-y-auto z-10 relative scrollbar-none"
               style={{ transform: 'rotateY(180deg)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.05, delay: 0 } }}
-              transition={{ delay: 0.4, duration: 0.2 }}
+              transition={{ delay: 0.45, duration: 0.25 }}
             >
+              {/* Header Title */}
               <h2
-                className="text-4xl sm:text-5xl font-display mb-8"
-                style={{ color: selected.text }}
+                className="text-4xl sm:text-5xl font-display font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
+                style={{ color: selected.text, fontFamily: 'var(--font-display), serif' }}
               >
                 {selected.title}
               </h2>
-              <div className="opacity-80 text-xl leading-relaxed" style={{ color: selected.text }}>
-                <p>
-                  Content for <strong>{selected.title}</strong> will go here.
-                </p>
+
+              {/* Dynamically Render Componentized Section Contents */}
+              <div className="flex-1">
+                {selectedId === 'about' && <About />}
+                {selectedId === 'date' && <DateDay />}
+                {selectedId === 'venue' && <Venue />}
+                {selectedId === 'rsvp' && <RSVP />}
+                {selectedId === 'dresscode' && <Dresscode />}
+                {selectedId === 'tentative' && <Tentative />}
+                {selectedId === 'wishlist' && <Wishlist />}
               </div>
             </motion.div>
           </motion.div>

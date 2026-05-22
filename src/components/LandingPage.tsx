@@ -21,8 +21,8 @@ export function LandingPage() {
         >
           {/* Names */}
           <motion.h1
-            className="font-display text-center leading-tight flex h-64 "
-            style={{ color: '#443511' }}
+            className="font-display text-center leading-tight flex h-64"
+            style={{ color: '#443511', fontFamily: 'var(--font-nima)' }}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
