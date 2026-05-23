@@ -4,7 +4,6 @@
 
 @layer base {
   body {
-    background-color: theme('colors.wedding-bg');
     background-image: url('/image/background.png');
     background-size: cover;
     background-position: center;
