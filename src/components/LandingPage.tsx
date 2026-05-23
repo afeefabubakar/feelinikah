@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CardsLayout } from '@/components/CardsLayout'
 import Image from 'next/image'
@@ -8,27 +8,14 @@ import Image from 'next/image'
 export function LandingPage() {
   const [stage, setStage] = useState<'welcome' | 'lil-us' | 'menu'>('welcome')
 
-  useEffect(() => {
-    if (stage === 'welcome') {
-      const timer = setTimeout(() => {
-        setStage('lil-us')
-      }, 4600) // 4.6s to allow all three lines to draw sequentially and pause briefly
-      return () => clearTimeout(timer)
-    } else if (stage === 'lil-us') {
-      const timer = setTimeout(() => {
-        setStage('menu')
-      }, 3600) // 3.6s to display the centered illustration
-      return () => clearTimeout(timer)
-    }
-  }, [stage])
-
   return (
     <div className="relative min-h-screen w-full overflow-hidden select-none">
       <AnimatePresence>
         {stage === 'welcome' && (
           <motion.div
             key="welcome"
-            className="fixed inset-0 flex flex-col items-center justify-center p-6 z-40"
+            onClick={() => setStage('lil-us')}
+            className="fixed inset-0 flex flex-col items-center justify-center p-6 z-40 cursor-pointer"
             style={{
               fontFamily: 'var(--font-imperial)',
             }}
@@ -38,7 +25,7 @@ export function LandingPage() {
             transition={{ duration: 0.6 }}
           >
             <div className="flex flex-col items-center justify-center gap-2 md:gap-4 text-center">
-              {/* Line 1: welcome */}
+              {/* Line 1: Welcome */}
               <motion.h1
                 className="text-5xl md:text-7xl text-amber-900/90 tracking-wide"
                 initial={{ clipPath: 'inset(-50px 100% -50px -20px)' }}
@@ -86,23 +73,25 @@ export function LandingPage() {
         {stage === 'lil-us' && (
           <motion.div
             key="lil-us"
-            className="fixed inset-0 bg-[#260303] flex items-center justify-center p-6 z-40"
+            onClick={() => setStage('menu')}
+            className="fixed inset-0 bg-[#260303] flex items-center justify-center p-6 z-40 cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
               opacity: { duration: 0.8, ease: 'easeInOut' },
+              exit: { duration: 0.4, ease: 'easeIn' },
             }}
           >
             <motion.div
               className="relative w-[60vw] flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.92, y: 25 }}
-              animate={{ opacity: 1, scale: 1.06, y: 0 }}
-              exit={{ opacity: 0, scale: 1.08, y: -15 }}
+              animate={{ opacity: 1, scale: 1.08, y: 0 }}
+              exit={{ opacity: 0, scale: 1.1, y: -15 }}
               transition={{
                 opacity: { duration: 1.0, ease: 'easeOut' },
                 y: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
-                scale: { duration: 4.5, ease: 'linear' }, // Continuous slow cinematic zoom-in
+                scale: { duration: 12.0, ease: 'linear' }, // Super long, slow continuous scale zoom-in
               }}
             >
               <Image
@@ -123,7 +112,7 @@ export function LandingPage() {
             className="min-h-screen w-full z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }} // Snappier fade-in for cards layout
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
             <CardsLayout />
           </motion.div>
