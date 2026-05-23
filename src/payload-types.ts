@@ -173,7 +173,7 @@ export interface Rsvp {
   id: number;
   name: string;
   isAttending: boolean;
-  dietaryRequirements?: string | null;
+  attendeesCount?: number | null;
   message?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -185,11 +185,15 @@ export interface Rsvp {
 export interface Wishlist {
   id: number;
   title: string;
-  link?: string | null;
   /**
-   * How many guests have expressed interest in this item.
+   * URL of the wishlist item.
    */
-  lookingIntoItCount?: number | null;
+  link?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * How many guests have expressed interest in getting this item.
+   */
+  interested?: number | null;
   isClaimed?: boolean | null;
   proofOfPurchase?: (number | null) | Media;
   updatedAt: string;
@@ -324,7 +328,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface RsvpSelect<T extends boolean = true> {
   name?: T;
   isAttending?: T;
-  dietaryRequirements?: T;
+  attendeesCount?: T;
   message?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -336,7 +340,8 @@ export interface RsvpSelect<T extends boolean = true> {
 export interface WishlistSelect<T extends boolean = true> {
   title?: T;
   link?: T;
-  lookingIntoItCount?: T;
+  image?: T;
+  interested?: T;
   isClaimed?: T;
   proofOfPurchase?: T;
   updatedAt?: T;

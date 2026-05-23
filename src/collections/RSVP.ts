@@ -2,7 +2,12 @@ import type { CollectionConfig } from 'payload'
 
 export const RSVP: CollectionConfig = {
   slug: 'rsvp',
+  labels: {
+    singular: 'RSVP',
+    plural: 'RSVPs',
+  },
   admin: {
+    group: 'Content',
     useAsTitle: 'name',
   },
   access: {
@@ -22,8 +27,16 @@ export const RSVP: CollectionConfig = {
       required: true,
     },
     {
-      name: 'dietaryRequirements',
-      type: 'textarea',
+      name: 'attendeesCount',
+      label: 'Number of Attendees',
+      type: 'number',
+      defaultValue: 1,
+      admin: {
+        condition: ({ isAttending }) => {
+          return isAttending
+        },
+      },
+      required: true,
     },
     {
       name: 'message',

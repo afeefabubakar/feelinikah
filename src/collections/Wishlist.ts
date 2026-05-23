@@ -2,7 +2,12 @@ import type { CollectionConfig } from 'payload'
 
 export const Wishlist: CollectionConfig = {
   slug: 'wishlist',
+  labels: {
+    singular: 'Wishlist',
+    plural: 'Wishlists',
+  },
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
   },
   access: {
@@ -17,18 +22,29 @@ export const Wishlist: CollectionConfig = {
     },
     {
       name: 'link',
-      type: 'text', // A URL to the item
+      type: 'text',
+      admin: {
+        description: 'URL of the wishlist item.',
+      },
     },
     {
-      name: 'lookingIntoItCount',
+      name: 'image',
+      label: 'Item Image',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'interested',
+      label: 'Interested Guests',
       type: 'number',
       defaultValue: 0,
       admin: {
-        description: 'How many guests have expressed interest in this item.',
+        description: 'How many guests have expressed interest in getting this item.',
       },
     },
     {
       name: 'isClaimed',
+      label: 'Has been Purchased',
       type: 'checkbox',
       defaultValue: false,
     },
