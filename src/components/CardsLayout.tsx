@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 
@@ -46,7 +46,7 @@ const sections = [
     id: 'dresscode',
     number: '05',
     title: 'Dresscode',
-    color: '#d9beb3', // Pastel Terracotta
+    color: 'white', // Pastel Terracotta
     text: '#4a3c36',
   },
   {
@@ -67,11 +67,49 @@ const sections = [
 
 type CardRect = { top: number; left: number; width: number; height: number }
 
+// Highly optimized GPU-accelerated smooth handwriting-like text reveal component
+function HandwritingText({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <motion.span
+      initial={{ maskPosition: '100% 0%' }}
+      animate={{ maskPosition: '0% 0%' }}
+      className="cursor-pointer"
+      transition={{
+        delay: delay,
+        duration: 1, // Slightly faster sweep duration for a highly responsive calligraphic feel
+        ease: [0.45, 0.05, 0.25, 1.0], // Beautiful S-curve handwriting sweep
+      }}
+      style={{
+        // 300% width mask: Left 33.3% is solid black, Middle 33.3% is feathered transition, Right 33.3% is solid transparent.
+        // This mathematically guarantees 100% hidden start (at 100% pos) and 100% visible end (at 0% pos) with no cuts or leaks.
+        maskImage: 'linear-gradient(to right, black 35%, transparent 65%)',
+        WebkitMaskImage: 'linear-gradient(to right, black 35%, transparent 65%)',
+        maskSize: '300% 100%',
+        WebkitMaskSize: '300% 100%',
+        maskRepeat: 'no-repeat',
+        WebkitMaskRepeat: 'no-repeat',
+        display: 'inline-block',
+      }}
+    >
+      {text}
+    </motion.span>
+  )
+}
+
+// TODO: smaller menu font size
+
 export function CardsLayout() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [fromRect, setFromRect] = useState<CardRect | null>(null)
   const [isClosing, setIsClosing] = useState(false)
   const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+
+  // Calculate typewriter typing delays for a slightly faster, stately sequential line-by-line reveal
+  const typewriterDelays = useMemo(() => {
+    const startDelay = 0.4
+    const step = 0.4 // Slightly faster step delay between lines starting (1.0s stagger)
+    return sections.map((_, i) => startDelay + i * step)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = selectedId ? 'hidden' : ''
@@ -107,12 +145,9 @@ export function CardsLayout() {
     <div className="min-h-screen flex items-center justify-center font-sans overflow-x-hidden p-6 md:p-12">
       {/* Center Layout for Text Menu */}
       <div className="flex flex-col items-center justify-center space-y-10 w-full max-w-lg mx-auto py-12">
-        {/* Soft decorative divider line */}
-        <div className="w-12 h-px bg-amber-200/40" />
-
         {/* Minimalist Vertical Column Menu */}
         <div className="flex flex-col space-y-4 w-full select-none">
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <button
               key={section.id}
               ref={(el) => {
@@ -127,14 +162,12 @@ export function CardsLayout() {
               }}
             >
               {/* Section Title */}
-              <span className="text-7xl sm:text-8xl tracking-wide font-light transition-all duration-300 text-black group-hover:text-yellow-800 group-hover:scale-105">
-                {section.title}
+              <span className="text-4xl sm:text-7xl tracking-wide font-light transition-all duration-300 text-black group-hover:text-yellow-800 group-hover:scale-105">
+                <HandwritingText text={section.title} delay={typewriterDelays[index]} />
               </span>
             </button>
           ))}
         </div>
-
-        <div className="w-12 h-px bg-amber-200/40" />
       </div>
 
       {/* The 3D Y-Axis Flip Flying Card Portal */}
@@ -146,106 +179,109 @@ export function CardsLayout() {
         }}
       >
         {selectedId && selected && fromRect && !isClosing && (
-          <motion.div
-            key="flying-card"
-            className="fixed z-50 overflow-hidden shadow-2xl border border-white/10"
-            style={{
-              backgroundColor: selected.color,
-              transformPerspective: 1400,
-              transformOrigin: 'center center',
-              borderRadius: '2rem',
-            }}
-            initial={{
-              top: fromRect.top,
-              left: fromRect.left,
-              width: fromRect.width,
-              height: fromRect.height,
-              rotateY: 0,
-              opacity: 0,
-              scale: 0.85,
-            }}
-            animate={(() => {
-              const t = getModalTarget()
-              return {
-                top: t.top,
-                left: t.left,
-                width: t.width,
-                height: t.height,
-                rotateY: 180,
-                opacity: 1,
-                scale: 1,
-                borderRadius: '3rem',
-              }
-            })()}
-            exit={{
-              top: fromRect.top,
-              left: fromRect.left,
-              width: fromRect.width,
-              height: fromRect.height,
-              rotateY: 0,
-              opacity: 0,
-              scale: 0.85,
-              borderRadius: '2rem',
-              transition: { ease: [0.7, 0, 0.84, 0], duration: 0.45 },
-            }}
-            transition={{
-              ease: [0.16, 1, 0.3, 1], // Expo-out curve
-              duration: 0.7,
-            }}
-          >
-            {/* Soft Paper Grain Texture Overlay */}
-            <div className="card-grain opacity-80" />
-
+          <>
             {/* Dark Blurred Backdrop behind the active card */}
             <motion.div
-              className="fixed inset-0 -z-10 bg-black/55 backdrop-blur-md"
+              className="fixed -z-10 w-screen h-screen bg-black/40 "
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{ pointerEvents: 'none' }}
             />
 
-            {/* Close Button - Fades in gently after 3D card settles */}
-            <motion.button
-              onClick={handleClose}
-              className="absolute top-6 left-6 p-2.5 bg-black/5 hover:bg-black/10 rounded-full transition-colors z-20 focus:outline-none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.7 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 0.4, duration: 0.2 }}
-            >
-              <X className="w-5 h-5" style={{ color: selected.text }} />
-            </motion.button>
-
-            {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
+            {/* 3D Flip Transition Portal */}
             <motion.div
-              className="p-8 sm:p-12 h-full flex flex-col justify-start overflow-y-auto z-10 relative scrollbar-none"
-              style={{ transform: 'rotateY(180deg)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.05, delay: 0 } }}
-              transition={{ delay: 0.45, duration: 0.25 }}
+              key="flying-card"
+              className="fixed z-50 overflow-hidden shadow-2xl border border-white/10"
+              style={{
+                backgroundColor: selected.color,
+                transformPerspective: 1400,
+                transformOrigin: 'center center',
+                borderRadius: '2rem',
+              }}
+              initial={{
+                top: fromRect.top,
+                left: fromRect.left,
+                width: fromRect.width,
+                height: fromRect.height,
+                rotateY: 0,
+                opacity: 0,
+                scale: 0.85,
+              }}
+              animate={(() => {
+                const t = getModalTarget()
+                return {
+                  top: t.top,
+                  left: t.left,
+                  width: t.width,
+                  height: t.height,
+                  rotateY: 180,
+                  opacity: 1,
+                  scale: 1,
+                  borderRadius: '3rem',
+                }
+              })()}
+              exit={{
+                top: fromRect.top,
+                left: fromRect.left,
+                width: fromRect.width,
+                height: fromRect.height,
+                rotateY: 0,
+                opacity: 0,
+                scale: 0.85,
+                borderRadius: '2rem',
+                transition: { ease: [0.7, 0, 0.84, 0], duration: 0.45 },
+              }}
+              transition={{
+                ease: [0.16, 1, 0.3, 1], // Expo-out curve
+                duration: 0.7,
+              }}
             >
-              {/* Header Title */}
-              <h2
-                className="text-4xl sm:text-5xl font-display font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
-                style={{ color: selected.text, fontFamily: 'var(--font-display), serif' }}
-              >
-                {selected.title}
-              </h2>
+              {/* Soft Paper Grain Texture Overlay */}
+              <div className="card-grain opacity-80" />
 
-              {/* Dynamically Render Componentized Section Contents */}
-              <div className="flex-1">
-                {selectedId === 'about' && <About />}
-                {selectedId === 'date' && <DateDay />}
-                {selectedId === 'venue' && <Venue />}
-                {selectedId === 'rsvp' && <RSVP />}
-                {selectedId === 'dresscode' && <Dresscode />}
-                {selectedId === 'tentative' && <Tentative />}
-                {selectedId === 'wishlist' && <Wishlist />}
-              </div>
+              {/* Close Button - Fades in gently after 3D card settles */}
+              <motion.button
+                onClick={handleClose}
+                className="absolute top-6 left-6 p-2.5 bg-black/5 hover:bg-black/10 rounded-full transition-colors z-20 focus:outline-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.7 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.4, duration: 0.2 }}
+              >
+                <X className="w-5 h-5" style={{ color: selected.text }} />
+              </motion.button>
+
+              {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
+              <motion.div
+                className="p-8 sm:p-12 h-full flex flex-col justify-start overflow-y-auto z-10 relative scrollbar-none"
+                style={{ transform: 'rotateY(180deg)' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.05, delay: 0 } }}
+                transition={{ delay: 0.45, duration: 0.25 }}
+              >
+                {/* Header Title */}
+                <h2
+                  className="text-4xl sm:text-5xl font-display font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
+                  style={{ color: selected.text, fontFamily: 'var(--font-display), serif' }}
+                >
+                  {selected.title}
+                </h2>
+
+                {/* Dynamically Render Componentized Section Contents */}
+                <div className="flex-1">
+                  {selectedId === 'about' && <About />}
+                  {selectedId === 'date' && <DateDay />}
+                  {selectedId === 'venue' && <Venue />}
+                  {selectedId === 'rsvp' && <RSVP />}
+                  {selectedId === 'dresscode' && <Dresscode />}
+                  {selectedId === 'tentative' && <Tentative />}
+                  {selectedId === 'wishlist' && <Wishlist />}
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
