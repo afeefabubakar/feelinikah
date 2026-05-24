@@ -13,10 +13,10 @@ const belmoneBallpoint = localFont({
   variable: '--font-sans',
   display: 'swap',
 })
-const imperialScript = Tangerine({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-imperial',
+const betrisDaniel = localFont({
+  src: '../../../public/fonts/Betris_Daniel.otf',
+  variable: '--font-betris-daniel',
+  display: 'swap',
 })
 const littleNima = localFont({
   src: '../../../public/fonts/LittleNima.otf',
@@ -30,7 +30,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${belmoneBallpoint.variable} ${littleNima.variable} ${imperialScript.variable}`}
+      className={`${belmoneBallpoint.variable} ${littleNima.variable} ${betrisDaniel.variable}`}
       suppressHydrationWarning
     >
       <body className="font-sans">
