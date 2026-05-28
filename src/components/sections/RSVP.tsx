@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { RSVPConfirmModal } from '@/components/rsvp/RSVPConfirmModal'
 import { LetterModal } from '@/components/rsvp/LetterModal'
-
+import { MessageBoard } from '@/components/rsvp/MessageBoard'
 
 type Stage = 'form' | 'confirm' | 'letter'
 
@@ -26,8 +26,14 @@ export default function RSVP({ onComplete }: RSVPProps) {
   // ── Step 1: Submit RSVP ────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!name.trim()) { setError('Please enter your name.'); return }
-    if (isAttending === null) { setError('Please select whether you are attending.'); return }
+    if (!name.trim()) {
+      setError('Please enter your name.')
+      return
+    }
+    if (isAttending === null) {
+      setError('Please select whether you are attending.')
+      return
+    }
 
     setSubmitting(true)
     setError(null)
@@ -79,12 +85,12 @@ export default function RSVP({ onComplete }: RSVPProps) {
   }
 
   return (
-    <div className="relative text-stone-800 h-full flex flex-col overflow-y-auto pb-4">
+    <div className="relative text-stone-800 h-full flex flex-col overflow-y-auto pb-4 scrollbar-none">
       {/* ── Form ── */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <h3 className="text-xl font-serif text-stone-800 font-semibold mb-1">Join Our Celebration</h3>
-          <p className="text-sm font-sans text-stone-500">Please RSVP by April 24, 2026</p>
+          <h3 className="text-xl font-semibold mb-1">Join Our Celebration</h3>
+          <p className="text-sm font-sans">Please RSVP by 1st August 2026</p>
         </div>
 
         {error && (
@@ -108,7 +114,9 @@ export default function RSVP({ onComplete }: RSVPProps) {
 
         {/* Attendance */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-sans text-stone-600 font-medium">Will you be attending?</label>
+          <label className="text-sm font-sans text-stone-600 font-medium">
+            Will you be attending?
+          </label>
           <div className="grid grid-cols-2 gap-4">
             {[
               { value: true, label: 'Yes, happily!' },
@@ -184,6 +192,9 @@ export default function RSVP({ onComplete }: RSVPProps) {
         </button>
       </form>
 
+      {/* ── Guest messages board ── */}
+      <MessageBoard />
+
       {/* ── Confirm modal (both flows) ── */}
       {stage === 'confirm' && isAttending !== null && (
         <RSVPConfirmModal
@@ -204,8 +215,6 @@ export default function RSVP({ onComplete }: RSVPProps) {
           error={error}
         />
       )}
-
-
     </div>
   )
 }
