@@ -55,8 +55,8 @@ const sections = [
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#ebdcd5', // Pale Warm Gray
-    text: '#4a3c36',
+    color: '#6D544A', // Pale Warm Gray
+    text: '#fff',
   },
   {
     id: 'wishlist',
