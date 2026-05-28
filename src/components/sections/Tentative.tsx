@@ -8,7 +8,7 @@ export default function Tentative() {
       {/* Schedule overview image */}
       <div className="rounded-2xl">
         <Image
-          src="/image/tentative.png"
+          src="/image/tentative-v2.png"
           alt="Wedding day schedule overview"
           width={800}
           height={600}
