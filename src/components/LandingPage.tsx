@@ -9,7 +9,7 @@ export function LandingPage() {
   const [stage, setStage] = useState<'welcome' | 'lil-us' | 'menu'>('welcome')
 
   return (
-    <div className="relative h-screen w-full overflow-hidden select-none">
+    <div className="relative h-screen w-full overflow-hidden">
       <AnimatePresence>
         {stage === 'welcome' && (
           <motion.div
