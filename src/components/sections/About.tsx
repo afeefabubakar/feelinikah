@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function About() {
   return (
-    <div className="flex flex-col gap-8 items-center text-stone-800 h-full">
+    <div className="flex flex-col gap-8 items-center text-stone-800">
       {/* Clip-masked Image Container */}
       <Image src="/image/lil-us.png" alt="" width={700} height={875} className="h-auto w-full" />
 

@@ -15,6 +15,10 @@
   li {
     @apply text-3xl;
   }
+
+  label {
+    @apply text-lg;
+  }
 }
 
 @layer components {

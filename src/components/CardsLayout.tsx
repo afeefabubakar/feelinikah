@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
+import { RSVPThankYou } from '@/components/rsvp/RSVPThankYou'
+import { RSVPThankYouToast } from '@/components/rsvp/RSVPThankYouToast'
 
 // Import Section Components
 import About from './sections/About'
@@ -103,6 +105,8 @@ export function CardsLayout() {
   const [fromRect, setFromRect] = useState<CardRect | null>(null)
   const [isClosing, setIsClosing] = useState(false)
   const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const [rsvpResult, setRsvpResult] = useState<{ name: string; isAttending: boolean } | null>(null)
+  const [showThankYou, setShowThankYou] = useState(false)
 
   // Calculate typewriter typing delays for a slightly faster, stately sequential line-by-line reveal
   const typewriterDelays = useMemo(() => {
@@ -129,6 +133,11 @@ export function CardsLayout() {
 
   function handleClose() {
     setIsClosing(true)
+  }
+
+  function handleRsvpComplete(name: string, isAttending: boolean) {
+    setRsvpResult({ name, isAttending })
+    setIsClosing(true) // close the card
   }
 
   const selected = sections.find((s) => s.id === selectedId)
@@ -176,6 +185,8 @@ export function CardsLayout() {
           setSelectedId(null)
           setFromRect(null)
           setIsClosing(false)
+          // Show thank-you after card has fully exited
+          if (rsvpResult) setShowThankYou(true)
         }}
       >
         {selectedId && selected && fromRect && !isClosing && (
@@ -274,13 +285,27 @@ export function CardsLayout() {
                   {selectedId === 'about' && <About />}
                   {selectedId === 'date' && <DateDay />}
                   {selectedId === 'venue' && <Venue />}
-                  {selectedId === 'rsvp' && <RSVP />}
+                  {selectedId === 'rsvp' && <RSVP onComplete={handleRsvpComplete} />}
                   {selectedId === 'dresscode' && <Dresscode />}
                   {selectedId === 'tentative' && <Tentative />}
                   {selectedId === 'wishlist' && <Wishlist />}
                 </div>
               </motion.div>
             </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* ── Post-RSVP: thank-you modal + floating toast (outside card transform) ── */}
+      <AnimatePresence onExitComplete={() => setRsvpResult(null)}>
+        {showThankYou && rsvpResult && (
+          <>
+            <RSVPThankYou
+              name={rsvpResult.name}
+              isAttending={rsvpResult.isAttending}
+              onClose={() => setShowThankYou(false)}
+            />
+            <RSVPThankYouToast onDone={() => {}} />
           </>
         )}
       </AnimatePresence>

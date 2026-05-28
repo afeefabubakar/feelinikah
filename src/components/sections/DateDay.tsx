@@ -1,12 +1,15 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { Heart, Calendar } from 'lucide-react'
 
 export default function DateDay() {
-  const weddingDate = new Date('2026-05-24T10:00:00') // Adjust to your actual wedding date/time
+  const weddingDate = new Date('2026-09-26T08:00:00')
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [hasMounted, setHasMounted] = useState(false)
 
   useEffect(() => {
+    setHasMounted(true)
     function updateCountdown() {
       const now = new Date()
       const diff = weddingDate.getTime() - now.getTime()
@@ -29,86 +32,137 @@ export default function DateDay() {
     return () => clearInterval(timer)
   }, [])
 
-  // Generate calendar grid for May 2026
-  // May 1, 2026 is a Friday (so 5 empty slots before it)
-  const daysInMay = 31
-  const startDayOffset = 5 // Friday
-  const calendarCells = Array.from({ length: 42 }, (_, i) => {
-    const dayNumber = i - startDayOffset + 1
-    if (dayNumber > 0 && dayNumber <= daysInMay) {
-      return dayNumber
-    }
-    return null
-  })
+  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+
+  // September 2026 starts on a Tuesday (2 empty slots: Sun, Mon)
+  const calendarDays = [
+    null,
+    null, // Empty slots
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+  ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-stone-800 h-full overflow-y-auto pb-4">
-      {/* Calendar Card */}
-      <div className="bg-stone-50 border border-stone-200 rounded-3xl p-6 shadow-inner flex flex-col items-center">
-        <h3 className="text-2xl font-serif text-stone-700 mb-4 tracking-wide">May 2026</h3>
-        <div className="grid grid-cols-7 gap-y-2 gap-x-3 text-center text-sm font-sans w-full max-w-[280px]">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-            <span key={i} className="font-semibold text-stone-400">
-              {d}
+    <div className="flex flex-col items-center text-stone-800 h-full select-none">
+      <h2
+        className="text-6xl mb-12"
+        style={{
+          fontFamily: 'var(--font-nima)',
+        }}
+      >
+        26 September 2026
+      </h2>
+      {/* Countdown */}
+      {hasMounted && (
+        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-stone-200/50 pb-6">
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-stone-850 tabular-nums">{timeLeft.days}</span>
+            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+              Days
             </span>
-          ))}
-          {calendarCells.map((cell, i) => {
-            const isWeddingDay = cell === 24
-            return (
-              <span
-                key={i}
-                className={`w-8 h-8 flex items-center justify-center rounded-full text-base font-serif transition-all ${
-                  cell ? 'text-stone-700' : 'text-transparent'
-                } ${
-                  isWeddingDay
-                    ? 'bg-amber-700 text-stone-100 font-bold scale-110 shadow-md ring-4 ring-amber-100'
-                    : ''
-                }`}
-              >
-                {cell}
-              </span>
-            )
-          })}
+          </div>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-stone-850 tabular-nums">{timeLeft.hours}</span>
+            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+              Hours
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-stone-850 tabular-nums">
+              {timeLeft.minutes}
+            </span>
+            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+              Mins
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-stone-850 tabular-nums">
+              {timeLeft.seconds}
+            </span>
+            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+              Secs
+            </span>
+          </div>
         </div>
-        <p className="text-sm font-sans tracking-widest text-stone-500 uppercase mt-6 text-center">
-          Sunday, May 24, 2026
-        </p>
-      </div>
+      )}
 
-      {/* Countdown Card */}
-      <div className="flex flex-col justify-center items-center md:items-start space-y-6">
-        <div className="text-center md:text-left">
-          <h4 className="text-lg font-sans tracking-widest text-stone-500 uppercase">Save the Date</h4>
-          <h2 className="text-4xl font-serif text-stone-800 mt-2 leading-snug">
-            Countdown to our <br className="hidden md:inline" />Special Day
-          </h2>
-        </div>
+      {/* Calendar Grid Container */}
+      <div className="flex w-full justify-center font-(--font-nima)">
+        <div className="max-w-sm bg-white p-8 rounded-xl">
+          {/* Header */}
+          <div className="flex items-center justify-center gap-2 mb-6 pb-4">
+            <h3 className="text-xl font-semibold text-stone-850 tracking-wide">September 2026</h3>
+          </div>
 
-        {/* Timer Numbers */}
-        <div className="grid grid-cols-4 gap-4 text-center max-w-[320px]">
-          {[
-            { value: timeLeft.days, label: 'Days' },
-            { value: timeLeft.hours, label: 'Hours' },
-            { value: timeLeft.minutes, label: 'Mins' },
-            { value: timeLeft.seconds, label: 'Secs' },
-          ].map((t, idx) => (
-            <div
-              key={idx}
-              className="bg-stone-50 border border-stone-100 rounded-2xl p-3 flex flex-col justify-center shadow-sm w-16 sm:w-20"
-            >
-              <span className="text-2xl sm:text-3xl font-serif text-amber-700 font-bold tracking-tight">
-                {String(t.value).padStart(2, '0')}
+          {/* Weekday Initials */}
+          <div className="grid grid-cols-7 gap-y-2 text-center mb-4">
+            {daysOfWeek.map((day, idx) => (
+              <span key={idx} className="tracking-widest text-stone-800 font-semibold uppercase">
+                {day}
               </span>
-              <span className="text-[10px] sm:text-xs font-sans tracking-wider uppercase text-stone-400 mt-1">
-                {t.label}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <p className="text-base text-stone-600 font-serif leading-relaxed text-center md:text-left mt-2">
-          Join us as we step into our forever. The celebration begins at 10:00 AM. We can’t wait to count down the final moments with you!
-        </p>
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 gap-y-3 gap-x-1 text-center items-center">
+            {calendarDays.map((day, idx) => {
+              if (day === null) {
+                return <div key={`empty-${idx}`} className="w-8 h-8 sm:w-10 sm:h-10" />
+              }
+
+              const isWeddingDay = day === 26
+
+              return (
+                <div
+                  key={day}
+                  className="relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center mx-auto"
+                >
+                  {isWeddingDay ? (
+                    <>
+                      {/* Pulsing Love Shaped Heart behind the number 26 */}
+                      <div className="absolute inset-0 flex items-center justify-center animate-pulse duration-3000">
+                        <Heart className="w-9 h-9 sm:w-11 sm:h-11 stroke-rose-500 drop-shadow-[0_2px_6px_rgba(225,29,72,0.4)]" />
+                      </div>
+                      <span className="relative z-10 text-black font-bold text-xl">{day}</span>
+                    </>
+                  ) : (
+                    <span className="text-stone-700 text-xl hover:bg-stone-200/50 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
+                      {day}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </div>
     </div>
   )
