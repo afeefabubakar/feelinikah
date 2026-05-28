@@ -102,7 +102,7 @@ export function MessageBoard() {
                 />
 
                 {/* Message text */}
-                <p className="relative text-stone-700 leading-7 whitespace-pre-wrap break-words">
+                <p className="relative text-stone-700 leading-7 whitespace-pre-wrap wrap-break-word">
                   {entry.message}
                 </p>
 
