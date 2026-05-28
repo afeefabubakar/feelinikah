@@ -182,11 +182,11 @@ export function CardsLayout() {
           <>
             {/* Dark Blurred Backdrop behind the active card */}
             <motion.div
-              className="fixed -z-10 w-screen h-screen bg-black/40 "
+              className="fixed inset-0 z-40 w-screen h-screen bg-black/40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{ pointerEvents: 'none' }}
+              onClick={handleClose}
             />
 
             {/* 3D Flip Transition Portal */}
@@ -254,7 +254,7 @@ export function CardsLayout() {
 
               {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
               <motion.div
-                className="p-8 sm:p-12 h-full flex flex-col justify-start overflow-y-auto z-10 relative scrollbar-none"
+                className="p-8 sm:p-12 h-full flex flex-col justify-start z-10 relative scrollbar-none"
                 style={{ transform: 'rotateY(180deg)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -270,7 +270,7 @@ export function CardsLayout() {
                 </h2>
 
                 {/* Dynamically Render Componentized Section Contents */}
-                <div className="flex-1">
+                <div className="overflow-y-auto scrollbar-none">
                   {selectedId === 'about' && <About />}
                   {selectedId === 'date' && <DateDay />}
                   {selectedId === 'venue' && <Venue />}
