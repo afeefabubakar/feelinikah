@@ -32,9 +32,9 @@ export function RSVPThankYouToast({ onDone }: RSVPThankYouToastProps) {
       >
         {/* Bubble */}
         <div
-          className="px-5 py-4 rounded-3xl rounded-br-sm shadow-xl text-sm leading-relaxed text-stone-700"
+          className="px-5 py-4 rounded-3xl rounded-br-sm shadow-xl text-sm leading-relaxed text-[#260303]"
           style={{
-            background: 'linear-gradient(135deg, #fdf8f0, #fef3e2)',
+            background: 'linear-gradient(135deg, var(--color-parchment), #fef3e2)',
             boxShadow: '0 12px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(180,140,80,0.12)',
           }}
         >
@@ -54,7 +54,7 @@ export function RSVPThankYouToast({ onDone }: RSVPThankYouToastProps) {
         <div
           className="absolute -bottom-2 right-5 w-4 h-4"
           style={{
-            background: '#fdf8f0',
+            background: 'var(--color-parchment)',
             clipPath: 'polygon(0 0, 100% 0, 100% 100%)',
             filter: 'drop-shadow(1px 2px 2px rgba(0,0,0,0.08))',
           }}
@@ -63,7 +63,7 @@ export function RSVPThankYouToast({ onDone }: RSVPThankYouToastProps) {
         {/* Shrinking progress bar */}
         <motion.div
           className="absolute bottom-0 left-0 h-0.5 rounded-full opacity-30"
-          style={{ background: '#b45309', width: '100%', originX: 0 }}
+          style={{ background: 'var(--brand-highlight)', width: '100%', originX: 0 }}
           initial={{ scaleX: 1 }}
           animate={{ scaleX: 0 }}
           transition={{ duration: 4.0, ease: 'linear' }}

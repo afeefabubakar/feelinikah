@@ -9,7 +9,7 @@ export function LandingPage() {
   const [stage, setStage] = useState<'lil-us' | 'menu'>('lil-us')
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative ">
       <AnimatePresence>
         {stage === 'lil-us' && (
           <motion.div
@@ -78,7 +78,7 @@ export function LandingPage() {
         {stage === 'menu' && (
           <motion.div
             key="menu"
-            className="min-h-screen w-full z-10"
+            className="w-full z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}

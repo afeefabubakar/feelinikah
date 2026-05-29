@@ -85,23 +85,23 @@ export default function RSVP({ onComplete }: RSVPProps) {
   }
 
   return (
-    <div className="relative text-stone-800 h-full flex flex-col overflow-y-auto pb-4 scrollbar-none">
+    <div className="relative text-white h-full flex flex-col overflow-y-auto pb-4 scrollbar-none">
       {/* ── Form ── */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <h3 className="text-xl font-semibold mb-1">Join Our Celebration</h3>
-          <p className="text-sm font-sans">Please RSVP by 1st August 2026</p>
+          <p className="text-sm font-sans text-white/60">Please RSVP by 1st August 2026</p>
         </div>
 
         {error && (
-          <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-sm text-rose-700 font-serif">
+          <div className="p-3 bg-rose-950/40 border border-rose-800/30 rounded-xl text-sm text-rose-200 font-sans">
             {error}
           </div>
         )}
 
         {/* Full Name */}
         <div className="flex flex-col gap-1.5">
-          <label className="font-sans font-medium" htmlFor="name">
+          <label className="font-sans font-medium text-white/95" htmlFor="name">
             Your Name
           </label>
           <input
@@ -110,14 +110,14 @@ export default function RSVP({ onComplete }: RSVPProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl text-sm font-serif text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-700 transition-all"
+            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm font-sans text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-700 transition-all"
             required
           />
         </div>
 
         {/* Attendance */}
         <div className="flex flex-col gap-2">
-          <label className="font-sans font-medium" htmlFor="attending">
+          <label className="font-sans font-medium text-white/95" htmlFor="attending">
             Will you be attending?
           </label>
           <div className="grid grid-cols-2 gap-4">
@@ -131,8 +131,8 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 onClick={() => setIsAttending(value)}
                 className={`py-3 rounded-2xl tracking-wide font-semibold border transition-all cursor-pointer ${
                   isAttending === value
-                    ? 'bg-amber-700/10 border-amber-700 text-amber-900 shadow-sm'
-                    : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100'
+                    ? 'bg-amber-700 border-amber-600 text-white shadow-sm'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 {label}
@@ -152,24 +152,24 @@ export default function RSVP({ onComplete }: RSVPProps) {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25 }}
             >
-              <label className="font-sans font-medium" htmlFor="attendeesCount">
+              <label className="font-sans font-medium text-white/95" htmlFor="attendeesCount">
                 Number of attendees (including yourself)
               </label>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setAttendeesCount((n) => Math.max(1, n - 1))}
-                  className="w-10 h-10 rounded-full bg-stone-100 border border-stone-200 text-stone-600 text-lg font-semibold hover:bg-stone-200 transition-colors flex items-center justify-center"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white text-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center cursor-pointer"
                 >
                   −
                 </button>
-                <span className="text-xl font-serif text-stone-800 w-6 text-center tabular-nums">
+                <span className="text-xl font-sans text-white w-6 text-center tabular-nums">
                   {attendeesCount}
                 </span>
                 <button
                   type="button"
                   onClick={() => setAttendeesCount((n) => n + 1)}
-                  className="w-10 h-10 rounded-full bg-stone-100 border border-stone-200 text-stone-600 text-lg font-semibold hover:bg-stone-200 transition-colors flex items-center justify-center"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white text-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center cursor-pointer"
                 >
                   +
                 </button>
@@ -182,7 +182,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-3.5 cursor-pointer bg-amber-700 hover:bg-amber-800 disabled:bg-stone-300 text-stone-100 rounded-2xl text-sm font-medium tracking-wide uppercase shadow-md flex items-center justify-center gap-2 transition-colors"
+          className="w-full py-3.5 cursor-pointer bg-amber-700 hover:bg-amber-800 disabled:bg-white/10 disabled:text-white/35 text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-md flex items-center justify-center gap-2 transition-colors"
         >
           {submitting ? (
             <>

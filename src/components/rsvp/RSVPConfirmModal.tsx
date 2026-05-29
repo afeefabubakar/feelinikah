@@ -30,7 +30,7 @@ export function RSVPConfirmModal({
       {/* Card */}
       <motion.div
         className="relative z-10 w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl"
-        style={{ background: '#fdf8f0' }}
+        style={{ background: 'var(--color-parchment)' }}
         initial={{ opacity: 0, y: 48, scale: 0.93 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 32, scale: 0.95 }}
@@ -39,7 +39,7 @@ export function RSVPConfirmModal({
         {/* Close */}
         <button
           onClick={onSkip}
-          className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-black/5 transition-colors text-stone-400 hover:text-stone-600"
+          className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-black/5 transition-colors text-amber-900/40 hover:text-amber-900/70 cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -64,10 +64,10 @@ export function RSVPConfirmModal({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h3 className="text-xl text-stone-800 font-semibold">
+            <h3 className="text-xl text-[#260303] font-semibold">
               {isAttending ? `See you there, ${name}! 🎉` : `We'll miss you, ${name} 🥹`}
             </h3>
-            <p className="text-lg text-stone-500 font-sans mt-2 leading-relaxed">
+            <p className="text-lg text-amber-900/70 font-sans mt-2 leading-relaxed">
               Would you like to leave a heartfelt message for the couple?
             </p>
           </motion.div>
@@ -87,7 +87,7 @@ export function RSVPConfirmModal({
             </button>
             <button
               onClick={onSkip}
-              className="w-full py-3 rounded-2xl text-lg font-medium tracking-wide border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors cursor-pointer"
+              className="w-full py-3 rounded-2xl text-lg font-medium tracking-wide border border-amber-900/10 text-amber-900/60 hover:bg-amber-900/5 transition-colors cursor-pointer"
             >
               No thanks, skip
             </button>

@@ -20,29 +20,29 @@ const sections = [
     id: 'about',
     number: '01',
     title: 'About Us',
-    color: '#fdf6e2', // Soft Cream
-    text: '#2d3b25', // Deep Forest Text
+    color: '#260303', // Burgundy
+    text: '#fff',
   },
   {
     id: 'date',
     number: '02',
     title: 'Date & Day',
-    color: '#cad4b1', // Sage Green
-    text: '#2d3b25',
+    color: '#6D544A', // Dark Brown
+    text: '#fff',
   },
   {
     id: 'venue',
     number: '03',
     title: 'Venue',
-    color: '#aab588', // Soft Olive
-    text: '#fdf6e2',
+    color: '#6D544A', // Dark Brown
+    text: '#fff',
   },
   {
     id: 'rsvp',
     number: '04',
     title: 'RSVP',
-    color: '#ddacaa', // Soft Dusty Rose
-    text: '#3c2c2a',
+    color: '#6D544A', // Dark Brown
+    text: '#fff',
   },
   {
     id: 'dresscode',
@@ -55,15 +55,15 @@ const sections = [
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#6D544A', // Pale Warm Gray
+    color: '#6D544A', // Dark Brown
     text: '#fff',
   },
   {
     id: 'wishlist',
     number: '07',
     title: 'Our Wishlist',
-    color: '#ebd7d8', // Light Champagne Rose
-    text: '#4f3133',
+    color: '#6D544A', // Dark Brown
+    text: '#fff',
   },
 ]
 
@@ -72,10 +72,10 @@ type CardRect = { top: number; left: number; width: number; height: number }
 // Highly optimized GPU-accelerated smooth handwriting-like text reveal component
 function HandwritingText({ text, delay = 0 }: { text: string; delay?: number }) {
   return (
-    <motion.span
+    <motion.h2
       initial={{ maskPosition: '100% 0%' }}
       animate={{ maskPosition: '0% 0%' }}
-      className="cursor-pointer"
+      className="cursor-pointer text-5xl sm:text-7xl"
       transition={{
         delay: delay,
         duration: 1, // Slightly faster sweep duration for a highly responsive calligraphic feel
@@ -94,7 +94,7 @@ function HandwritingText({ text, delay = 0 }: { text: string; delay?: number }) 
       }}
     >
       {text}
-    </motion.span>
+    </motion.h2>
   )
 }
 
@@ -151,32 +151,29 @@ export function CardsLayout() {
   }, [])
 
   return (
-    <div className="min-h-screen flex items-center justify-center font-sans overflow-x-hidden p-6 md:p-12">
+    <div className="flex items-center min-h-dvh justify-center font-sans overflow-x-hidden p-6 md:p-12">
       {/* Center Layout for Text Menu */}
-      <div className="flex flex-col items-center justify-center space-y-10 w-full max-w-lg mx-auto py-12">
-        {/* Minimalist Vertical Column Menu */}
-        <div className="flex flex-col space-y-4 w-full select-none">
-          {sections.map((section, index) => (
-            <button
-              key={section.id}
-              ref={(el) => {
-                linkRefs.current[section.id] = el
-              }}
-              onClick={() => !selectedId && handleOpen(section.id)}
-              disabled={selectedId !== null}
-              className="group relative flex items-center justify-center py-3 text-center border-b border-transparent focus:outline-none transition-all duration-300 w-full"
-              style={{
-                opacity: selectedId === section.id ? 0 : 1,
-                pointerEvents: selectedId ? 'none' : 'auto',
-              }}
-            >
-              {/* Section Title */}
-              <span className="text-4xl sm:text-7xl tracking-wide font-light transition-all duration-300 text-black group-hover:text-yellow-800 group-hover:scale-105">
-                <HandwritingText text={section.title} delay={typewriterDelays[index]} />
-              </span>
-            </button>
-          ))}
-        </div>
+      <div className="flex flex-col items-center justify-center gap-4 sm:gap-8 w-full max-w-lg mx-auto2">
+        {sections.map((section, index) => (
+          <button
+            key={section.id}
+            ref={(el) => {
+              linkRefs.current[section.id] = el
+            }}
+            onClick={() => !selectedId && handleOpen(section.id)}
+            disabled={selectedId !== null}
+            className="group relative flex items-center justify-center py-3 text-center border-b border-transparent focus:outline-none transition-all duration-300 w-full"
+            style={{
+              opacity: selectedId === section.id ? 0 : 1,
+              pointerEvents: selectedId ? 'none' : 'auto',
+            }}
+          >
+            {/* Section Title */}
+            <span className="transition-all duration-300 text-black group-hover:text-yellow-800 group-hover:scale-105">
+              <HandwritingText text={section.title} delay={typewriterDelays[index]} />
+            </span>
+          </button>
+        ))}
       </div>
 
       {/* The 3D Y-Axis Flip Flying Card Portal */}
@@ -274,8 +271,8 @@ export function CardsLayout() {
               >
                 {/* Header Title */}
                 <h2
-                  className="text-4xl sm:text-5xl font-display font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
-                  style={{ color: selected.text, fontFamily: 'var(--font-display), serif' }}
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
+                  style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
                 </h2>

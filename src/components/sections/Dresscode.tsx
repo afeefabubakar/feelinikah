@@ -98,7 +98,7 @@ export default function Dresscode() {
   const theme = themes[variation]
 
   return (
-    <div className="flex flex-col gap-6 text-stone-800 h-full overflow-y-auto scrollbar-none pb-4">
+    <div className="flex flex-col gap-6 text-[#260303] h-full overflow-y-auto scrollbar-none pb-4">
       {/* Outfit groups — vertical stack (Him then Her) */}
       <div className="flex flex-col gap-4">
         {theme.groups.map(({ label, images }) => (

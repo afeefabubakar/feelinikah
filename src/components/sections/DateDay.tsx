@@ -71,7 +71,7 @@ export default function DateDay() {
   ]
 
   return (
-    <div className="flex flex-col items-center text-stone-800 h-full select-none">
+    <div className="flex flex-col items-center text-white h-full select-none">
       <h2
         className="text-6xl mb-12"
         style={{
@@ -82,32 +82,32 @@ export default function DateDay() {
       </h2>
       {/* Countdown */}
       {hasMounted && (
-        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-stone-200/50 pb-6">
+        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-white/10 pb-6 w-full max-w-sm">
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-stone-850 tabular-nums">{timeLeft.days}</span>
-            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+            <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.days}</span>
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Days
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-stone-850 tabular-nums">{timeLeft.hours}</span>
-            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+            <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.hours}</span>
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Hours
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-stone-850 tabular-nums">
+            <span className="text-2xl font-bold text-white tabular-nums">
               {timeLeft.minutes}
             </span>
-            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Mins
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-stone-850 tabular-nums">
+            <span className="text-2xl font-bold text-white tabular-nums">
               {timeLeft.seconds}
             </span>
-            <span className="text-lg tracking-widest text-stone-800 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Secs
             </span>
           </div>
@@ -115,17 +115,17 @@ export default function DateDay() {
       )}
 
       {/* Calendar Grid Container */}
-      <div className="flex w-full justify-center font-(--font-nima)">
-        <div className="max-w-sm bg-white p-8 rounded-xl">
+      <div className="flex w-full justify-center">
+        <div className="max-w-sm bg-white p-8 rounded-xl w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 mb-6 pb-4">
-            <h3 className="text-xl font-semibold text-stone-850 tracking-wide">September 2026</h3>
+            <h3 className="text-xl font-semibold text-[#260303] tracking-wide">September 2026</h3>
           </div>
 
           {/* Weekday Initials */}
           <div className="grid grid-cols-7 gap-y-2 text-center mb-4">
             {daysOfWeek.map((day, idx) => (
-              <span key={idx} className="tracking-widest text-stone-800 font-semibold uppercase">
+              <span key={idx} className="tracking-widest text-[#6d544a] font-semibold uppercase">
                 {day}
               </span>
             ))}
@@ -154,7 +154,7 @@ export default function DateDay() {
                       <span className="relative z-10 text-black font-bold text-xl">{day}</span>
                     </>
                   ) : (
-                    <span className="text-stone-700 text-xl hover:bg-stone-200/50 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
+                    <span className="text-[#6d544a] text-xl hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
                       {day}
                     </span>
                   )}

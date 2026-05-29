@@ -31,15 +31,15 @@ export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) 
         transition={{ type: 'spring', damping: 22, stiffness: 180 }}
       >
         <div className="relative mb-2">
-          <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center shadow-md animate-bounce">
-            <Sparkles className="w-10 h-10 text-rose-500" />
+          <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center shadow-md animate-bounce">
+            <Sparkles className="w-10 h-10 text-white/70" />
           </div>
           <span className="absolute -top-1 -right-1 text-2xl animate-ping opacity-60">💖</span>
           <span className="absolute -bottom-2 -left-2 text-xl animate-pulse">✨</span>
         </div>
 
-        <h2 className="text-3xl font-serif text-rose-900 font-bold">Thank You, {name}!</h2>
-        <p className="text-stone-600 font-serif leading-relaxed max-w-[280px] text-base">
+        <h2 className="text-3xl font-sans text-white font-bold">Thank You, {name}!</h2>
+        <p className="text-white font-sans leading-relaxed max-w-[280px] text-base">
           {isAttending
             ? 'We are absolutely thrilled that you will be celebrating with us! Your wishes mean the world.'
             : 'We will truly miss you on our special day, but we are so grateful for your thoughts and love!'}
@@ -47,7 +47,7 @@ export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) 
 
         <button
           onClick={onClose}
-          className="mt-2 px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-lg transition-colors flex items-center gap-2"
+          className="mt-2 px-6 py-3 bg-amber-700 hover:bg-amber-800 text-white text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-lg transition-colors flex items-center gap-2"
         >
           <Check className="w-4 h-4" />
           Close

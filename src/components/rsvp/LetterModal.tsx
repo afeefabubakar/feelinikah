@@ -37,7 +37,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
         <div
           className="relative rounded-2xl overflow-hidden shadow-2xl"
           style={{
-            background: '#fdf8f0',
+            background: 'var(--color-parchment)',
             boxShadow: '0 25px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(180,150,100,0.15)',
           }}
         >
@@ -68,7 +68,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             {/* Close */}
             <button
               onClick={onSkip}
-              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-black/5 transition-colors text-stone-400 hover:text-stone-600"
+              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-black/5 transition-colors text-amber-900/40 hover:text-amber-900/70 cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -80,12 +80,12 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
               transition={{ delay: 0.3 }}
             >
               <p
-                className="text-lg uppercase tracking-[0.25em] text-stone-400 mb-1"
+                className="text-lg uppercase tracking-[0.25em] text-amber-900/40 mb-1"
                 style={{ fontFamily: 'var(--font-sans), serif' }}
               >
                 A letter from
               </p>
-              <h3 className="text-3xl text-stone-700" style={{ fontWeight: 400 }}>
+              <h3 className="text-3xl text-[#260303]" style={{ fontWeight: 400 }}>
                 {name || 'You'}
               </h3>
             </motion.div>
@@ -105,7 +105,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <p className="text-lg text-stone-400 mb-3 italic">Dear Alin &amp; Afeef,</p>
+            <p className="text-lg text-amber-900/40 mb-3 italic">Dear Alin &amp; Afeef,</p>
 
             {error && (
               <div className="mb-3 p-2.5 bg-rose-50 border border-rose-100 rounded-xl text-xs text-rose-700">
@@ -119,7 +119,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
               placeholder="Write your wishes, blessings, or a heartfelt message here…"
               rows={6}
               autoFocus
-              className="w-full bg-transparent resize-none text-stone-700 placeholder-stone-300 focus:outline-none leading-8 text-lg"
+              className="w-full bg-transparent resize-none text-[#260303] placeholder-amber-900/25 focus:outline-none leading-8 text-lg"
             />
           </motion.div>
 
@@ -133,7 +133,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             <button
               type="button"
               onClick={onSkip}
-              className="flex-1 py-2.5 border border-stone-200 text-stone-500 rounded-xl text-lg font-medium tracking-wide hover:bg-stone-50 transition-colors cursor-pointer"
+              className="flex-1 py-2.5 border border-amber-900/10 text-amber-900/60 rounded-xl text-lg font-medium tracking-wide hover:bg-amber-900/5 transition-colors cursor-pointer"
             >
               Skip
             </button>
@@ -145,7 +145,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
               style={{
                 background:
                   submitting || !message.trim()
-                    ? '#d6cfc5'
+                    ? 'rgba(109, 84, 74, 0.2)'
                     : 'linear-gradient(135deg, #b45309, #92400e)',
               }}
             >

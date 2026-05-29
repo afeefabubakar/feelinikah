@@ -14,7 +14,7 @@ const TILTS = [-2.5, 1.8, -1.2, 2.1, -0.8, 1.5, -2.0, 0.9, -1.6, 2.4]
 
 // Warm paper tones — slightly varied per note
 const PAPER_COLORS = [
-  '#f9f7ee', // parchment
+  'var(--color-parchment)',
 ]
 
 export function MessageBoard() {
@@ -32,7 +32,7 @@ export function MessageBoard() {
   if (loading) {
     return (
       <div className="mt-10 flex justify-center">
-        <span className="text-xs text-stone-400 font-sans animate-pulse">Loading messages…</span>
+        <span className="text-xs text-white/50 font-sans animate-pulse">Loading messages…</span>
       </div>
     )
   }
@@ -40,12 +40,12 @@ export function MessageBoard() {
   if (messages.length === 0) return null
 
   return (
-    <div className="mt-10 px-4">
+    <div className="mt-10 px-4 text-white/70">
       {/* Section header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex-1 h-px bg-stone-200" />
-        <p className="text-xs uppercase tracking-[0.2em] whitespace-nowrap">Messages from Guests</p>
-        <div className="flex-1 h-px bg-stone-200" />
+        <div className="flex-1 h-px bg-white/10" />
+        <p className="text-xs uppercase tracking-[0.2em] whitespace-nowrap text-white/60">Messages from Guests</p>
+        <div className="flex-1 h-px bg-white/10" />
       </div>
 
       {/* Notes grid */}
@@ -98,12 +98,12 @@ export function MessageBoard() {
                 />
 
                 {/* Message text */}
-                <p className="relative text-stone-700 leading-7 whitespace-pre-wrap wrap-break-word">
+                <p className="relative text-[#260303] leading-7 whitespace-pre-wrap wrap-break-word">
                   {entry.message}
                 </p>
 
                 {/* Signature */}
-                <p className="relative text-right text-stone-400 mt-3 italic">— {entry.name}</p>
+                <p className="relative text-right text-amber-900/60 mt-3 italic">— {entry.name}</p>
               </div>
             </motion.div>
           )
