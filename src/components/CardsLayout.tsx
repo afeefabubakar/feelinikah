@@ -105,8 +105,19 @@ export function CardsLayout() {
   const [fromRect, setFromRect] = useState<CardRect | null>(null)
   const [isClosing, setIsClosing] = useState(false)
   const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({})
-  const [rsvpResult, setRsvpResult] = useState<{ name: string; isAttending: boolean } | null>(null)
   const [showThankYou, setShowThankYou] = useState(false)
+  const [rsvpResult, setRsvpResult] = useState<{ name: string; isAttending: boolean } | null>(null)
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Calculate typewriter typing delays for a slightly faster, stately sequential line-by-line reveal
   const typewriterDelays = useMemo(() => {
@@ -143,12 +154,12 @@ export function CardsLayout() {
   const selected = sections.find((s) => s.id === selectedId)
 
   const getModalTarget = useCallback((): CardRect => {
-    const vw = window.innerWidth
-    const vh = window.innerHeight
+    const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
+    const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
     const w = Math.min(vw * 0.92, 768)
     const h = vh * 0.85
     return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
-  }, [])
+  }, [windowSize])
 
   return (
     <div className="flex items-center min-h-dvh justify-center font-sans overflow-x-hidden p-6 md:p-12">
@@ -200,7 +211,7 @@ export function CardsLayout() {
             {/* 3D Flip Transition Portal */}
             <motion.div
               key="flying-card"
-              className="fixed z-50 overflow-hidden shadow-2xl border border-white/10"
+              className="fixed z-50 overflow-hidden shadow-2xl"
               style={{
                 backgroundColor: selected.color,
                 transformPerspective: 1400,
@@ -271,7 +282,7 @@ export function CardsLayout() {
               >
                 {/* Header Title */}
                 <h2
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide mb-8 border-b border-black/5 pb-6"
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide border-b border-black/5 pb-6"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
