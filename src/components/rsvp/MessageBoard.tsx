@@ -14,10 +14,6 @@ const TILTS = [-2.5, 1.8, -1.2, 2.1, -0.8, 1.5, -2.0, 0.9, -1.6, 2.4]
 
 // Warm paper tones — slightly varied per note
 const PAPER_COLORS = [
-  '#fdf8f0', // warm white
-  '#fef9ec', // soft butter
-  '#fdf6e8', // cream
-  '#fff8f5', // blush white
   '#f9f7ee', // parchment
 ]
 
