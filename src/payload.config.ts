@@ -14,6 +14,20 @@ import { s3Storage } from '@payloadcms/storage-s3'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const rawConnectionString =
+  process.env.DATABASE_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL || ''
+
+// Automatically append uselibpqcompat=true if sslmode=require is present to resolve the SSL warning dynamically
+const getConnectionString = (url: string) => {
+  if (url.includes('sslmode=require') && !url.includes('uselibpqcompat=')) {
+    const separator = url.includes('?') ? '&' : '?'
+    return `${url}${separator}uselibpqcompat=true`
+  }
+  return url
+}
+
+const connectionString = getConnectionString(rawConnectionString)
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -29,7 +43,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL || '',
+      connectionString,
     },
   }),
   sharp,
