@@ -72,17 +72,10 @@ export default function DateDay() {
 
   return (
     <div className="flex flex-col items-center text-white h-full select-none">
-      <h2
-        className="text-6xl mb-12"
-        style={{
-          fontFamily: 'var(--font-nima)',
-        }}
-      >
-        26 September 2026
-      </h2>
+      <h2 className="my-4 sm:my-6 max-sm:text-4xl">26 September 2026</h2>
       {/* Countdown */}
       {hasMounted && (
-        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-white/10 pb-6 w-full max-w-sm">
+        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-white pb-6 w-full max-w-sm">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.days}</span>
             <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
@@ -96,17 +89,13 @@ export default function DateDay() {
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-white tabular-nums">
-              {timeLeft.minutes}
-            </span>
+            <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.minutes}</span>
             <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Mins
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-white tabular-nums">
-              {timeLeft.seconds}
-            </span>
+            <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.seconds}</span>
             <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
               Secs
             </span>
