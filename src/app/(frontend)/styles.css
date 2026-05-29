@@ -115,7 +115,7 @@
   input,
   textarea,
   button {
-    @apply text-2xl font-sans;
+    @apply text-3xl font-sans;
   }
 }
 

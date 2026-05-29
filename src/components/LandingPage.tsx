@@ -35,7 +35,7 @@ export function LandingPage() {
                       strokeLinecap="butt"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.4, duration: 2.2, ease: 'easeInOut' }}
+                      transition={{ delay: 0.4, duration: 1.4, ease: 'easeInOut' }}
                     />
                   </mask>
                 </defs>
@@ -52,14 +52,30 @@ export function LandingPage() {
                 </text>
               </svg>
 
-              {/* Image — springs up from below */}
+              {/* Image — slides and sticks on the page */}
               <motion.div
-                className="w-[80%] mt-[-20%]"
-                initial={{ y: '60vh', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+                className="w-[80%] mt-[-20%] relative overflow-visible"
+                initial={{
+                  x: -300,
+                  y: -100,
+                  rotate: -18,
+                  scale: 1.15,
+                  opacity: 0,
+                  filter: 'drop-shadow(0 40px 30px rgba(0,0,0,0.6))',
+                }}
+                animate={{
+                  x: 0,
+                  y: 0,
+                  rotate: -1.5,
+                  scale: 1,
+                  opacity: 1,
+                  filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.35))',
+                }}
                 transition={{
-                  y: { type: 'spring', damping: 26, stiffness: 70 },
-                  opacity: { duration: 0.8 },
+                  type: 'spring',
+                  stiffness: 85,
+                  damping: 14,
+                  delay: 0.8,
                 }}
               >
                 <Image
@@ -67,7 +83,7 @@ export function LandingPage() {
                   alt="Illustration of little Afeef & Partner"
                   width={2091}
                   height={2275}
-                  className="w-full h-auto pl-4 object-contain select-none pointer-events-none drop-shadow-2xl"
+                  className="w-full h-auto pl-4 object-contain select-none pointer-events-none"
                   priority
                 />
               </motion.div>
