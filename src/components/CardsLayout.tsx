@@ -282,7 +282,7 @@ export function CardsLayout() {
               >
                 {/* Header Title */}
                 <h2
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide border-b border-black/5 pb-6"
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pb-6"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
