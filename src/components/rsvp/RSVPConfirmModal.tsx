@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { MessageSquareHeart, X } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 interface RSVPConfirmModalProps {
   name: string
@@ -37,12 +38,14 @@ export function RSVPConfirmModal({
         transition={{ type: 'spring', damping: 22, stiffness: 180 }}
       >
         {/* Close */}
-        <button
+        <Button
           onClick={onSkip}
-          className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-black/5 transition-colors text-amber-900/40 hover:text-amber-900/70 cursor-pointer"
+          variant="ghost"
+          size="icon"
+          className="absolute top-4 right-4"
         >
           <X className="w-4 h-4" />
-        </button>
+        </Button>
 
         <div className="px-8 pt-10 pb-8 flex flex-col items-center text-center gap-4">
           {/* Icon */}
@@ -78,19 +81,24 @@ export function RSVPConfirmModal({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 }}
           >
-            <button
+            <Button
               onClick={onWriteMessage}
-              className="w-full py-3 rounded-2xl text-lg font-medium tracking-wide text-white shadow-md transition-all cursor-pointer"
-              style={{ background: 'linear-gradient(135deg, #b45309, #92400e)' }}
+              variant="gold-gradient"
+              size="lg"
+              fullWidth
+              className="py-3 text-lg font-medium normal-case"
             >
               Yes, write a message ✍️
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={onSkip}
-              className="w-full py-3 rounded-2xl text-lg font-medium tracking-wide border border-amber-900/10 text-amber-900/60 hover:bg-amber-900/5 transition-colors cursor-pointer"
+              variant="outline-amber"
+              size="lg"
+              fullWidth
+              className="py-3 text-lg font-medium normal-case"
             >
               No thanks, skip
-            </button>
+            </Button>
           </motion.div>
         </div>
       </motion.div>

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Upload } from 'lucide-react'
+import { Button } from './Button'
 
 // Placeholder for the Wishlist modal content
 export function WishlistModal() {
@@ -19,15 +20,16 @@ export function WishlistModal() {
         </div>
         
         <div className="flex flex-wrap gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-          <button className="px-4 py-2 bg-[#6d544a]/10 text-[#6d544a] rounded-lg text-sm font-medium hover:bg-[#6d544a]/20 transition-colors flex-1 sm:flex-none cursor-pointer">
+          <Button variant="outline" className="text-[#6d544a] border-[#6d544a]/20 bg-[#6d544a]/5 hover:bg-[#6d544a]/10 flex-1 sm:flex-none" size="sm">
             I'm looking into it
-          </button>
-          <button className="px-4 py-2 bg-amber-700 text-white rounded-lg text-sm font-medium hover:bg-amber-800 transition-colors flex items-center justify-center gap-2 flex-1 sm:flex-none shadow-sm cursor-pointer">
+          </Button>
+          <Button variant="primary" className="flex items-center justify-center gap-2 flex-1 sm:flex-none" size="sm">
             <Upload className="w-4 h-4" />
             Upload Receipt
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   )
 }
+

@@ -1,93 +1,140 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Gift, Loader2, Sparkles, Upload, Lock, Check } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 type RegistryItem = {
   id: string
-  name: string
-  desc: string
-  lookingCount: number
-  claimed: boolean
-  receiptUrl?: string
+  title: string
+  description?: string
+  link?: string
+  image?: {
+    url: string
+  } | string | null
+  interested: number
+  isClaimed: boolean
+  proofOfPurchase?: {
+    url: string
+  } | string | null
 }
 
 export default function Wishlist() {
-  const [items, setItems] = useState<RegistryItem[]>([
-    {
-      id: 'espresso',
-      name: 'Breville Espresso Machine',
-      desc: 'To fuel our early morning coffees and late-night talks.',
-      lookingCount: 3,
-      claimed: false,
-    },
-    {
-      id: 'bedding',
-      name: 'Premium Egyptian Cotton Bedding Set',
-      desc: 'For comfortable rest after a long day of adventures.',
-      lookingCount: 1,
-      claimed: false,
-    },
-    {
-      id: 'cookware',
-      name: 'Le Creuset Signature Cast Iron Dutch Oven',
-      desc: 'For cozy family dinners and sunday afternoon stews.',
-      lookingCount: 5,
-      claimed: false,
-    },
-  ])
-
+  const [items, setItems] = useState<RegistryItem[]>([])
+  const [loading, setLoading] = useState(true)
   const [uploadingItemId, setUploadingItemId] = useState<string | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [claimedItemName, setClaimedItemName] = useState('')
 
-  function handleLooking(id: string) {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === id && !item.claimed) {
-          return { ...item, lookingCount: item.lookingCount + 1 }
-        }
-        return item
+  // ── Fetch Wishlist items dynamically from Payload API ────────────────────
+  useEffect(() => {
+    fetch('/api/wishlist?limit=50&sort=createdAt')
+      .then((res) => res.json())
+      .then((data) => {
+        setItems(data?.docs || [])
+        setLoading(false)
       })
-    )
+      .catch((err) => {
+        console.error('Failed to load wishlist:', err)
+        setLoading(false)
+      })
+  }, [])
+
+  const getImageUrl = (imageField: any) => {
+    if (!imageField) return null
+    if (typeof imageField === 'object' && imageField.url) return imageField.url
+    return null
   }
 
+  // ── handleLooking PATCH request ───────────────────────────────────────────
+  async function handleLooking(id: string) {
+    const item = items.find((i) => i.id === id)
+    if (!item || item.isClaimed) return
+
+    const newCount = (item.interested || 0) + 1
+    try {
+      const res = await fetch(`/api/wishlist/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ interested: newCount }),
+      })
+      if (res.ok) {
+        setItems((prev) =>
+          prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i))
+        )
+      }
+    } catch (err) {
+      console.error('Failed to update interest:', err)
+    }
+  }
+
+  // ── handleFileUpload PATCH request ────────────────────────────────────────
   async function handleFileUpload(id: string, file: File) {
     setUploadingItemId(id)
-
     try {
-      // 1. Create a FormData and upload to Payload's Media endpoint
+      const targetItem = items.find((item) => item.id === id)
+      if (!targetItem) return
+
+      // 1. Upload proof of purchase receipt to Payload's Media endpoint
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('alt', `Receipt for ${items.find((item) => item.id === id)?.name || 'registry item'}`)
+      formData.append('alt', `Receipt proof for ${targetItem.title}`)
 
-      const res = await fetch('/api/media', {
+      const uploadRes = await fetch('/api/media', {
         method: 'POST',
         body: formData,
       })
 
-      if (!res.ok) throw new Error('Failed to upload receipt.')
-      const data = await res.json()
-      const uploadedFileUrl = data.doc.url
+      if (!uploadRes.ok) throw new Error('Failed to upload proof.')
+      const uploadData = await uploadRes.json()
+      const mediaId = uploadData.doc.id
 
-      // 2. Mark item as claimed and attach the receipt URL
+      // 2. Mark item as purchased (isClaimed: true) and attach proof of purchase
+      const patchRes = await fetch(`/api/wishlist/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isClaimed: true, proofOfPurchase: mediaId }),
+      })
+
+      if (!patchRes.ok) throw new Error('Failed to claim item.')
+
       setItems((prev) =>
-        prev.map((item) => {
-          if (item.id === id) {
-            setClaimedItemName(item.name)
-            return { ...item, claimed: true, receiptUrl: uploadedFileUrl }
-          }
-          return item
-        })
+        prev.map((i) => (i.id === id ? { ...i, isClaimed: true } : i))
       )
 
-      setUploadingItemId(null)
+      setClaimedItemName(targetItem.title)
       setShowToast(true)
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      alert('Failed to upload receipt. Please try again.')
+      alert(err.message || 'Failed to claim item. Please try again.')
+    } finally {
       setUploadingItemId(null)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] gap-3">
+        <Loader2 className="w-10 h-10 text-white/30 animate-spin" />
+        <p className="text-sm tracking-widest text-white/50 font-sans uppercase animate-pulse">
+          Loading Registry…
+        </p>
+      </div>
+    )
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] text-center p-8 bg-white/5 border border-white/10 rounded-3xl gap-4 max-w-md mx-auto">
+        <Gift className="w-12 h-12 text-white/20" />
+        <div>
+          <h3 className="text-lg font-sans font-semibold text-white">Registry is being prepared</h3>
+          <p className="text-sm text-white/50 font-sans mt-1 leading-relaxed">
+            We are currently compiling our list. Check back soon to see our wishlist!
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -103,85 +150,131 @@ export default function Wishlist() {
 
         {/* Wishlist Items List */}
         <div className="space-y-4">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className={`border rounded-3xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all duration-300 ${
-                item.claimed
-                  ? 'bg-emerald-950/40 border-emerald-800/40 shadow-sm opacity-90'
-                  : 'bg-white/5 border-white/10 hover:border-amber-700/30'
-              }`}
-            >
-              {/* Item Info */}
-              <div className="space-y-1.5 flex-1 pr-2">
-                <div className="flex items-center gap-2">
-                  <h4 className={`text-lg font-sans font-semibold ${item.claimed ? 'text-emerald-300 line-through' : 'text-white'}`}>
-                    {item.name}
-                  </h4>
-                  {item.claimed && (
-                    <span className="text-[10px] font-sans font-bold tracking-wider uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
-                      <Lock className="w-2.5 h-2.5" />
-                      Gift Claimed
+          {items.map((item) => {
+            const imageUrl = getImageUrl(item.image)
+            return (
+              <div
+                key={item.id}
+                className={`border rounded-3xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-all duration-300 ${
+                  item.isClaimed
+                    ? 'bg-emerald-950/40 border-emerald-800/40 shadow-sm opacity-90'
+                    : 'bg-white/5 border-white/10 hover:border-amber-700/30'
+                }`}
+              >
+                {/* Image + Details (Left and Middle) */}
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  {/* Picture to the left */}
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center relative">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Gift className="w-8 h-8 text-white/20" />
+                    )}
+                  </div>
+
+                  {/* Details next to it */}
+                  <div className="space-y-1 flex-1 min-w-0 pr-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4
+                        className={`text-lg font-sans font-semibold truncate ${
+                          item.isClaimed ? 'text-emerald-300 line-through' : 'text-white'
+                        }`}
+                      >
+                        {item.title}
+                      </h4>
+                      {item.isClaimed && (
+                        <span className="text-[10px] font-sans font-bold tracking-wider uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
+                          <Lock className="w-2.5 h-2.5" />
+                          Gift Claimed
+                        </span>
+                      )}
+                    </div>
+
+                    {item.description && (
+                      <p className="text-sm text-white/70 font-sans leading-relaxed line-clamp-2 max-w-lg">
+                        {item.description}
+                      </p>
+                    )}
+
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-amber-500 hover:text-amber-400 font-sans hover:underline transition-colors mt-0.5"
+                      >
+                        View Item Link ↗
+                      </a>
+                    )}
+
+                    {/* Looking count */}
+                    {!item.isClaimed && (
+                      <p className="text-[11px] font-sans font-semibold text-white/50 uppercase tracking-wider flex items-center gap-1 mt-0.5">
+                        <Sparkles className="w-3 h-3 text-amber-700/80" />
+                        {item.interested || 0}{' '}
+                        {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into
+                        this
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Buttons at the right end */}
+                <div className="flex items-center gap-2 shrink-0 self-stretch md:self-auto justify-end">
+                  {!item.isClaimed ? (
+                    <>
+                      {/* Looking into it button */}
+                      <Button
+                        onClick={() => handleLooking(item.id)}
+                        variant="outline"
+                        className="px-4 py-2.5 hover:border-amber-700/30 text-white/80 whitespace-nowrap"
+                      >
+                        Looking into it
+                      </Button>
+
+                      {/* Upload Receipt / Claim Button */}
+                      <Button
+                        as="label"
+                        variant="primary"
+                        className="px-4 py-2.5 flex items-center justify-center gap-1.5 whitespace-nowrap"
+                      >
+                        {uploadingItemId === item.id ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-3.5 h-3.5" />
+                            Claim Gift
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*,application/pdf"
+                          disabled={uploadingItemId !== null}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (file) handleFileUpload(item.id, file)
+                          }}
+                          className="hidden"
+                        />
+                      </Button>
+                    </>
+                  ) : (
+                    <span className="text-xs font-sans font-bold tracking-wider uppercase text-emerald-400 flex items-center gap-1">
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      Thank You!
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-white/70 font-sans leading-relaxed max-w-lg">{item.desc}</p>
-                
-                {/* Looking count */}
-                {!item.claimed && (
-                  <p className="text-[11px] font-sans font-semibold text-white/50 uppercase tracking-wider flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-700/80" />
-                    {item.lookingCount} {item.lookingCount === 1 ? 'guest is' : 'guests are'} looking into this
-                  </p>
-                )}
               </div>
-
-              {/* Actions */}
-              <div className="flex items-center gap-2 shrink-0 self-stretch md:self-auto justify-end">
-                {!item.claimed ? (
-                  <>
-                    {/* Looking into it button */}
-                    <button
-                      onClick={() => handleLooking(item.id)}
-                      className="px-4 py-2.5 border border-white/10 hover:border-amber-700/30 text-white/80 hover:bg-white/5 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
-                    >
-                      Looking into it
-                    </button>
-
-                    {/* Upload Receipt / Claim Button */}
-                    <label className="cursor-pointer px-4 py-2.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-sm transition-colors">
-                      {uploadingItemId === item.id ? (
-                        <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-3.5 h-3.5" />
-                          Claim Gift
-                        </>
-                      )}
-                      <input
-                        type="file"
-                        accept="image/*,application/pdf"
-                        disabled={uploadingItemId !== null}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0]
-                          if (file) handleFileUpload(item.id, file)
-                        }}
-                        className="hidden"
-                      />
-                    </label>
-                  </>
-                ) : (
-                  <span className="text-xs font-sans font-bold tracking-wider uppercase text-emerald-400 flex items-center gap-1">
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    Thank You!
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -198,16 +291,19 @@ export default function Wishlist() {
 
           <h2 className="text-3xl font-sans text-emerald-400 font-bold mb-2">Gift Registered!</h2>
           <p className="text-white/90 font-sans leading-relaxed max-w-[280px] mb-8 text-lg">
-            We are incredibly grateful for your warm generosity. <strong>{claimedItemName}</strong> has been registered on our list and locked!
+            We are incredibly grateful for your warm generosity. <strong>{claimedItemName}</strong>{' '}
+            has been registered on our list and locked!
           </p>
 
-          <button
+          <Button
             onClick={() => setShowToast(false)}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-lg transition-colors flex items-center gap-2 cursor-pointer"
+            variant="primary"
+            className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl flex items-center gap-2"
+            size="sm"
           >
             <Check className="w-4 h-4" />
             Close
-          </button>
+          </Button>
         </div>
       )}
     </div>

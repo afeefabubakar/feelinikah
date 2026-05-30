@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react'
 import { RSVPConfirmModal } from '@/components/rsvp/RSVPConfirmModal'
 import { LetterModal } from '@/components/rsvp/LetterModal'
 import { MessageBoard } from '@/components/rsvp/MessageBoard'
+import { Button } from '@/components/Button'
 
 type Stage = 'form' | 'confirm' | 'letter'
 
@@ -125,18 +126,19 @@ export default function RSVP({ onComplete }: RSVPProps) {
               { value: true, label: 'Yes, happily!' },
               { value: false, label: 'Regretfully, no' },
             ].map(({ value, label }) => (
-              <button
+              <Button
                 key={String(value)}
                 type="button"
                 onClick={() => setIsAttending(value)}
-                className={`py-3 rounded-2xl tracking-wide font-semibold border transition-all cursor-pointer ${
+                variant={isAttending === value ? 'primary' : 'outline'}
+                className={`py-3 rounded-2xl tracking-wide font-semibold border transition-all normal-case text-lg ${
                   isAttending === value
-                    ? 'bg-amber-700 border-amber-600 text-white shadow-sm'
-                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'border-amber-600'
+                    : 'text-white/70 hover:text-white'
                 }`}
               >
                 {label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -156,33 +158,36 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 Number of attendees (including yourself)
               </label>
               <div className="flex items-center gap-3">
-                <button
+                <Button
                   type="button"
                   onClick={() => setAttendeesCount((n) => Math.max(1, n - 1))}
-                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white text-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center cursor-pointer"
+                  variant="counter"
                 >
                   −
-                </button>
+                </Button>
                 <span className="text-xl font-sans text-white w-6 text-center tabular-nums">
                   {attendeesCount}
                 </span>
-                <button
+                <Button
                   type="button"
                   onClick={() => setAttendeesCount((n) => n + 1)}
-                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white text-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center cursor-pointer"
+                  variant="counter"
                 >
                   +
-                </button>
+                </Button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Submit */}
-        <button
+        <Button
           type="submit"
           disabled={submitting}
-          className="w-full py-3.5 cursor-pointer bg-amber-700 hover:bg-amber-800 disabled:bg-white/10 disabled:text-white/35 text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-md flex items-center justify-center gap-2 transition-colors"
+          variant="primary"
+          size="lg"
+          fullWidth
+          className="py-3.5 flex items-center justify-center gap-2"
         >
           {submitting ? (
             <>
@@ -192,7 +197,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
           ) : (
             'Submit RSVP'
           )}
-        </button>
+        </Button>
       </form>
 
       {/* ── Guest messages board ── */}

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { PenLine, Loader2, X } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 interface LetterModalProps {
   name: string
@@ -66,12 +67,14 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
           {/* Header */}
           <div className="relative pl-20 pr-8 pt-8 pb-4">
             {/* Close */}
-            <button
+            <Button
               onClick={onSkip}
-              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-black/5 transition-colors text-amber-900/40 hover:text-amber-900/70 cursor-pointer"
+              variant="ghost"
+              size="icon"
+              className="absolute top-5 right-5"
             >
               <X className="w-4 h-4" />
-            </button>
+            </Button>
 
             <motion.div
               className="text-center"
@@ -130,24 +133,20 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
           >
-            <button
+            <Button
               type="button"
               onClick={onSkip}
-              className="flex-1 py-2.5 border border-amber-900/10 text-amber-900/60 rounded-xl text-lg font-medium tracking-wide hover:bg-amber-900/5 transition-colors cursor-pointer"
+              variant="outline-amber"
+              className="flex-1 py-2.5 text-lg font-medium tracking-wide normal-case"
             >
               Skip
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               disabled={submitting || !message.trim()}
               onClick={() => onSend(message)}
-              className="flex-2 py-2.5 text-white rounded-xl text-lg font-medium tracking-wide shadow-md flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
-              style={{
-                background:
-                  submitting || !message.trim()
-                    ? 'rgba(109, 84, 74, 0.2)'
-                    : 'linear-gradient(135deg, #b45309, #92400e)',
-              }}
+              variant="gold-gradient"
+              className="flex-2 py-2.5 text-lg font-medium tracking-wide normal-case"
             >
               {submitting ? (
                 <>
@@ -160,7 +159,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
                   Send Letter
                 </>
               )}
-            </button>
+            </Button>
           </motion.div>
         </div>
       </motion.div>

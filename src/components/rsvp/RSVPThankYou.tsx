@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Check, Sparkles } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 interface RSVPThankYouProps {
   name: string
@@ -45,13 +46,15 @@ export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) 
             : 'We will truly miss you on our special day, but we are so grateful for your thoughts and love!'}
         </p>
 
-        <button
+        <Button
           onClick={onClose}
-          className="mt-2 px-6 py-3 bg-amber-700 hover:bg-amber-800 text-white text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-lg transition-colors flex items-center gap-2"
+          variant="primary"
+          size="lg"
+          className="mt-2 flex items-center gap-2"
         >
           <Check className="w-4 h-4" />
           Close
-        </button>
+        </Button>
       </motion.div>
     </div>
   )
