@@ -32,12 +32,11 @@ export default function DateDay() {
     return () => clearInterval(timer)
   }, [])
 
-  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  const daysOfWeek = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
-  // September 2026 starts on a Tuesday (2 empty slots: Sun, Mon)
+  // September 2026 starts on a Tuesday (1 empty slot when starting week on Monday)
   const calendarDays = [
-    null,
-    null, // Empty slots
+    null, // Empty slot
     1,
     2,
     3,
@@ -114,7 +113,7 @@ export default function DateDay() {
           {/* Weekday Initials */}
           <div className="grid grid-cols-7 gap-y-2 gap-x-1 text-center mb-4">
             {daysOfWeek.map((day, idx) => (
-              <span key={idx} className="text-[#6d544a] font-semibold uppercase">
+              <span key={idx} className="text-[#6d544a] text-lg sm:text-xl uppercase">
                 {day}
               </span>
             ))}
@@ -143,7 +142,7 @@ export default function DateDay() {
                       <span className="relative z-10 text-black font-bold text-xl">{day}</span>
                     </>
                   ) : (
-                    <span className="text-[#6d544a] text-xl hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
+                    <span className="text-black hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
                       {day}
                     </span>
                   )}
