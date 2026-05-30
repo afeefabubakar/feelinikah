@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Check } from 'lucide-react'
 import { useWeddingVariation } from '@/hooks/useWeddingVariation'
 
@@ -13,69 +14,35 @@ type OutfitGroup = { label: string; images: string[] }
 const themes: Record<
   Variation,
   {
-    title: string
-    desc: string
-    themeName: string
-    colors: { name: string; hex: string; text: 'dark' | 'light' }[]
-    guidelines: string[]
+    colors?: { title: string; hex?: string }
     groups: OutfitGroup[]
   }
 > = {
   groom: {
-    title: 'Groom-Side Theme',
-    desc: 'Please join us in matching the groom-side celebration palette.',
-    themeName: 'Earthy Sage & Forest',
-    colors: [
-      { name: 'Sage Green', hex: '#879879', text: 'dark' },
-      { name: 'Forest Green', hex: '#2d3b25', text: 'light' },
-      { name: 'Olive Green', hex: '#5b6a48', text: 'light' },
-      { name: 'Soft Cream', hex: '#fdf6e2', text: 'dark' },
-    ],
-    guidelines: [
-      'Traditional Baju Melayu or elegant Smart Casual.',
-      'Feel free to incorporate Sage, Olive, or Deep Forest tones.',
-      'Please avoid pure white or ivory (reserved for the couple).',
-    ],
+    colors: {
+      title: 'Dark brown',
+      hex: '#4a3932',
+    },
+
     groups: [
       { label: 'Him', images: ['/image/groom-male.png'] },
       { label: 'Her', images: ['/image/groom-female.png'] },
     ],
   },
   bride: {
-    title: 'Bride-Side Theme',
-    desc: 'Please join us in matching the bride-side celebration palette.',
-    themeName: 'Dusty Rose & Terracotta',
-    colors: [
-      { name: 'Dusty Rose', hex: '#c59593', text: 'dark' },
-      { name: 'Terracotta', hex: '#c27d66', text: 'light' },
-      { name: 'Soft Peach', hex: '#f0cdc2', text: 'dark' },
-      { name: 'Warm Beige', hex: '#e8dcce', text: 'dark' },
-    ],
-    guidelines: [
-      'Traditional Kurta, Baju Kurung, or elegant Semi-Formal attire.',
-      'Incorporate soft, warm tones of Rose, Coral, and Warm Terracotta.',
-      'Please avoid pure white or ivory (reserved for the couple).',
-    ],
+    colors: {
+      title: 'Navy blue',
+      hex: '#263453',
+    },
     groups: [
       { label: 'Him', images: ['/image/bride-male.png'] },
       { label: 'Her', images: ['/image/bride-female.png'] },
     ],
   },
   friends: {
-    title: 'Friends & Family Theme',
-    desc: 'We look forward to seeing your beautiful, festive styles!',
-    themeName: 'Elegant Pastel & Neutrals',
-    colors: [
-      { name: 'Warm Cream', hex: '#f5ead2', text: 'dark' },
-      { name: 'Gold Dust', hex: '#d4b785', text: 'dark' },
-      { name: 'Taupe', hex: '#b0a090', text: 'light' },
-      { name: 'Champagne', hex: '#e8dfcc', text: 'dark' },
-    ],
-    guidelines: [
-      'Formal or Semi-Formal / Traditional attire.',
-      'Warm, soft pastel colors and sophisticated neutral tones.',
-      'Please avoid pure white or ivory (reserved for the couple).',
-    ],
+    colors: {
+      title: 'Earthy',
+    },
     groups: [
       // Both male options inside one "Him" box
       { label: 'Him', images: ['/image/guest-male-1.png', '/image/guest-male-2.png'] },
@@ -86,34 +53,117 @@ const themes: Record<
 
 export default function Dresscode() {
   const variation = useWeddingVariation()
+  const [activeTab, setActiveTab] = useState<'Him' | 'Her'>('Him')
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
 
   if (!variation) return null
 
   const theme = themes[variation]
 
+  // Swipe detection parameters
+  const minSwipeDistance = 50
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe && activeTab === 'Him') {
+      setActiveTab('Her')
+    } else if (isRightSwipe && activeTab === 'Her') {
+      setActiveTab('Him')
+    }
+
+    setTouchStart(null)
+    setTouchEnd(null)
+  }
+
   return (
-    <div className="flex flex-col gap-6 text-[#260303] h-full overflow-y-auto scrollbar-none pb-4">
-      {/* Outfit groups — vertical stack (Him then Her) */}
-      <div className="flex flex-col gap-4">
-        {theme.groups.map(({ label, images }) => (
-          <div key={label} className="flex flex-col gap-2">
-            {/* One box — images inside are side-by-side if multiple */}
-            <div className="flex gap-2 rounded-2xl overflow-hidden">
-              {images.map((src, i) => (
-                <div key={i} className="flex-1 min-w-0">
-                  <Image
-                    src={src}
-                    alt={`${theme.title} — ${label} option ${i + 1}`}
-                    width={400}
-                    height={600}
-                    className="w-full h-auto object-contain"
-                    priority
-                  />
+    <div className="flex flex-col gap-6 text-[#260303] h-full overflow-hidden pb-4">
+      {variation !== 'friends' && (
+        <div className="flex gap-4 items-center justify-center">
+          <h3 className="text-center">{theme.colors?.title} </h3>
+          {theme.colors?.hex && (
+            <span
+              className="h-10 w-10 rounded-full aspect-square mb-3"
+              style={{ backgroundColor: theme.colors?.hex }}
+            ></span>
+          )}
+        </div>
+      )}
+
+      {/* Premium Swipeable Tab Switcher */}
+      <div className="flex border-b border-[#260303]/10 relative shrink-0">
+        {(['Him', 'Her'] as const).map((tab) => {
+          const isActive = activeTab === tab
+          return (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 pb-2 text-center text-xl font-medium tracking-wide transition-all relative cursor-pointer focus:outline-none ${
+                isActive ? 'text-[#260303] font-bold' : 'text-[#6d544a]/60 hover:text-[#6d544a]'
+              }`}
+            >
+              {tab}
+              {isActive && (
+                <motion.div
+                  layoutId="activeTabUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#92400e]"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Swipeable Outfit Content */}
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="flex-1 min-h-0 relative overflow-hidden"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, x: activeTab === 'Him' ? -35 : 35 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: activeTab === 'Him' ? 35 : -35 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="h-full overflow-y-auto scrollbar-none pb-2"
+          >
+            {theme.groups
+              .filter((group) => group.label === activeTab)
+              .map(({ label, images }) => (
+                <div key={label} className="flex flex-col gap-2">
+                  <div className="flex">
+                    {images.map((src, i) => (
+                      <Image
+                        key={src}
+                        src={src}
+                        alt={`${theme.colors?.title} — ${label} option ${i + 1}`}
+                        width={400}
+                        height={600}
+                        className="w-full h-auto object-contain max-h-[52dvh]"
+                        priority
+                      />
+                    ))}
+                  </div>
                 </div>
               ))}
-            </div>
-          </div>
-        ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
