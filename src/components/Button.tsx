@@ -25,16 +25,16 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center tracking-wide font-sans transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
+      'text-xl inline-flex items-center justify-center tracking-wide transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
 
     const variants = {
       primary:
         'bg-amber-700 hover:bg-amber-800 text-white shadow-sm border border-transparent disabled:bg-white/10 disabled:text-white/35 disabled:cursor-not-allowed disabled:active:scale-100',
       outline:
-        'border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
+        'border border-white/10 bg-white/25 text-white hover:bg-white/10 hover:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
       'outline-amber':
         'border border-amber-900/10 text-amber-900/60 hover:bg-amber-900/5 hover:border-amber-900/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
       'gold-gradient':
@@ -46,9 +46,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     }
 
     const sizes = {
-      sm: 'px-4 py-2 rounded-lg text-sm font-medium',
-      md: 'px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider',
-      lg: 'px-6 py-3.5 rounded-2xl text-sm font-medium uppercase tracking-wider',
+      sm: 'px-4 py-2 rounded-lg',
+      md: 'px-5 py-2.5 rounded-xl',
+      lg: 'px-6 py-3.5 rounded-2xl',
       icon: 'p-1.5 rounded-full',
     }
 
@@ -57,7 +57,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
       variants[variant],
       variant !== 'counter' ? sizes[size] : '',
       fullWidth ? 'w-full' : '',
-      className
+      className,
     )
 
     // Build element-specific properties
@@ -73,12 +73,15 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     } else if (Component === 'label') {
       // Add custom disabled behavior for label styling if needed
       if (disabled) {
-        elementProps.className = cn(combinedClassName, 'opacity-50 cursor-not-allowed pointer-events-none')
+        elementProps.className = cn(
+          combinedClassName,
+          'opacity-50 cursor-not-allowed pointer-events-none',
+        )
       }
     }
 
     return <Component {...elementProps} />
-  }
+  },
 )
 
 Button.displayName = 'Button'

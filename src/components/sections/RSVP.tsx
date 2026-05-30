@@ -90,12 +90,12 @@ export default function RSVP({ onComplete }: RSVPProps) {
       {/* ── Form ── */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <h3 className="text-xl font-semibold mb-1">Join Our Celebration</h3>
-          <p className="text-sm font-sans text-white/60">Please RSVP by 1st August 2026</p>
+          <h4 className="font-semibold mb-1">Join Our Celebration</h4>
+          <p className="text-white text-xl">Please RSVP by 1st July 2026</p>
         </div>
 
         {error && (
-          <div className="p-3 bg-rose-950/40 border border-rose-800/30 rounded-xl text-sm text-rose-200 font-sans">
+          <div className="p-3 bg-rose-950/40 border border-rose-800/30 rounded-xl text-sm text-rose-200">
             {error}
           </div>
         )}
@@ -111,30 +111,28 @@ export default function RSVP({ onComplete }: RSVPProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm font-sans text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-700 transition-all"
+            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-700 transition-all"
             required
           />
         </div>
 
         {/* Attendance */}
         <div className="flex flex-col gap-2">
-          <label className="font-sans font-medium text-white/95" htmlFor="attending">
+          <label className="text-white/95" htmlFor="attending">
             Will you be attending?
           </label>
           <div className="grid grid-cols-2 gap-4">
             {[
               { value: true, label: 'Yes, happily!' },
-              { value: false, label: 'Regretfully, no' },
+              { value: false, label: 'Regretfully, no...' },
             ].map(({ value, label }) => (
               <Button
                 key={String(value)}
                 type="button"
                 onClick={() => setIsAttending(value)}
                 variant={isAttending === value ? 'primary' : 'outline'}
-                className={`py-3 rounded-2xl tracking-wide font-semibold border transition-all normal-case text-lg ${
-                  isAttending === value
-                    ? 'border-amber-600'
-                    : 'text-white/70 hover:text-white'
+                className={`py-3 rounded-2xl border transition-all normal-case ${
+                  isAttending === value ? 'border-amber-600' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {label}

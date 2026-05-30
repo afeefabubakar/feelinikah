@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import { Sparkles, Check } from 'lucide-react'
+import { useWeddingVariation } from '@/hooks/useWeddingVariation'
 
 type Variation = 'groom' | 'bride' | 'friends'
 
@@ -84,14 +85,7 @@ const themes: Record<
 }
 
 export default function Dresscode() {
-  const [variation, setVariation] = useState<Variation | null>(null)
-
-  useEffect(() => {
-    const hostname = window.location.hostname.toLowerCase()
-    if (hostname.includes('groom')) setVariation('groom')
-    else if (hostname.includes('bride')) setVariation('bride')
-    else setVariation('friends')
-  }, [])
+  const variation = useWeddingVariation()
 
   if (!variation) return null
 

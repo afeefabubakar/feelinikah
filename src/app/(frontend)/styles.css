@@ -61,12 +61,15 @@
   /* ── Body text default ── */
   p,
   li,
-  span,
+  span {
+    @apply text-3xl max-sm:text-2xl font-sans;
+  }
+
   label,
   input,
   textarea,
   button {
-    @apply text-3xl max-sm:text-2xl font-sans;
+    @apply text-2xl max-sm:text-xl font-sans;
   }
 }
 

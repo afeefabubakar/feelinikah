@@ -13,9 +13,7 @@ interface RSVPEntry {
 const TILTS = [-2.5, 1.8, -1.2, 2.1, -0.8, 1.5, -2.0, 0.9, -1.6, 2.4]
 
 // Warm paper tones — slightly varied per note
-const PAPER_COLORS = [
-  'var(--color-parchment)',
-]
+const PAPER_COLORS = ['var(--color-parchment)']
 
 export function MessageBoard() {
   const [messages, setMessages] = useState<RSVPEntry[]>([])
@@ -44,7 +42,7 @@ export function MessageBoard() {
       {/* Section header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="flex-1 h-px bg-white/10" />
-        <p className="text-xs uppercase tracking-[0.2em] whitespace-nowrap text-white/60">Messages from Guests</p>
+        <p className="uppercase text-xl whitespace-nowrap">Messages from Guests</p>
         <div className="flex-1 h-px bg-white/10" />
       </div>
 
