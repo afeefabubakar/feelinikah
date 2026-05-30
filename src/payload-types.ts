@@ -186,6 +186,10 @@ export interface Wishlist {
   id: number;
   title: string;
   /**
+   * A short note explaining why you are looking for this item.
+   */
+  description?: string | null;
+  /**
    * URL of the wishlist item.
    */
   link?: string | null;
@@ -339,6 +343,7 @@ export interface RsvpSelect<T extends boolean = true> {
  */
 export interface WishlistSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
   link?: T;
   image?: T;
   interested?: T;

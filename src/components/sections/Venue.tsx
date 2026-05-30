@@ -13,19 +13,22 @@ export default function Venue() {
       {/* Top Banner / Venue Summary */}
       <div className="bg-white/5 border border-white/10 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
         <div>
-          <span className="text-xs font-sans tracking-widest text-white/60 uppercase flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-amber-500" />
-            The Location
-          </span>
-          <h2 className="text-3xl text-white mt-2 font-semibold">Carpe Diem Orchard Home</h2>
-          <p className="text-xl text-white/70 mt-1">Serendah</p>
+          <div className="font-sans flex items-center gap-1.5">
+            <MapPin className="w-4 h-4 mb-2" />
+            <span className="text-2xl">The Location</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl text-white mt-2 font-semibold">
+            Carpe Diem
+            <br className="sm:hidden" /> Orchard Home
+          </h2>
+          <p className="text-white/70 mt-1">Serendah</p>
         </div>
 
         <a
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-5 py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-2xl text-sm font-medium tracking-wide uppercase shadow-md flex items-center gap-2 transition-colors self-stretch md:self-auto justify-center"
+          className="px-5 py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-2xl font-medium tracking-wide uppercase shadow-md flex items-center gap-2 transition-colors self-stretch md:self-auto justify-center"
         >
           <Navigation className="w-4 h-4" />
           Navigate with Maps

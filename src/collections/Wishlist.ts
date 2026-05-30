@@ -21,6 +21,14 @@ export const Wishlist: CollectionConfig = {
       required: true,
     },
     {
+      name: 'description',
+      label: 'Description',
+      type: 'textarea',
+      admin: {
+        description: 'A short note explaining why you are looking for this item.',
+      },
+    },
+    {
       name: 'link',
       type: 'text',
       admin: {

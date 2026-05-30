@@ -52,6 +52,6 @@ The following have not been specified yet — do not assume defaults:
 
 - [ ] Border radius conventions
 - [ ] Spacing / padding standards
-- [ ] Button styles (shadcn base is installed)
+- [ ] Button styles (custom Tailwind v4 components, shadcn is removed)
 - [ ] Shadow usage
 - [ ] Dark / light mode strategy

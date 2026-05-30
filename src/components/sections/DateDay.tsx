@@ -75,7 +75,7 @@ export default function DateDay() {
       <h2 className="my-4 sm:my-6 max-sm:text-4xl">26 September 2026</h2>
       {/* Countdown */}
       {hasMounted && (
-        <div className="grid grid-cols-4 gap-4 text-center mb-8 border-b border-white pb-6 w-full max-w-sm">
+        <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-4 mb-4 w-full max-w-sm">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.days}</span>
             <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
@@ -105,26 +105,26 @@ export default function DateDay() {
 
       {/* Calendar Grid Container */}
       <div className="flex w-full justify-center">
-        <div className="max-w-sm bg-white p-8 rounded-xl w-full">
+        <div className="max-w-sm bg-white p-4 sm:p-8 rounded-xl w-full">
           {/* Header */}
-          <div className="flex items-center justify-center gap-2 mb-6 pb-4">
+          <div className="flex items-center justify-center gap-2 sm:mb-6 pb-4">
             <h3 className="text-xl font-semibold text-[#260303] tracking-wide">September 2026</h3>
           </div>
 
           {/* Weekday Initials */}
-          <div className="grid grid-cols-7 gap-y-2 text-center mb-4">
+          <div className="grid grid-cols-7 gap-y-2 gap-x-1 text-center mb-4">
             {daysOfWeek.map((day, idx) => (
-              <span key={idx} className="tracking-widest text-[#6d544a] font-semibold uppercase">
+              <span key={idx} className="text-[#6d544a] font-semibold uppercase">
                 {day}
               </span>
             ))}
           </div>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-y-3 gap-x-1 text-center items-center">
+          <div className="grid grid-cols-7 gap-y-3 text-center items-center">
             {calendarDays.map((day, idx) => {
               if (day === null) {
-                return <div key={`empty-${idx}`} className="w-8 h-8 sm:w-10 sm:h-10" />
+                return <div key={`empty-${idx}`} />
               }
 
               const isWeddingDay = day === 26
