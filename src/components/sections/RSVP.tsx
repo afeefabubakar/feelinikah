@@ -7,6 +7,7 @@ import { RSVPConfirmModal } from '@/components/rsvp/RSVPConfirmModal'
 import { LetterModal } from '@/components/rsvp/LetterModal'
 import { MessageBoard } from '@/components/rsvp/MessageBoard'
 import { Button } from '@/components/Button'
+import { useWeddingVariation } from '@/hooks/useWeddingVariation'
 
 type Stage = 'form' | 'confirm' | 'letter'
 
@@ -15,6 +16,9 @@ interface RSVPProps {
 }
 
 export default function RSVP({ onComplete }: RSVPProps) {
+  const variation = useWeddingVariation()
+  const maxAttendees = variation === 'bride' || variation === 'groom' ? 10 : 2
+
   const [name, setName] = useState('')
   const [isAttending, setIsAttending] = useState<boolean | null>(null)
   const [attendeesCount, setAttendeesCount] = useState(1)
@@ -160,6 +164,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
                   type="button"
                   onClick={() => setAttendeesCount((n) => Math.max(1, n - 1))}
                   variant="counter"
+                  disabled={attendeesCount <= 1}
                 >
                   −
                 </Button>
@@ -168,8 +173,9 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 </span>
                 <Button
                   type="button"
-                  onClick={() => setAttendeesCount((n) => n + 1)}
+                  onClick={() => setAttendeesCount((n) => Math.min(maxAttendees, n + 1))}
                   variant="counter"
+                  disabled={attendeesCount >= maxAttendees}
                 >
                   +
                 </Button>
