@@ -72,36 +72,27 @@ export function LandingPage() {
                 </text>
               </svg>
 
-              {/* Image — slides and sticks on the page */}
+              {/* Image — revealed from left to right at the same rate as the text */}
               <motion.div
                 className="w-[80%] mt-[-20%] relative overflow-visible"
                 initial={{
-                  x: -300,
-                  y: -100,
-                  rotate: -18,
-                  scale: 1.15,
+                  clipPath: 'inset(0% 100% 0% 0%)',
                   opacity: 0,
-                  filter: 'drop-shadow(0 40px 30px rgba(0,0,0,0.6))',
                 }}
                 animate={
                   imageLoaded
                     ? {
-                        x: 0,
-                        y: 0,
-                        rotate: -1.5,
-                        scale: 1,
+                        clipPath: 'inset(0% 0% 0% 0%)',
                         opacity: 1,
-                        filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.35))',
                       }
                     : {
                         opacity: 0,
                       }
                 }
                 transition={{
-                  type: 'spring',
-                  stiffness: 85,
-                  damping: 14,
-                  delay: 0.8,
+                  delay: 0.4,
+                  duration: 1.4,
+                  ease: 'easeInOut',
                 }}
               >
                 <Image
@@ -110,7 +101,7 @@ export function LandingPage() {
                   width={2091}
                   height={2275}
                   onLoad={() => setImageLoaded(true)}
-                  className="w-full h-auto pl-4 object-contain select-none pointer-events-none"
+                  className="w-full h-auto pl-4 object-contain select-none pointer-events-none filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
                   priority
                 />
               </motion.div>
