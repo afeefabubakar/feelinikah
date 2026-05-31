@@ -90,7 +90,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
   }
 
   return (
-    <div className="relative text-white h-full flex flex-col overflow-y-auto pb-4 scrollbar-none">
+    <div className="relative text-white h-full flex flex-col overflow-y-auto pb-4">
       {/* ── Form ── */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>

@@ -9,7 +9,7 @@ export default function Venue() {
   const mapsUrl = `https://maps.app.goo.gl/AH7XjQerzDpo7kTN7`
 
   return (
-    <div className="flex flex-col gap-8 text-white h-full overflow-y-auto pb-4 scrollbar-none">
+    <div className="flex flex-col gap-8 text-white h-full overflow-y-auto pb-4">
       {/* Top Banner / Venue Summary */}
       <div className="bg-white/5 border border-white/10 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
         <div>
@@ -35,13 +35,13 @@ export default function Venue() {
         </a>
       </div>
 
-      <div className="rounded-2xl overflow-hidden">
+      <div className="rounded-2xl">
         <Image
           src="/image/venue.jpg"
           alt="Carpe Diem Orchard Home venue map"
           width={1280}
           height={914}
-          className="w-full h-auto object-contain"
+          className="w-full h-auto rounded-2xl object-contain"
           priority
         />
       </div>

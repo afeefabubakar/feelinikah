@@ -289,7 +289,7 @@ export function CardsLayout() {
                 </h2>
 
                 {/* Dynamically Render Componentized Section Contents */}
-                <div className="overflow-y-auto scrollbar-none">
+                <div className="overflow-y-auto">
                   {selectedId === 'about' && <About />}
                   {selectedId === 'date' && <DateDay />}
                   {selectedId === 'venue' && <Venue />}

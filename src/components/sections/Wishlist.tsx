@@ -9,14 +9,20 @@ type RegistryItem = {
   title: string
   description?: string
   link?: string
-  image?: {
-    url: string
-  } | string | null
+  image?:
+    | {
+        url: string
+      }
+    | string
+    | null
   interested: number
   isClaimed: boolean
-  proofOfPurchase?: {
-    url: string
-  } | string | null
+  proofOfPurchase?:
+    | {
+        url: string
+      }
+    | string
+    | null
 }
 
 export default function Wishlist() {
@@ -59,9 +65,7 @@ export default function Wishlist() {
         body: JSON.stringify({ interested: newCount }),
       })
       if (res.ok) {
-        setItems((prev) =>
-          prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i))
-        )
+        setItems((prev) => prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i)))
       }
     } catch (err) {
       console.error('Failed to update interest:', err)
@@ -98,9 +102,7 @@ export default function Wishlist() {
 
       if (!patchRes.ok) throw new Error('Failed to claim item.')
 
-      setItems((prev) =>
-        prev.map((i) => (i.id === id ? { ...i, isClaimed: true } : i))
-      )
+      setItems((prev) => prev.map((i) => (i.id === id ? { ...i, isClaimed: true } : i)))
 
       setClaimedItemName(targetItem.title)
       setShowToast(true)
@@ -138,13 +140,16 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="relative text-white h-full flex flex-col justify-between overflow-y-auto pb-4 scrollbar-none">
+    <div className="relative text-white h-full flex flex-col justify-between overflow-y-auto pb-4">
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h3 className="text-xl font-sans text-white font-semibold mb-1">Our Registry & Wishlist</h3>
+          <h3 className="text-xl font-sans text-white font-semibold mb-1">
+            Our Registry & Wishlist
+          </h3>
           <p className="text-sm font-sans text-white/60 leading-relaxed">
-            If you wish to bless us with a wedding gift, here are some things we are currently looking into.
+            If you wish to bless us with a wedding gift, here are some things we are currently
+            looking into.
           </p>
         </div>
 
@@ -166,11 +171,7 @@ export default function Wishlist() {
                   {/* Picture to the left */}
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center relative">
                     {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />
                     ) : (
                       <Gift className="w-8 h-8 text-white/20" />
                     )}
@@ -216,8 +217,7 @@ export default function Wishlist() {
                       <p className="text-[11px] font-sans font-semibold text-white/50 uppercase tracking-wider flex items-center gap-1 mt-0.5">
                         <Sparkles className="w-3 h-3 text-amber-700/80" />
                         {item.interested || 0}{' '}
-                        {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into
-                        this
+                        {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
                       </p>
                     )}
                   </div>

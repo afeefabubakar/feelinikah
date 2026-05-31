@@ -141,7 +141,7 @@ export default function Dresscode() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: activeTab === 'Him' ? 35 : -35 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="h-full overflow-y-auto scrollbar-none pb-2"
+            className="h-full overflow-y-auto pb-2"
           >
             {theme.groups
               .filter((group) => group.label === activeTab)
