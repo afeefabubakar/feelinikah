@@ -59,7 +59,7 @@ export function LandingPage() {
                     />
                   </mask>
                 </defs>
-                <path id="textCurve" d="M 30,390 Q 720,-50 1125,450" fill="none" stroke="none" />
+                <path id="textCurve" d="M 30,365 Q 800,-50 1125,450" fill="none" stroke="none" />
                 <text
                   fill="#fff"
                   fontSize="108"
