@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'lucide-react'
+import { Gift, Loader2, Upload, Lock, Check, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Image from 'next/image'
 import { storage } from '@/lib/storage'
@@ -177,13 +177,11 @@ export default function Wishlist() {
             return (
               <div
                 key={item.id}
-                className={`border rounded-3xl p-5 flex flex-col gap-4 transition-all duration-300 ${
-                  item.isClaimed
-                    ? 'bg-emerald-950/40 border-emerald-800/40 shadow-sm opacity-90'
-                    : 'bg-white/5 border-white/10 hover:border-amber-700/30'
+                className={`border rounded-3xl p-5 flex flex-col gap-4 transition-all duration-300 bg-white/5 border-white/10 ${
+                  item.isClaimed ? 'opacity-40 grayscale shadow-sm' : 'hover:border-amber-700/30'
                 }`}
               >
-                {/* Row 1: Image + Title + Viewing count */}
+                {/* Row 1: Image + Title + Status */}
                 <div className="flex flex-col sm:flex-row items-start gap-4">
                   {/* Image */}
                   <div className="w-full h-auto sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center">
@@ -200,7 +198,7 @@ export default function Wishlist() {
                     )}
                   </div>
 
-                  {/* Title + viewing count */}
+                  {/* Title + status */}
                   <div className="flex flex-col gap-1 flex-1 min-w-0">
                     {/* Title — clickable link if item.link exists */}
                     {item.link ? (
@@ -208,35 +206,19 @@ export default function Wishlist() {
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`inline-flex items-start sm:items-center gap-1.5 font-sans font-semibold hover:underline underline-offset-2 transition-colors ${
-                          item.isClaimed
-                            ? 'text-emerald-300 line-through'
-                            : 'text-white hover:text-white/80'
-                        }`}
+                        className="inline-flex items-start sm:items-center gap-1.5 font-sans font-semibold hover:underline underline-offset-2 transition-colors text-white hover:text-white/80"
                       >
                         <span>{item.title}</span>
                         <ExternalLink className="w-4 h-4 shrink-0 opacity-60 max-sm:mt-1" />
                       </a>
                     ) : (
-                      <span
-                        className={`font-sans font-semibold ${
-                          item.isClaimed ? 'text-emerald-300 line-through' : 'text-white'
-                        }`}
-                      >
-                        {item.title}
-                      </span>
+                      <span className="font-sans font-semibold text-white">{item.title}</span>
                     )}
 
-                    {/* Claimed badge */}
-                    {item.isClaimed && (
-                      <span className="font-sans font-bold tracking-wider uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1 w-fit">
-                        <Lock className="w-3 h-3" />
-                        Gift Claimed
-                      </span>
-                    )}
-
-                    {/* Viewing count */}
-                    {!item.isClaimed && (
+                    {/* Bought / Viewing status */}
+                    {item.isClaimed ? (
+                      <span className="font-sans text-white/50 text-xl">Gift has been bought</span>
+                    ) : (
                       <p className="font-sans flex items-center gap-1 text-2xl">
                         {item.interested || 0}{' '}
                         {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
@@ -245,7 +227,7 @@ export default function Wishlist() {
                   </div>
                 </div>
 
-                {/* Row 2: Buttons */}
+                {/* Row 2: Buttons / Thank You */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                   {!item.isClaimed ? (
                     <>
@@ -288,8 +270,8 @@ export default function Wishlist() {
                       </Button>
                     </>
                   ) : (
-                    <span className="font-sans font-bold tracking-wider uppercase text-emerald-400 flex items-center gap-1">
-                      <Check className="w-4 h-4 text-emerald-400" />
+                    <span className="font-sans text-white/70 flex items-center gap-1">
+                      <Check className="w-4 h-4 text-white/70" />
                       Thank You!
                     </span>
                   )}
@@ -321,17 +303,10 @@ export default function Wishlist() {
               exit={{ opacity: 0, y: 32, scale: 0.95 }}
               transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             >
-              <div className="relative mb-2">
-                <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center shadow-sm animate-bounce">
-                  <Gift className="w-8 h-8 text-emerald-600" />
-                </div>
-                <span className="absolute -top-1 -right-1 text-xl animate-ping opacity-60">🎁</span>
-                <span className="absolute -bottom-2 -left-2 text-lg animate-pulse">🎉</span>
-              </div>
-
-              <h3 className="text-black font-bold">Gift Registered!</h3>
+              <h3 className="text-black font-bold">Gift Received!</h3>
               <p className="text-black/80 max-w-[280px]">
-                We are incredibly grateful for your warm generosity. <strong>{claimedItemName}</strong> has been registered on our list and locked!
+                We are incredibly grateful for your warm generosity.{' '}
+                <strong>{claimedItemName}</strong> has been received on our list and locked!
               </p>
 
               <Button
