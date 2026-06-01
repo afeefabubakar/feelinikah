@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Tentative() {
   return (
-    <div className="flex flex-col gap-6 h-full overflow-y-auto pb-4 text-4xl sm:text-7xl tracking-wide font-light">
+    <div className="flex flex-col gap-6 pb-4 text-4xl sm:text-7xl tracking-wide font-light">
       {/* Schedule overview image */}
       <div className="rounded-2xl">
         <Image

@@ -141,7 +141,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="relative text-white h-full flex flex-col justify-between overflow-y-auto pb-4 pr-4">
+    <div className="relative text-white flex flex-col justify-between pb-4">
       <div className="space-y-6">
         {/* Header — title removed, keeping the 'if you wish' text */}
         <p className="font-sans">

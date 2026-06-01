@@ -89,7 +89,7 @@ export default function Dresscode() {
   }
 
   return (
-    <div className="flex flex-col gap-6 text-[#260303] h-full overflow-hidden pb-4">
+    <div className="flex flex-col gap-6 text-[#260303] pb-4">
       {variation !== 'friends' && (
         <div className="flex gap-4 items-center justify-center">
           <h3 className="text-center">{theme.colors?.title} </h3>
@@ -132,7 +132,7 @@ export default function Dresscode() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="flex-1 min-h-0 relative overflow-hidden"
+        className="relative overflow-hidden"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -141,7 +141,7 @@ export default function Dresscode() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: activeTab === 'Him' ? 35 : -35 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="h-full overflow-y-auto pb-2"
+            className="pb-2"
           >
             {theme.groups
               .filter((group) => group.label === activeTab)

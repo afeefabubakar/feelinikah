@@ -9,7 +9,7 @@ export default function Venue() {
   const mapsUrl = `https://maps.app.goo.gl/AH7XjQerzDpo7kTN7`
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-8 text-white h-full overflow-y-auto pb-4">
+    <div className="flex flex-col gap-4 sm:gap-8 text-white pb-4">
       {/* Top Banner / Venue Summary */}
       <div className="bg-white/5 border border-white/10 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row gap-2 sm:gap-6 justify-between items-start md:items-center">
         <div>
