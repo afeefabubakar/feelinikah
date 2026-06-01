@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 let browserQueryClient: QueryClient | undefined = undefined
@@ -37,8 +37,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
   // Retrieve the stable, singleton-safe query client
   const queryClient = getQueryClient()
 
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.1
+    }
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
+      <audio ref={audioRef} src={'/audio/eternal-flame.mp3'} autoPlay loop />
       {children}
     </QueryClientProvider>
   )
