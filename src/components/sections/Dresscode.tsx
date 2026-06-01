@@ -110,7 +110,7 @@ export default function Dresscode() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 pb-2 text-center text-xl font-medium tracking-wide transition-all relative cursor-pointer focus:outline-none ${
+              className={`flex-1 pb-2 text-center transition-all relative cursor-pointer focus:outline-none ${
                 isActive ? 'text-[#260303] font-bold' : 'text-[#6d544a]/60 hover:text-[#6d544a]'
               }`}
             >

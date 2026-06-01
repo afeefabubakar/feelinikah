@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { RSVPThankYou } from '@/components/rsvp/RSVPThankYou'
-import { RSVPThankYouToast } from '@/components/rsvp/RSVPThankYouToast'
 
 // Import Section Components
 import About from './sections/About'
@@ -289,7 +288,7 @@ export function CardsLayout() {
                 </h2>
 
                 {/* Dynamically Render Componentized Section Contents */}
-                <div className="overflow-y-auto">
+                <div className="overflow-y-auto pr-1">
                   {selectedId === 'about' && <About />}
                   {selectedId === 'date' && <DateDay />}
                   {selectedId === 'venue' && <Venue />}
@@ -313,7 +312,6 @@ export function CardsLayout() {
               isAttending={rsvpResult.isAttending}
               onClose={() => setShowThankYou(false)}
             />
-            <RSVPThankYouToast onDone={() => {}} />
           </>
         )}
       </AnimatePresence>

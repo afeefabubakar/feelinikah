@@ -94,8 +94,8 @@ export default function RSVP({ onComplete }: RSVPProps) {
       {/* ── Form ── */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <h4 className="font-semibold mb-1">Join Our Celebration</h4>
-          <p className="text-white text-xl">Please RSVP by 1st July 2026</p>
+          <h3 className="font-semibold mb-1 whitespace-nowrap">Join Our Celebration</h3>
+          <p className="text-white">Please RSVP by 1st July 2026</p>
         </div>
 
         {error && (
@@ -115,7 +115,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-700 transition-all"
+            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-900 transition-all"
             required
           />
         </div>
