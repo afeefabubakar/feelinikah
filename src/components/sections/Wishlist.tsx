@@ -35,6 +35,7 @@ export default function Wishlist() {
   const [showToast, setShowToast] = useState(false)
   const [claimedItemName, setClaimedItemName] = useState('')
   const [trackedGiftIds, setTrackedGiftIds] = useState<string[]>([])
+  const [loadingLookingId, setLoadingLookingId] = useState<string | null>(null)
 
   // ── Fetch Wishlist items dynamically using TanStack React Query ───────────
   const { data, isLoading } = useQuery({
@@ -70,6 +71,8 @@ export default function Wishlist() {
     const item = items.find((i) => i.id === id)
     if (!item || item.isClaimed) return
 
+    setLoadingLookingId(id)
+
     const isTracking = trackedGiftIds.includes(id)
     const newCount = isTracking
       ? Math.max(0, (item.interested || 0) - 1)
@@ -93,6 +96,8 @@ export default function Wishlist() {
       }
     } catch (err) {
       console.error('Failed to update interest:', err)
+    } finally {
+      setLoadingLookingId(null)
     }
   }
 
@@ -241,9 +246,19 @@ export default function Wishlist() {
                         onClick={() => handleLooking(item.id)}
                         variant={trackedGiftIds.includes(item.id) ? 'primary' : 'outline'}
                         size="sm"
-                        className="whitespace-nowrap"
+                        disabled={loadingLookingId !== null}
+                        className="whitespace-nowrap flex items-center justify-center gap-1.5"
                       >
-                        {trackedGiftIds.includes(item.id) ? 'Interested ✓' : "I'm interested!"}
+                        {loadingLookingId === item.id ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin mr-1 mb-1" />
+                            Updating...
+                          </>
+                        ) : trackedGiftIds.includes(item.id) ? (
+                          'Interested ✓'
+                        ) : (
+                          "I'm interested!"
+                        )}
                       </Button>
 
                       <Button
