@@ -223,7 +223,7 @@ export default function Wishlist() {
 
                     {/* Bought / Viewing status */}
                     {item.isClaimed ? (
-                      <span className="font-sans text-white/50 text-xl">Gift has been bought</span>
+                      <span className="font-sans text-white/50">Gift has been bought</span>
                     ) : (
                       <p className="font-sans flex items-center gap-1 text-2xl">
                         {item.interested || 0}{' '}
@@ -277,7 +277,7 @@ export default function Wishlist() {
                     </>
                   ) : (
                     <span className="font-sans text-white/70 flex items-center gap-1">
-                      <Check className="w-4 h-4 text-white/70" />
+                      <Check className="w-4 h-4 text-white/70 mb-1 mr-1" />
                       Thank You!
                     </span>
                   )}
