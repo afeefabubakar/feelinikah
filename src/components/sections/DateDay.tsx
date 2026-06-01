@@ -141,7 +141,7 @@ export default function DateDay() {
         <div className="bg-white p-4 sm:p-8 rounded-xl w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 sm:mb-6 pb-4">
-            <h3 className="text-xl font-semibold text-[#260303] tracking-wide">September 2026</h3>
+            <h5 className="font-semibold text-[#260303] tracking-wide">September 2026</h5>
           </div>
 
           {/* Weekday Initials */}
