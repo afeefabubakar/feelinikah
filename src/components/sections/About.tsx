@@ -36,7 +36,7 @@ export default function About() {
           <br />
           Afeef is in love with Alin.
         </p>
-        <p>See you at our solemnisation!</p>
+        <p>See you at our solemnization!</p>
         <p>Love, FEELIN.</p>
       </div>
     </div>
