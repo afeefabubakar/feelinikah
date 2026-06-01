@@ -29,7 +29,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
-  const [existingRsvp, setExistingRsvp] = useState<{ id: string; name: string } | null>(null)
+  const [existingRsvp, setExistingRsvp] = useState<{ id: string; name: string | null } | null>(null)
 
   useEffect(() => {
     setExistingRsvp(storage.getRSVP())
