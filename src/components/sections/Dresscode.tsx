@@ -45,7 +45,7 @@ const themes: Record<
     },
     groups: [
       // Both male options inside one "Him" box
-      { label: 'Him', images: ['/image/guest-male-1.png', '/image/guest-male-2.png'] },
+      { label: 'Him', images: ['/image/guest-male-1.png'] },
       { label: 'Her', images: ['/image/guest-female.png'] },
     ],
   },
