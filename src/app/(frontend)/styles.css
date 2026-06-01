@@ -41,13 +41,6 @@
     color: white;
   }
 
-  /* ── Scrollbar Gutter and Padding to Prevent Overlap ── */
-  .overflow-y-auto,
-  [class*='overflow-y-'] {
-    scrollbar-gutter: stable;
-    padding-right: 0.75rem; /* Creates a visual buffer so text doesn't touch the scrollbar */
-  }
-
   /* ── WebKit (Safari, Chrome, etc.) Scrollbar Styling ── */
   ::-webkit-scrollbar {
     width: 4px;
@@ -100,7 +93,7 @@
   input,
   textarea,
   button {
-    @apply text-2xl max-sm:text-xl font-sans;
+    @apply text-3xl max-sm:text-2xl font-sans;
   }
 }
 
