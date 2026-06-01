@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Gift, Loader2, Sparkles, Upload, Lock, Check, ExternalLink } from 'lucide-react'
+import { Gift, Loader2, Upload, Lock, Check, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/Button'
+import Image from 'next/image'
 
 type RegistryItem = {
   id: string
@@ -166,7 +167,13 @@ export default function Wishlist() {
                   {/* Image */}
                   <div className="w-full h-auto sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center">
                     {imageUrl ? (
-                      <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                      <Image
+                        src={imageUrl}
+                        alt={item.title}
+                        width={800}
+                        height={800}
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <Gift className="w-8 h-8 text-white/20" />
                     )}
