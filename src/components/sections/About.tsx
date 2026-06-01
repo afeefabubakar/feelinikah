@@ -11,7 +11,7 @@ export default function About() {
         alt="Picture of little Alin and Afeef"
         width={700}
         height={875}
-        className="h-auto max-w-lg"
+        className="h-auto sm:max-w-lg"
       />
 
       <div className="flex-1 space-y-6 text-lg leading-relaxed text-white/85">
