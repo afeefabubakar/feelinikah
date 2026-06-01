@@ -152,23 +152,26 @@ export function CardsLayout() {
 
   const selected = sections.find((s) => s.id === selectedId)
 
-  const getModalTarget = useCallback((id: string | null): CardRect => {
-    const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
-    const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
-    
-    let maxWidth = 768
-    if (id === 'about') {
-      // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
-      maxWidth = 608
-    } else if (id === 'date') {
-      // Fits the calendar + padding
-      maxWidth = 512
-    }
+  const getModalTarget = useCallback(
+    (id: string | null): CardRect => {
+      const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
+      const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
 
-    const w = Math.min(vw * 0.92, maxWidth)
-    const h = vh * 0.85
-    return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
-  }, [windowSize])
+      let maxWidth = 768
+      if (id === 'about') {
+        // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
+        maxWidth = 608
+      } else if (id === 'date') {
+        // Fits the calendar + padding
+        maxWidth = 512
+      }
+
+      const w = Math.min(vw * 0.92, maxWidth)
+      const h = vh * 0.85
+      return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
+    },
+    [windowSize],
+  )
 
   return (
     <div className="flex items-center min-h-dvh justify-center font-sans overflow-x-hidden p-6 md:p-12">
@@ -282,7 +285,7 @@ export function CardsLayout() {
 
               {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
               <motion.div
-                className={`p-8 sm:p-12 h-full flex flex-col justify-start z-10 relative scrollbar-none `}
+                className="pt-8 pb-8 pl-8 pr-1 sm:pt-12 sm:pb-12 sm:pl-12 sm:pr-1 h-full flex flex-col justify-start z-10 relative scrollbar-none"
                 style={{ transform: 'rotateY(180deg)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -291,14 +294,17 @@ export function CardsLayout() {
               >
                 {/* Header Title */}
                 <h2
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pb-6"
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pb-6 pr-7 sm:pr-11"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
                 </h2>
 
                 {/* Dynamically Render Componentized Section Contents */}
-                <div className="overflow-y-auto pr-1">
+                <div 
+                  className="overflow-y-auto pr-7 sm:pr-11"
+                  style={{ scrollbarGutter: 'stable' }}
+                >
                   {selectedId === 'about' && <About />}
                   {selectedId === 'date' && <DateDay />}
                   {selectedId === 'venue' && <Venue />}
