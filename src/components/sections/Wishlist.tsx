@@ -162,9 +162,9 @@ export default function Wishlist() {
                 }`}
               >
                 {/* Row 1: Image + Title + Viewing count */}
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                   {/* Image */}
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center">
+                  <div className="w-full h-auto sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shrink-0 flex items-center justify-center">
                     {imageUrl ? (
                       <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />
                     ) : (
@@ -180,14 +180,14 @@ export default function Wishlist() {
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`inline-flex items-center gap-1.5 font-sans font-semibold hover:underline underline-offset-2 transition-colors ${
+                        className={`inline-flex items-start sm:items-center gap-1.5 font-sans font-semibold hover:underline underline-offset-2 transition-colors ${
                           item.isClaimed
                             ? 'text-emerald-300 line-through'
                             : 'text-white hover:text-white/80'
                         }`}
                       >
-                        <span className="truncate">{item.title}</span>
-                        <ExternalLink className="w-4 h-4 shrink-0 opacity-60" />
+                        <span>{item.title}</span>
+                        <ExternalLink className="w-4 h-4 shrink-0 opacity-60 max-sm:mt-1" />
                       </a>
                     ) : (
                       <span
@@ -209,8 +209,7 @@ export default function Wishlist() {
 
                     {/* Viewing count */}
                     {!item.isClaimed && (
-                      <p className="font-sans flex items-center gap-1 text-xl">
-                        <Sparkles className="w-4 h-4 shrink-0 mb-1" />
+                      <p className="font-sans flex items-center gap-1 text-2xl">
                         {item.interested || 0}{' '}
                         {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
                       </p>
@@ -219,7 +218,7 @@ export default function Wishlist() {
                 </div>
 
                 {/* Row 2: Buttons */}
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                   {!item.isClaimed ? (
                     <>
                       <Button
@@ -228,7 +227,7 @@ export default function Wishlist() {
                         size="sm"
                         className="whitespace-nowrap"
                       >
-                        Looking into it
+                        I'm interested!
                       </Button>
 
                       <Button
