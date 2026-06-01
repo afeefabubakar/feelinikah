@@ -47,7 +47,7 @@ export default function Wishlist() {
         console.error('Failed to load wishlist:', err)
         setLoading(false)
       })
-    
+
     // Load tracked gifts from local storage
     setTrackedGiftIds(storage.getTrackedGifts())
   }, [])
@@ -98,14 +98,15 @@ export default function Wishlist() {
 
       // 1. Upload proof of purchase receipt to Payload's Media endpoint
       const formData = new FormData()
-      formData.append('file', file)
       formData.append('alt', `Receipt proof for ${targetItem.title}`)
+      formData.append('file', file)
 
       const uploadRes = await fetch('/api/media', {
         method: 'POST',
         body: formData,
       })
 
+      console.log(await uploadRes.json())
       if (!uploadRes.ok) throw new Error('Failed to upload proof.')
       const uploadData = await uploadRes.json()
       const mediaId = uploadData.doc.id
