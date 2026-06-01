@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: 'primary' | 'outline' | 'outline-amber' | 'gold-gradient' | 'ghost' | 'counter'
+  variant?: 'primary' | 'outline' | 'outline-dark' | 'blue-gradient' | 'ghost' | 'counter'
   size?: 'sm' | 'md' | 'lg' | 'icon'
   fullWidth?: boolean
   as?: 'button' | 'label' | 'a'
@@ -31,17 +31,17 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      'text-xl inline-flex items-center justify-center tracking-wide transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
+      'text-3xl max-sm:text-2xl inline-flex items-center justify-center tracking-wide transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
 
     const variants = {
       primary:
-        'bg-amber-700 hover:bg-amber-800 text-white shadow-sm border border-transparent disabled:bg-white/10 disabled:text-white/35 disabled:cursor-not-allowed disabled:active:scale-100',
+        'bg-[#fdf8f0] hover:bg-[#f5ede0] text-[#260303] shadow-sm border border-transparent disabled:bg-white/10 disabled:text-white/35 disabled:cursor-not-allowed disabled:active:scale-100',
       outline:
         'border border-white/10 bg-white/25 text-white hover:bg-white/10 hover:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
-      'outline-amber':
-        'border border-amber-900/10 text-amber-900/60 hover:bg-amber-900/5 hover:border-amber-900/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
-      'gold-gradient':
-        'bg-gradient-to-br from-amber-600 to-amber-800 text-white shadow-md hover:from-amber-700 hover:to-amber-900 disabled:opacity-50 disabled:bg-none disabled:bg-white/10 disabled:text-white/35 disabled:cursor-not-allowed disabled:active:scale-100',
+      'outline-dark':
+        'border border-[#6d544a]/30 text-[#6d544a] hover:bg-[#6d544a]/5 hover:border-[#6d544a]/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
+      'blue-gradient':
+        'bg-gradient-to-br from-[#35637a] to-[#1e4a5c] text-white shadow-md hover:from-[#2a4f63] hover:to-[#163845] disabled:from-[#35637a]/50 disabled:to-[#1e4a5c]/50 disabled:text-white/40 disabled:shadow-none disabled:cursor-not-allowed disabled:active:scale-100',
       ghost:
         'text-amber-900/40 hover:text-amber-900/70 hover:bg-black/5 disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100',
       counter:
