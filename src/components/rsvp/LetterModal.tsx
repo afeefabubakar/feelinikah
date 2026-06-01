@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import { PenLine, Loader2, X } from 'lucide-react'
 import { Button } from '@/components/Button'
@@ -15,8 +16,14 @@ interface LetterModalProps {
 
 export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterModalProps) {
   const [message, setMessage] = useState('')
+  const [mounted, setMounted] = useState(false)
 
-  return (
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  if (!mounted) return null
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Scrim */}
       <motion.div
@@ -67,12 +74,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
           {/* Header */}
           <div className="relative pl-20 pr-8 pt-8 pb-4">
             {/* Close */}
-            <Button
-              onClick={onSkip}
-              variant="ghost"
-              size="icon"
-              className="absolute top-5 right-5"
-            >
+            <Button onClick={onSkip} variant="ghost" size="icon" className="absolute top-5 right-5">
               <X className="w-4 h-4" />
             </Button>
 
@@ -83,7 +85,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
               transition={{ delay: 0.3 }}
             >
               <p
-                className="text-lg uppercase tracking-[0.25em] text-amber-900/40 mb-1"
+                className="uppercase tracking-[0.25em] text-amber-900 mb-1"
                 style={{ fontFamily: 'var(--font-sans), serif' }}
               >
                 A letter from
@@ -95,9 +97,9 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
 
             {/* Divider */}
             <div className="flex items-center gap-3 mt-4 mb-1">
-              <div className="flex-1 h-px bg-amber-900/10" />
-              <span className="text-amber-800/30 text-xs">✦</span>
-              <div className="flex-1 h-px bg-amber-900/10" />
+              <div className="flex-1 h-px bg-amber-900" />
+              <span className="text-amber-800 mt-2">✦</span>
+              <div className="flex-1 h-px bg-amber-900" />
             </div>
           </div>
 
@@ -108,10 +110,10 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <p className="text-lg text-amber-900/40 mb-3 italic">Dear Alin &amp; Afeef,</p>
+            <p className="text-amber-900 mb-3 italic">Dear Alin &amp; Afeef,</p>
 
             {error && (
-              <div className="mb-3 p-2.5 bg-rose-50 border border-rose-100 rounded-xl text-xs text-rose-700">
+              <div className="mb-3 p-2.5 bg-rose-50 border border-rose-100 rounded-xl text-rose-700">
                 {error}
               </div>
             )}
@@ -122,7 +124,7 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
               placeholder="Write your wishes, blessings, or a heartfelt message here…"
               rows={6}
               autoFocus
-              className="w-full bg-transparent resize-none text-[#260303] placeholder-amber-900/25 focus:outline-none leading-8 text-lg"
+              className="w-full bg-transparent resize-none text-[#260303] placeholder-amber-900/25 focus:outline-none leading-8"
             />
           </motion.div>
 
@@ -133,36 +135,32 @@ export function LetterModal({ name, onSend, onSkip, submitting, error }: LetterM
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
           >
-            <Button
-              type="button"
-              onClick={onSkip}
-              variant="outline-amber"
-              className="flex-1 py-2.5 text-lg font-medium tracking-wide normal-case"
-            >
+            <Button type="button" onClick={onSkip} variant="outline-dark" className="flex-1 py-2.5">
               Skip
             </Button>
             <Button
               type="button"
               disabled={submitting || !message.trim()}
               onClick={() => onSend(message)}
-              variant="gold-gradient"
-              className="flex-2 py-2.5 text-lg font-medium tracking-wide normal-case"
+              variant="blue-gradient"
+              className="flex-2 py-2.5"
             >
               {submitting ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin mr-2 mb-2" />
                   Sealing…
                 </>
               ) : (
                 <>
-                  <PenLine className="w-3.5 h-3.5" />
-                  Send Letter
+                  <PenLine className="mr-2 mb-2 w-3.5 h-3.5" />
+                  Send
                 </>
               )}
             </Button>
           </motion.div>
         </div>
       </motion.div>
-    </div>
+    </div>,
+    document.body,
   )
 }
