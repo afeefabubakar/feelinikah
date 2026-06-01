@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { RSVPConfirmModal } from '@/components/rsvp/RSVPConfirmModal'
@@ -8,6 +8,7 @@ import { LetterModal } from '@/components/rsvp/LetterModal'
 import { MessageBoard } from '@/components/rsvp/MessageBoard'
 import { Button } from '@/components/Button'
 import { useWeddingVariation } from '@/hooks/useWeddingVariation'
+import { storage } from '@/lib/storage'
 
 type Stage = 'form' | 'confirm' | 'letter'
 
@@ -27,6 +28,12 @@ export default function RSVP({ onComplete }: RSVPProps) {
   const [rsvpId, setRsvpId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  const [existingRsvp, setExistingRsvp] = useState<{ id: string; name: string } | null>(null)
+
+  useEffect(() => {
+    setExistingRsvp(storage.getRSVP())
+  }, [])
 
   // ── Step 1: Submit RSVP ────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
@@ -55,7 +62,9 @@ export default function RSVP({ onComplete }: RSVPProps) {
       })
       if (!res.ok) throw new Error('Failed to submit RSVP.')
       const data = await res.json()
-      setRsvpId(data.doc.id)
+      const newId = data.doc.id
+      setRsvpId(newId)
+      storage.setRSVP(newId, name)
       setStage('confirm')
     } catch (err: any) {
       setError(err.message || 'Something went wrong.')
@@ -87,6 +96,34 @@ export default function RSVP({ onComplete }: RSVPProps) {
 
   function handleSkip() {
     onComplete(name, isAttending ?? false)
+  }
+
+  if (existingRsvp) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center bg-white/5 border border-white/10 rounded-3xl gap-6 max-w-sm mx-auto my-4">
+        <span className="text-5xl animate-bounce">💍</span>
+        <div>
+          <h3 className="font-sans font-semibold text-white">You're all set!</h3>
+          <p className="text-white/70 font-sans mt-3 leading-relaxed">
+            We have registered your RSVP for <strong>{existingRsvp.name}</strong>. Thank you so much!
+          </p>
+          <p className="text-white/50 text-xl font-sans mt-2 leading-relaxed">
+            If you need to make changes or updates, please contact us directly.
+          </p>
+        </div>
+        <Button
+          onClick={() => {
+            storage.clearRSVP()
+            setExistingRsvp(null)
+          }}
+          variant="outline"
+          size="sm"
+          className="text-xl px-4 py-2 border-white/20 hover:bg-white/10"
+        >
+          Submit Another RSVP
+        </Button>
+      </div>
+    )
   }
 
   return (

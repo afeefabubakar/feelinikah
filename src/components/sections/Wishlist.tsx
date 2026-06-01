@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Gift, Loader2, Upload, Lock, Check, ExternalLink } from 'lucide-react'
+import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Image from 'next/image'
+import { storage } from '@/lib/storage'
 
 type RegistryItem = {
   id: string
@@ -32,6 +33,7 @@ export default function Wishlist() {
   const [uploadingItemId, setUploadingItemId] = useState<string | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [claimedItemName, setClaimedItemName] = useState('')
+  const [trackedGiftIds, setTrackedGiftIds] = useState<string[]>([])
 
   // ── Fetch Wishlist items dynamically from Payload API ────────────────────
   useEffect(() => {
@@ -45,6 +47,9 @@ export default function Wishlist() {
         console.error('Failed to load wishlist:', err)
         setLoading(false)
       })
+    
+    // Load tracked gifts from local storage
+    setTrackedGiftIds(storage.getTrackedGifts())
   }, [])
 
   const getImageUrl = (imageField: any) => {
@@ -53,12 +58,16 @@ export default function Wishlist() {
     return null
   }
 
-  // ── handleLooking PATCH request ───────────────────────────────────────────
+  // ── handleLooking PATCH request (Toggles track/untrack locally & updates DB) ──
   async function handleLooking(id: string) {
     const item = items.find((i) => i.id === id)
     if (!item || item.isClaimed) return
 
-    const newCount = (item.interested || 0) + 1
+    const isTracking = trackedGiftIds.includes(id)
+    const newCount = isTracking
+      ? Math.max(0, (item.interested || 0) - 1)
+      : (item.interested || 0) + 1
+
     try {
       const res = await fetch(`/api/wishlist/${id}`, {
         method: 'PATCH',
@@ -67,6 +76,13 @@ export default function Wishlist() {
       })
       if (res.ok) {
         setItems((prev) => prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i)))
+        if (isTracking) {
+          storage.untrackGift(id)
+          setTrackedGiftIds((prev) => prev.filter((x) => x !== id))
+        } else {
+          storage.trackGift(id)
+          setTrackedGiftIds((prev) => [...prev, id])
+        }
       }
     } catch (err) {
       console.error('Failed to update interest:', err)
@@ -104,6 +120,10 @@ export default function Wishlist() {
       if (!patchRes.ok) throw new Error('Failed to claim item.')
 
       setItems((prev) => prev.map((i) => (i.id === id ? { ...i, isClaimed: true } : i)))
+
+      // Clean up local tracked state since it is now claimed
+      storage.untrackGift(id)
+      setTrackedGiftIds((prev) => prev.filter((x) => x !== id))
 
       setClaimedItemName(targetItem.title)
       setShowToast(true)
@@ -230,11 +250,11 @@ export default function Wishlist() {
                     <>
                       <Button
                         onClick={() => handleLooking(item.id)}
-                        variant="outline"
+                        variant={trackedGiftIds.includes(item.id) ? 'primary' : 'outline'}
                         size="sm"
                         className="whitespace-nowrap"
                       >
-                        I'm interested!
+                        {trackedGiftIds.includes(item.id) ? 'Interested ✓' : "I'm interested!"}
                       </Button>
 
                       <Button
