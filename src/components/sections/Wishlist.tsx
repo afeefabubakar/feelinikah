@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Gift, Loader2, Upload, Lock, Check, ExternalLink } from 'lucide-react'
+import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Image from 'next/image'
 import { storage } from '@/lib/storage'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useQuery } from '@tanstack/react-query'
 
 type RegistryItem = {
   id: string
@@ -30,25 +31,30 @@ type RegistryItem = {
 
 export default function Wishlist() {
   const [items, setItems] = useState<RegistryItem[]>([])
-  const [loading, setLoading] = useState(true)
   const [uploadingItemId, setUploadingItemId] = useState<string | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [claimedItemName, setClaimedItemName] = useState('')
   const [trackedGiftIds, setTrackedGiftIds] = useState<string[]>([])
 
-  // ── Fetch Wishlist items dynamically from Payload API ────────────────────
-  useEffect(() => {
-    fetch('/api/wishlist?limit=50&sort=createdAt')
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data?.docs || [])
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error('Failed to load wishlist:', err)
-        setLoading(false)
-      })
+  // ── Fetch Wishlist items dynamically using TanStack React Query ───────────
+  const { data, isLoading } = useQuery({
+    queryKey: ['wishlist'],
+    queryFn: async () => {
+      const res = await fetch('/api/wishlist?limit=50&sort=createdAt')
+      if (!res.ok) throw new Error('Failed to load wishlist')
+      const result = await res.json()
+      return result?.docs || []
+    },
+  })
 
+  // Synchronize state with query cache
+  useEffect(() => {
+    if (data) {
+      setItems(data)
+    }
+  }, [data])
+
+  useEffect(() => {
     // Load tracked gifts from local storage
     setTrackedGiftIds(storage.getTrackedGifts())
   }, [])
@@ -136,7 +142,7 @@ export default function Wishlist() {
     }
   }
 
-  if (loading) {
+  if (isLoading && items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px] gap-3">
         <Loader2 className="w-10 h-10 text-white/30 animate-spin" />

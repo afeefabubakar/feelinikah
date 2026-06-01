@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useQuery } from '@tanstack/react-query'
 
 interface RSVPEntry {
   id: string
@@ -16,18 +16,17 @@ const TILTS = [-2.5, 1.8, -1.2, 2.1, -0.8, 1.5, -2.0, 0.9, -1.6, 2.4]
 const PAPER_COLORS = ['var(--color-parchment)']
 
 export function MessageBoard() {
-  const [messages, setMessages] = useState<RSVPEntry[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data: messages = [], isLoading } = useQuery<RSVPEntry[]>({
+    queryKey: ['messages'],
+    queryFn: async () => {
+      const res = await fetch('/api/rsvp?where[message][exists]=true&limit=50&sort=-createdAt')
+      if (!res.ok) throw new Error('Failed to load messages')
+      const result = await res.json()
+      return result?.docs ?? []
+    },
+  })
 
-  useEffect(() => {
-    fetch('/api/rsvp?where[message][exists]=true&limit=50&sort=-createdAt')
-      .then((r) => r.json())
-      .then((data) => setMessages(data?.docs ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
-
-  if (loading) {
+  if (isLoading && messages.length === 0) {
     return (
       <div className="mt-10 flex justify-center">
         <span className="text-xs text-white/50 font-sans animate-pulse">Loading messages…</span>

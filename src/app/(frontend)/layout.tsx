@@ -23,6 +23,8 @@ const littleNima = localFont({
   display: 'swap',
 })
 
+import { Providers } from './providers'
+
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
@@ -34,7 +36,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     >
       <link rel="icon" href="/favicon.ico" />
       <body className="font-sans">
-        <main>{children}</main>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   )
