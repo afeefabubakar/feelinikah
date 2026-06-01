@@ -6,7 +6,13 @@ export default function About() {
   return (
     <div className="flex flex-col gap-8 items-center text-white">
       {/* Clip-masked Image Container */}
-      <Image src="/image/lil-us.png" alt="" width={700} height={875} className="h-auto sm:w-3/4" />
+      <Image
+        src="/image/lil-us.png"
+        alt="Picture of little Alin and Afeef"
+        width={700}
+        height={875}
+        className="h-auto max-w-lg"
+      />
 
       <div className="flex-1 space-y-6 text-lg leading-relaxed text-white/85">
         <p className="italic text-white/60 border-l-2 border-white/20 pl-4 mb-4 text-xl"></p>

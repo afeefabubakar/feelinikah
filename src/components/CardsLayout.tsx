@@ -152,10 +152,20 @@ export function CardsLayout() {
 
   const selected = sections.find((s) => s.id === selectedId)
 
-  const getModalTarget = useCallback((): CardRect => {
+  const getModalTarget = useCallback((id: string | null): CardRect => {
     const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
     const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
-    const w = Math.min(vw * 0.92, 768)
+    
+    let maxWidth = 768
+    if (id === 'about') {
+      // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
+      maxWidth = 608
+    } else if (id === 'date') {
+      // Fits the calendar + padding
+      maxWidth = 512
+    }
+
+    const w = Math.min(vw * 0.92, maxWidth)
     const h = vh * 0.85
     return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
   }, [windowSize])
@@ -227,7 +237,7 @@ export function CardsLayout() {
                 scale: 0.85,
               }}
               animate={(() => {
-                const t = getModalTarget()
+                const t = getModalTarget(selected.id)
                 return {
                   top: t.top,
                   left: t.left,
@@ -272,7 +282,7 @@ export function CardsLayout() {
 
               {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
               <motion.div
-                className="p-8 sm:p-12 h-full flex flex-col justify-start z-10 relative scrollbar-none"
+                className={`p-8 sm:p-12 h-full flex flex-col justify-start z-10 relative scrollbar-none `}
                 style={{ transform: 'rotateY(180deg)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
