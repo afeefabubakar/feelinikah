@@ -1,5 +1,6 @@
 import * as migration_20260529_065832_init from './20260529_065832_init';
 import * as migration_20260601_112219_add_wishlist_description from './20260601_112219_add_wishlist_description';
+import * as migration_20260601_151840_alter_media_alt_optional from './20260601_151840_alter_media_alt_optional';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20260601_112219_add_wishlist_description.up,
     down: migration_20260601_112219_add_wishlist_description.down,
-    name: '20260601_112219_add_wishlist_description'
+    name: '20260601_112219_add_wishlist_description',
+  },
+  {
+    up: migration_20260601_151840_alter_media_alt_optional.up,
+    down: migration_20260601_151840_alter_media_alt_optional.down,
+    name: '20260601_151840_alter_media_alt_optional'
   },
 ];

@@ -5,6 +5,7 @@ import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'luci
 import { Button } from '@/components/Button'
 import Image from 'next/image'
 import { storage } from '@/lib/storage'
+import { motion, AnimatePresence } from 'framer-motion'
 
 type RegistryItem = {
   id: string
@@ -106,7 +107,6 @@ export default function Wishlist() {
         body: formData,
       })
 
-      console.log(await uploadRes.json())
       if (!uploadRes.ok) throw new Error('Failed to upload proof.')
       const uploadData = await uploadRes.json()
       const mediaId = uploadData.doc.id
@@ -301,33 +301,52 @@ export default function Wishlist() {
       </div>
 
       {/* Cutesy Gift Claimed Success Overlay Toast */}
-      {showToast && (
-        <div className="absolute inset-0 bg-[#6d544a]/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-          <div className="relative mb-6">
-            <div className="w-20 h-20 bg-emerald-950/80 border border-emerald-800/40 rounded-full flex items-center justify-center shadow-md animate-bounce">
-              <Gift className="w-10 h-10 text-emerald-400" />
-            </div>
-            <span className="absolute -top-1 -right-1 text-2xl animate-ping opacity-60">🎁</span>
-            <span className="absolute -bottom-2 -left-2 text-xl animate-pulse">🎉</span>
+      <AnimatePresence>
+        {showToast && (
+          <div className="fixed inset-0 z-70 flex items-center justify-center p-6">
+            {/* Backdrop */}
+            <motion.div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowToast(false)}
+            />
+
+            {/* Card */}
+            <motion.div
+              className="relative z-10 w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center text-center p-8 gap-4 bg-white"
+              initial={{ opacity: 0, y: 48, scale: 0.93 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 32, scale: 0.95 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 180 }}
+            >
+              <div className="relative mb-2">
+                <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center shadow-sm animate-bounce">
+                  <Gift className="w-8 h-8 text-emerald-600" />
+                </div>
+                <span className="absolute -top-1 -right-1 text-xl animate-ping opacity-60">🎁</span>
+                <span className="absolute -bottom-2 -left-2 text-lg animate-pulse">🎉</span>
+              </div>
+
+              <h3 className="text-black font-bold">Gift Registered!</h3>
+              <p className="text-black/80 max-w-[280px]">
+                We are incredibly grateful for your warm generosity. <strong>{claimedItemName}</strong> has been registered on our list and locked!
+              </p>
+
+              <Button
+                onClick={() => setShowToast(false)}
+                variant="outline-dark"
+                size="lg"
+                className="w-full flex items-center justify-center gap-2 mt-2"
+                fullWidth
+              >
+                Close
+              </Button>
+            </motion.div>
           </div>
-
-          <h2 className="font-sans text-emerald-400 font-bold mb-2">Gift Registered!</h2>
-          <p className="text-white/90 font-sans leading-relaxed max-w-[280px] mb-8">
-            We are incredibly grateful for your warm generosity. <strong>{claimedItemName}</strong>{' '}
-            has been registered on our list and locked!
-          </p>
-
-          <Button
-            onClick={() => setShowToast(false)}
-            variant="primary"
-            className="bg-emerald-600 hover:bg-emerald-700 flex items-center gap-2"
-            size="sm"
-          >
-            <Check className="w-4 h-4" />
-            Close
-          </Button>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   )
 }
