@@ -3,7 +3,7 @@ import './styles.css'
 import localFont from 'next/font/local'
 
 export const metadata = {
-  title: 'FEELINikah',
+  title: '#FEELIN',
   description: 'A wedding website for Alin and Afeef',
 }
 
@@ -32,6 +32,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       className={`${belmoneBallpoint.variable} ${littleNima.variable} ${betrisDaniel.variable}`}
       suppressHydrationWarning
     >
+      <link rel="icon" href="/favicon.ico" />
       <body className="font-sans">
         <main>{children}</main>
       </body>
