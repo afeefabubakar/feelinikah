@@ -74,7 +74,7 @@ function HandwritingText({ text, delay = 0 }: { text: string; delay?: number }) 
     <motion.h2
       initial={{ maskPosition: '100% 0%' }}
       animate={{ maskPosition: '0% 0%' }}
-      className="cursor-pointer text-5xl sm:text-7xl"
+      className="cursor-pointer menu-text"
       transition={{
         delay: delay,
         duration: 1, // Slightly faster sweep duration for a highly responsive calligraphic feel
@@ -174,9 +174,9 @@ export function CardsLayout() {
   )
 
   return (
-    <div className="flex items-center min-h-dvh justify-center font-sans overflow-x-hidden p-6 md:p-12">
+    <div className="flex items-center min-h-dvh justify-center font-sans overflow-hidden py-4 px-6 md:py-6 md:px-12">
       {/* Center Layout for Text Menu */}
-      <div className="flex flex-col items-center justify-center gap-4 sm:gap-8 w-full max-w-lg mx-auto2">
+      <div className="menu-container">
         {sections.map((section, index) => (
           <button
             key={section.id}
@@ -185,7 +185,7 @@ export function CardsLayout() {
             }}
             onClick={() => !selectedId && handleOpen(section.id)}
             disabled={selectedId !== null}
-            className="group relative flex items-center justify-center py-3 text-center border-b border-transparent focus:outline-none transition-all duration-300 w-full"
+            className="group relative menu-button text-center border-b border-transparent focus:outline-none transition-all duration-300"
             style={{
               opacity: selectedId === section.id ? 0 : 1,
               pointerEvents: selectedId ? 'none' : 'auto',
