@@ -46,40 +46,22 @@ export default function DateDay() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const icsContent = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//FEELINikah//Wedding//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    'DTSTART:20260926T080000',
-    'DTEND:20260926T230000',
-    'SUMMARY:Alin & Afeef — FEELINikah 💍',
-    'DESCRIPTION:Join us to celebrate our wedding day!',
-    'LOCATION:Carpe Diem Orchard Home\\, Serendah',
-    'STATUS:CONFIRMED',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n')
+  // webcal:// tells macOS & iOS to open the URL directly in Calendar.app
+  // We point it at our own API route so it's a stable hosted URL
+  const icsApiPath = '/api/calendar'
+  const webcalUrl =
+    typeof window !== 'undefined'
+      ? `webcal://${window.location.host}${icsApiPath}`
+      : `webcal://feelinikah.com${icsApiPath}`
 
   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Alin & Afeef — FEELINikah 💍')}&dates=20260926T080000%2F20260926T230000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
 
-  const downloadIcs = () => {
-    const isIos = /ipad|iphone|ipod/i.test(navigator.userAgent)
-
-    if (isIos) {
-      // iOS Safari blocks blob URL downloads — use data URI instead so it opens in Calendar
-      window.open(`data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}`, '_blank')
-    } else {
-      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'feelinikah-save-the-date.ics'
-      a.click()
-      URL.revokeObjectURL(url)
-    }
+  // Outlook / Windows: direct HTTPS download of the ICS file from the API route
+  const outlookDownload = () => {
+    const a = document.createElement('a')
+    a.href = icsApiPath
+    a.download = 'feelinikah-save-the-date.ics'
+    a.click()
     setDropdownOpen(false)
   }
 
@@ -230,15 +212,28 @@ export default function DateDay() {
             <span className="text-xl font-sans">Google Calendar</span>
           </Button>
 
-          {/* Apple / Outlook .ics */}
+          {/* Apple Calendar — webcal:// opens Calendar.app directly on macOS & iOS */}
           <Button
-            id="save-ics-btn"
+            id="save-apple-calendar-btn"
+            as="a"
             variant="ghost"
             size="lg"
-            onClick={downloadIcs}
+            href={webcalUrl}
+            onClick={() => setDropdownOpen(false)}
+            className="w-full justify-start gap-4 text-white hover:bg-white/10 hover:text-white rounded-none border-b border-white/10"
+          >
+            <span className="text-xl font-sans">Apple Calendar</span>
+          </Button>
+
+          {/* Outlook — downloads the .ics from the API route */}
+          <Button
+            id="save-outlook-btn"
+            variant="ghost"
+            size="lg"
+            onClick={outlookDownload}
             className="w-full justify-start gap-4 text-white hover:bg-white/10 hover:text-white rounded-none"
           >
-            <span className="text-xl font-sans">Apple / Outlook Calendar</span>
+            <span className="text-xl font-sans">Outlook</span>
           </Button>
         </div>
 
