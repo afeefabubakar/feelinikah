@@ -246,7 +246,7 @@ export default function Wishlist() {
                         onClick={() => handleLooking(item.id)}
                         variant={trackedGiftIds.includes(item.id) ? 'primary' : 'outline'}
                         size="sm"
-                        disabled={loadingLookingId !== null}
+                        disabled={loadingLookingId !== null || uploadingItemId !== null}
                         className="whitespace-nowrap flex items-center justify-center gap-1.5"
                       >
                         {loadingLookingId === item.id ? (
@@ -265,7 +265,7 @@ export default function Wishlist() {
                         as="label"
                         variant="primary"
                         size="sm"
-                        className="flex items-center gap-1.5 whitespace-nowrap"
+                        className={`flex items-center justify-center gap-1.5 whitespace-nowrap ${(uploadingItemId !== null || loadingLookingId !== null) ? 'opacity-50 pointer-events-none' : ''}`}
                       >
                         {uploadingItemId === item.id ? (
                           <>
@@ -281,7 +281,7 @@ export default function Wishlist() {
                         <input
                           type="file"
                           accept="image/*,application/pdf"
-                          disabled={uploadingItemId !== null}
+                          disabled={uploadingItemId !== null || loadingLookingId !== null}
                           onChange={(e) => {
                             const file = e.target.files?.[0]
                             if (file) handleFileUpload(item.id, file)
