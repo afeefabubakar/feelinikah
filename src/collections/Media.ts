@@ -4,6 +4,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
+    create: () => true, // Allow guests to upload proof of purchase receipts
   },
   fields: [
     {
