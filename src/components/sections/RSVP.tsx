@@ -28,7 +28,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
   const [rsvpId, setRsvpId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
+
   const [existingRsvp, setExistingRsvp] = useState<{ id: string; name: string | null } | null>(null)
 
   useEffect(() => {
@@ -101,11 +101,11 @@ export default function RSVP({ onComplete }: RSVPProps) {
   if (existingRsvp) {
     return (
       <div className="flex flex-col items-center justify-center p-6 text-center bg-white/5 border border-white/10 rounded-3xl gap-6 max-w-sm mx-auto my-4">
-        <span className="text-5xl animate-bounce">💍</span>
         <div>
           <h3 className="font-sans font-semibold text-white">You're all set!</h3>
           <p className="text-white/70 font-sans mt-3 leading-relaxed">
-            We have registered your RSVP for <strong>{existingRsvp.name}</strong>. Thank you so much!
+            We have registered your RSVP for <strong>{existingRsvp.name}</strong>. Thank you so
+            much!
           </p>
           <p className="text-white/50 text-xl font-sans mt-2 leading-relaxed">
             If you need to make changes or updates, please contact us directly.
