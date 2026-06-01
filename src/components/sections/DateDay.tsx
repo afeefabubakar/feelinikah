@@ -1,12 +1,15 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { Heart, Calendar } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Heart, CalendarPlus, ChevronUp } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 export default function DateDay() {
   const weddingDate = new Date('2026-09-26T08:00:00')
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   const [hasMounted, setHasMounted] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setHasMounted(true)
@@ -31,6 +34,54 @@ export default function DateDay() {
     const timer = setInterval(updateCountdown, 1000)
     return () => clearInterval(timer)
   }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//FEELINikah//Wedding//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'DTSTART:20260926T080000',
+    'DTEND:20260926T230000',
+    'SUMMARY:Alin & Afeef — FEELINikah 💍',
+    'DESCRIPTION:Join us to celebrate our wedding day!',
+    'LOCATION:Carpe Diem Orchard Home\\, Serendah',
+    'STATUS:CONFIRMED',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Alin & Afeef — FEELINikah 💍')}&dates=20260926T080000%2F20260926T230000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
+
+  const downloadIcs = () => {
+    const isIos = /ipad|iphone|ipod/i.test(navigator.userAgent)
+
+    if (isIos) {
+      // iOS Safari blocks blob URL downloads — use data URI instead so it opens in Calendar
+      window.open(`data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}`, '_blank')
+    } else {
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'feelinikah-save-the-date.ics'
+      a.click()
+      URL.revokeObjectURL(url)
+    }
+    setDropdownOpen(false)
+  }
 
   const daysOfWeek = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
@@ -72,6 +123,7 @@ export default function DateDay() {
   return (
     <div className="flex flex-col items-center text-white h-full select-none">
       <h2 className="my-4 sm:my-6 max-sm:text-4xl">26 September 2026</h2>
+
       {/* Countdown */}
       {hasMounted && (
         <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-4 mb-4 w-full max-w-sm">
@@ -104,7 +156,7 @@ export default function DateDay() {
 
       {/* Calendar Grid Container */}
       <div className="flex w-full justify-center">
-        <div className="max-w-sm bg-white p-4 sm:p-8 rounded-xl w-full">
+        <div className="bg-white p-4 sm:p-8 rounded-xl w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 sm:mb-6 pb-4">
             <h3 className="text-xl font-semibold text-[#260303] tracking-wide">September 2026</h3>
@@ -151,6 +203,60 @@ export default function DateDay() {
             })}
           </div>
         </div>
+      </div>
+
+      {/* Save the Date — dropdown button */}
+      <div ref={dropdownRef} className="relative w-full mt-6 mb-2">
+        {/* Dropdown options — rendered above the button */}
+        <div
+          className={`absolute bottom-full left-0 right-0 mb-2 rounded-2xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
+            dropdownOpen
+              ? 'opacity-100 scale-y-100 pointer-events-auto'
+              : 'opacity-0 scale-y-95 pointer-events-none'
+          }`}
+        >
+          {/* Google Calendar */}
+          <Button
+            id="save-google-calendar-btn"
+            as="a"
+            variant="ghost"
+            size="lg"
+            href={googleCalendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setDropdownOpen(false)}
+            className="w-full justify-start gap-4 text-white hover:bg-white/10 hover:text-white rounded-none border-b border-white/10"
+          >
+            <span className="text-xl font-sans">Google Calendar</span>
+          </Button>
+
+          {/* Apple / Outlook .ics */}
+          <Button
+            id="save-ics-btn"
+            variant="ghost"
+            size="lg"
+            onClick={downloadIcs}
+            className="w-full justify-start gap-4 text-white hover:bg-white/10 hover:text-white rounded-none"
+          >
+            <span className="text-xl font-sans">Apple / Outlook Calendar</span>
+          </Button>
+        </div>
+
+        {/* Main trigger button */}
+        <Button
+          id="save-the-date-btn"
+          variant="outline"
+          size="lg"
+          fullWidth
+          onClick={() => setDropdownOpen((o) => !o)}
+          className="gap-3 text-2xl"
+        >
+          <CalendarPlus className="w-6 h-6 shrink-0" />
+          <span className="-mb-2">Save the Date</span>
+          <ChevronUp
+            className={`w-5 h-5 ml-auto shrink-0 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
+          />
+        </Button>
       </div>
     </div>
   )

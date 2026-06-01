@@ -7,10 +7,13 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   variant?: 'primary' | 'outline' | 'outline-amber' | 'gold-gradient' | 'ghost' | 'counter'
   size?: 'sm' | 'md' | 'lg' | 'icon'
   fullWidth?: boolean
-  as?: 'button' | 'label'
+  as?: 'button' | 'label' | 'a'
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   htmlFor?: string
+  href?: string
+  target?: string
+  rel?: string
 }
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(
@@ -72,6 +75,14 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
       elementProps.disabled = disabled
     } else if (Component === 'label') {
       // Add custom disabled behavior for label styling if needed
+      if (disabled) {
+        elementProps.className = cn(
+          combinedClassName,
+          'opacity-50 cursor-not-allowed pointer-events-none',
+        )
+      }
+    } else if (Component === 'a') {
+      // Anchor elements don't use the `type` or `disabled` attributes
       if (disabled) {
         elementProps.className = cn(
           combinedClassName,
