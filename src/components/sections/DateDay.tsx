@@ -54,7 +54,7 @@ export default function DateDay() {
       ? `webcal://${window.location.host}${icsApiPath}`
       : `webcal://feelinikah.com${icsApiPath}`
 
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding")}&dates=20260926T080000%2F20260926T230000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding")}&dates=20260926T080000%2F20260926T120000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
 
   // Outlook / Windows: direct HTTPS download of the ICS file from the API route
   const outlookDownload = () => {
@@ -103,33 +103,33 @@ export default function DateDay() {
   ]
 
   return (
-    <div className="flex flex-col items-center text-white h-full select-none">
-      <h2 className="my-4 sm:my-6 max-sm:text-4xl">26 September 2026</h2>
+    <div className="flex flex-col items-center text-white h-full select-none overflow-hidden">
+      <h2 className="mb-3 mt-4 max-sm:text-[2.6rem] text-[3.5rem]">26 September 2026</h2>
 
       {/* Countdown */}
       {hasMounted && (
-        <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-4 mb-4 w-full max-w-sm">
+        <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-2 mb-3 w-full max-w-sm">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.days}</span>
-            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans -mt-1">
               Days
             </span>
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.hours}</span>
-            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans -mt-1">
               Hours
             </span>
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.minutes}</span>
-            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans -mt-1">
               Mins
             </span>
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.seconds}</span>
-            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans mt-1">
+            <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans -mt-1">
               Secs
             </span>
           </div>
@@ -138,14 +138,14 @@ export default function DateDay() {
 
       {/* Calendar Grid Container */}
       <div className="flex w-full justify-center">
-        <div className="bg-white p-4 sm:p-8 rounded-xl w-full">
+        <div className="bg-white px-4 py-6 rounded-xl max-w-sm w-full">
           {/* Header */}
-          <div className="flex items-center justify-center gap-2 sm:mb-6 pb-4">
+          <div className="flex items-center justify-center gap-2 mb-2 sm:mb-4">
             <h5 className="font-semibold text-[#260303] tracking-wide">September 2026</h5>
           </div>
 
           {/* Weekday Initials */}
-          <div className="grid grid-cols-7 gap-y-2 gap-x-1 text-center mb-4">
+          <div className="grid grid-cols-7 gap-y-2 gap-x-1 text-center mb-2 sm:mb-4">
             {daysOfWeek.map((day, idx) => (
               <span key={idx} className="text-[#6d544a] text-lg sm:text-xl uppercase">
                 {day}
@@ -154,7 +154,7 @@ export default function DateDay() {
           </div>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-y-3 text-center items-center">
+          <div className="grid grid-cols-7 gap-y-1 gap-x-1 text-center items-center">
             {calendarDays.map((day, idx) => {
               if (day === null) {
                 return <div key={`empty-${idx}`} />
@@ -165,15 +165,15 @@ export default function DateDay() {
               return (
                 <div
                   key={day}
-                  className="relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center mx-auto"
+                  className="relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center mx-auto"
                 >
                   {isWeddingDay ? (
                     <>
                       {/* Pulsing Love Shaped Heart behind the number 26 */}
-                      <div className="absolute inset-0 flex items-center justify-center animate-pulse duration-3000">
-                        <Heart className="w-9 h-9 sm:w-11 sm:h-11 stroke-rose-500 drop-shadow-[0_2px_6px_rgba(225,29,72,0.4)]" />
+                      <div className="absolute w-fit h-fit top-[45%] left-[49%] -translate-x-1/2 -translate-y-1/2 inset-0 flex items-center justify-center animate-pulse duration-3000">
+                        <Heart className="w-10 h-10 sm:w-11 sm:h-11 stroke-rose-500 drop-shadow-[0_2px_6px_rgba(225,29,72,0.4)]" />
                       </div>
-                      <span className="relative z-10 text-black font-bold text-xl">{day}</span>
+                      <span className="relative z-10 text-black font-bold text-3xl">{day}</span>
                     </>
                   ) : (
                     <span className="text-black hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
@@ -188,10 +188,10 @@ export default function DateDay() {
       </div>
 
       {/* Save the Date — dropdown button */}
-      <div ref={dropdownRef} className="relative w-full mt-6 mb-2">
+      <div ref={dropdownRef} className="relative w-full mt-3">
         {/* Dropdown options — rendered above the button */}
         <div
-          className={`absolute bottom-full left-0 right-0 mb-2 rounded-2xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
+          className={`absolute bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
             dropdownOpen
               ? 'opacity-100 scale-y-100 pointer-events-auto'
               : 'opacity-0 scale-y-95 pointer-events-none'
@@ -241,7 +241,6 @@ export default function DateDay() {
         <Button
           id="save-the-date-btn"
           variant="outline"
-          size="lg"
           fullWidth
           onClick={() => setDropdownOpen((o) => !o)}
           className="gap-3 text-2xl"
