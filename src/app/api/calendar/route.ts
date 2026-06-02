@@ -9,7 +9,7 @@ const icsContent = [
   'BEGIN:VEVENT',
   'DTSTART:20260926T080000',
   'DTEND:20260926T230000',
-  'SUMMARY:Wedding of Alin & Afeef 💍',
+  "SUMMARY:Alin and Afeef's Solemnization & Intimate Breakfast Wedding",
   'DESCRIPTION:Join us to celebrate our wedding day!',
   'LOCATION:Carpe Diem Orchard Home\\, Serendah',
   'STATUS:CONFIRMED',

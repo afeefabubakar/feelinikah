@@ -31,7 +31,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      'text-3xl max-sm:text-2xl inline-flex items-center justify-center tracking-wide transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
+      'text-3xl max-sm:text-2xl inline-flex items-center justify-center transition-all duration-200 cursor-pointer select-none active:scale-[0.98]'
 
     const variants = {
       primary:
@@ -49,9 +49,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     }
 
     const sizes = {
-      sm: 'px-4 py-2 rounded-lg',
-      md: 'px-5 py-2.5 rounded-xl',
-      lg: 'px-6 py-3.5 rounded-2xl',
+      sm: 'px-4 py-1 rounded-lg',
+      md: 'px-5 py-1.5 rounded-xl',
+      lg: 'px-6 py-2 rounded-2xl',
       icon: 'p-1.5 rounded-full',
     }
 

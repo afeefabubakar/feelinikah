@@ -54,7 +54,7 @@ export default function DateDay() {
       ? `webcal://${window.location.host}${icsApiPath}`
       : `webcal://feelinikah.com${icsApiPath}`
 
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Wedding of Alin & Afeef 💍')}&dates=20260926T080000%2F20260926T230000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding")}&dates=20260926T080000%2F20260926T230000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
 
   // Outlook / Windows: direct HTTPS download of the ICS file from the API route
   const outlookDownload = () => {

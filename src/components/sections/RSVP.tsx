@@ -172,7 +172,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 type="button"
                 onClick={() => setIsAttending(value)}
                 variant={isAttending === value ? 'primary' : 'outline'}
-                className={`py-3 rounded-2xl border transition-all normal-case ${
+                className={`rounded-2xl border transition-all normal-case ${
                   isAttending === value ? 'border-amber-600' : 'text-white/90 hover:text-white'
                 }`}
               >
@@ -226,9 +226,8 @@ export default function RSVP({ onComplete }: RSVPProps) {
           type="submit"
           disabled={submitting}
           variant="primary"
-          size="lg"
           fullWidth
-          className="py-3.5 flex items-center justify-center gap-2"
+          className="flex items-center justify-center gap-2"
         >
           {submitting ? (
             <>

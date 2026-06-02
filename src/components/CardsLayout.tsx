@@ -108,6 +108,10 @@ export function CardsLayout() {
   const [rsvpResult, setRsvpResult] = useState<{ name: string; isAttending: boolean } | null>(null)
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
 
+  const [measuredHeight, setMeasuredHeight] = useState<number | null>(null)
+  const titleRef = useRef<HTMLHeadingElement | null>(null)
+  const sectionContainerRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => {
     if (typeof window === 'undefined') return
     const handleResize = () => {
@@ -131,6 +135,56 @@ export function CardsLayout() {
       document.body.style.overflow = ''
     }
   }, [selectedId])
+
+  // Reset measured height when selectedId changes or on unmount
+  useEffect(() => {
+    if (!selectedId) {
+      setMeasuredHeight(null)
+    }
+  }, [selectedId])
+
+  const measureContent = useCallback(() => {
+    if (!selectedId) return
+
+    const titleEl = titleRef.current
+    const sectionEl = sectionContainerRef.current
+    if (!titleEl || !sectionEl) return
+
+    const isMobile = window.innerWidth < 640 // 'sm' breakpoint is 640px
+    const padding = isMobile ? 64 : 96 // pt-8 pb-8 = 64px, pt-12 pb-12 = 96px
+
+    // Add title offsetHeight + section scrollHeight + padding
+    const totalHeight = titleEl.offsetHeight + sectionEl.scrollHeight + padding
+
+    setMeasuredHeight((prev) => (prev === totalHeight ? prev : totalHeight))
+  }, [selectedId])
+
+  // Setup ResizeObserver to automatically measure when content changes (images load, accordion open, tab shifts, viewport resize, etc.)
+  useEffect(() => {
+    if (!selectedId) return
+
+    // Run initial measure
+    measureContent()
+
+    const observer = new ResizeObserver(() => {
+      measureContent()
+    })
+
+    const titleEl = titleRef.current
+    const sectionEl = sectionContainerRef.current
+
+    if (titleEl) observer.observe(titleEl)
+    if (sectionEl) observer.observe(sectionEl)
+
+    // Also observe the first child of the section container if it exists, to catch internal content resize
+    if (sectionEl && sectionEl.firstElementChild) {
+      observer.observe(sectionEl.firstElementChild)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [selectedId, measureContent])
 
   function handleOpen(id: string) {
     const el = linkRefs.current[id]
@@ -157,20 +211,21 @@ export function CardsLayout() {
       const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
       const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
 
-      let maxWidth = 768
+      let maxWidth = 608
       if (id === 'about') {
         // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
         maxWidth = 608
-      } else if (id === 'date') {
+      } else if (id === 'date' || id === 'dresscode') {
         // Fits the calendar + padding
         maxWidth = 512
       }
 
       const w = Math.min(vw * 0.92, maxWidth)
-      const h = vh * 0.85
+      const maxHeight = vh * 0.85
+      const h = measuredHeight !== null ? Math.min(measuredHeight, maxHeight) : maxHeight
       return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
     },
-    [windowSize],
+    [windowSize, measuredHeight],
   )
 
   return (
@@ -294,14 +349,16 @@ export function CardsLayout() {
               >
                 {/* Header Title */}
                 <h2
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pb-6 pr-7 sm:pr-11"
+                  ref={titleRef}
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-7 sm:pr-11"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
                 </h2>
 
                 {/* Dynamically Render Componentized Section Contents */}
-                <div 
+                <div
+                  ref={sectionContainerRef}
                   className="overflow-y-auto pr-7 sm:pr-11"
                   style={{ scrollbarGutter: 'stable' }}
                 >

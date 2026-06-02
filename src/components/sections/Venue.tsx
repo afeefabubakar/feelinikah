@@ -9,29 +9,23 @@ export default function Venue() {
   const mapsUrl = `https://maps.app.goo.gl/AH7XjQerzDpo7kTN7`
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-8 text-white pb-4">
+    <div className="flex flex-col gap-1 sm:gap-2 text-white">
       {/* Top Banner / Venue Summary */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row gap-2 sm:gap-6 justify-between items-start md:items-center">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 sm:p-4 shadow-sm flex flex-col justify-between items-start">
         <div>
-          <div className="font-sans flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 mb-2" />
-            <span className="text-2xl">The Location</span>
+          <div className="flex items-center gap-1.5">
+            <MapPin className="w-6 h-6 mb-2 sm:mb-1" />
+            <h2 className="text-4xl sm:text-5xl text-white font-semibold">Carpe Diem</h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl text-white sm:mt-2 font-semibold">
-            Carpe Diem
-            <br className="sm:hidden" /> Orchard Home
-          </h2>
-          <p className="text-white/70 sm:mt-1">Serendah</p>
+          <p className="text-3xl sm:text-4xl text-white font-semibold">Orchard Home Serendah</p>
         </div>
-
         <Button
           as="a"
           variant="primary"
-          size="lg"
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="self-stretch md:self-auto justify-center gap-2 text-xl"
+          className="self-stretch gap-2 text-xl whitespace-nowrap mt-2 "
         >
           <Navigation className="w-4 h-4 mb-1" />
           Navigate with Maps
@@ -40,13 +34,15 @@ export default function Venue() {
 
       <div>
         <Image
-          src="/image/venue.jpg"
-          alt="Carpe Diem Orchard Home venue map"
+          src="/image/carpe-diem-pavilion-v2.png"
+          alt="Carpe Diem Orchard Home pavilion"
           width={1280}
           height={914}
-          className="w-full h-auto rounded-lg sm:rounded-2xl object-contain"
+          className="w-full h-auto object-contain rounded-2xl sm:rounded-2xl border-2 border-white/10"
           priority
         />
+        <p className="mt-2 text-center">Solemnization - Pavillion Hall</p>
+        <p className="text-center">Breakfast Wedding - Garden</p>
       </div>
 
       {/* Details Grid */}
