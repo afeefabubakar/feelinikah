@@ -217,10 +217,12 @@ export default function Wishlist() {
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-start sm:items-center gap-1.5 font-sans font-semibold hover:underline underline-offset-2 transition-colors text-white hover:text-white/80"
+                        className="font-semibold hover:underline underline-offset-2 transition-colors text-white hover:text-white/80"
                       >
-                        <span>{item.title}</span>
-                        <ExternalLink className="w-4 h-4 shrink-0 opacity-60 max-sm:mt-1" />
+                        <span>
+                          {item.title}{' '}
+                          <ExternalLink className="inline w-4 h-4 shrink-0 opacity-60 mb-1" />
+                        </span>
                       </a>
                     ) : (
                       <span className="font-sans font-semibold text-white">{item.title}</span>
@@ -265,7 +267,7 @@ export default function Wishlist() {
                         as="label"
                         variant="primary"
                         size="sm"
-                        className={`flex items-center justify-center gap-1.5 whitespace-nowrap ${(uploadingItemId !== null || loadingLookingId !== null) ? 'opacity-50 pointer-events-none' : ''}`}
+                        className={`flex items-center justify-center gap-1.5 whitespace-nowrap ${uploadingItemId !== null || loadingLookingId !== null ? 'opacity-50 pointer-events-none' : ''}`}
                       >
                         {uploadingItemId === item.id ? (
                           <>
