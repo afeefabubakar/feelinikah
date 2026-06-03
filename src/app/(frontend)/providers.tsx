@@ -56,7 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.05
+      audioRef.current.volume = 0.03
     }
   }, [])
 
