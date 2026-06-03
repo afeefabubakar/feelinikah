@@ -243,18 +243,7 @@ export default function Wishlist() {
                     {item.isClaimed && !item.unclaimable ? (
                       <span className="font-sans text-white/50">Gift has been bought</span>
                     ) : (
-                      <div className="flex flex-col gap-1">
-                        <p className="font-sans flex items-center gap-1 text-2xl">
-                          {item.interested || 0}{' '}
-                          {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into
-                          this
-                        </p>
-                        {item.unclaimable && (
-                          <span className="text-xl text-amber-500 font-sans font-semibold">
-                            Multiple purchases allowed
-                          </span>
-                        )}
-                      </div>
+                      <></>
                     )}
                   </div>
                 </div>
@@ -263,25 +252,6 @@ export default function Wishlist() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                   {!item.isClaimed || item.unclaimable ? (
                     <>
-                      <Button
-                        onClick={() => handleLooking(item.id)}
-                        variant={trackedGiftIds.includes(item.id) ? 'primary' : 'outline'}
-                        size="sm"
-                        disabled={loadingLookingId !== null || uploadingItemId !== null}
-                        className="whitespace-nowrap flex items-center justify-center gap-1.5"
-                      >
-                        {loadingLookingId === item.id ? (
-                          <>
-                            <Loader2 className="w-3.5 h-3.5 animate-spin mr-1 mb-1" />
-                            Updating...
-                          </>
-                        ) : trackedGiftIds.includes(item.id) ? (
-                          'Interested ✓'
-                        ) : (
-                          "I'm interested!"
-                        )}
-                      </Button>
-
                       <Button
                         as="label"
                         variant="primary"
@@ -296,7 +266,7 @@ export default function Wishlist() {
                         ) : (
                           <>
                             <Upload className="w-4 h-4 mb-2" />
-                            Claim Gift
+                            Proof of Purchase
                           </>
                         )}
                         <input
