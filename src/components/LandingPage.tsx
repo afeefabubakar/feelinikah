@@ -4,10 +4,19 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CardsLayout } from '@/components/CardsLayout'
 import Image from 'next/image'
+import { useAudio } from '@/app/(frontend)/providers'
 
 export function LandingPage() {
   const [stage, setStage] = useState<'lil-us' | 'menu'>('lil-us')
   const [imageLoaded, setImageLoaded] = useState(false)
+  const { play } = useAudio()
+
+  const handleEnter = () => {
+    if (imageLoaded) {
+      play()
+      setStage('menu')
+    }
+  }
 
   return (
     <div className="relative">
@@ -15,7 +24,7 @@ export function LandingPage() {
         {stage === 'lil-us' && (
           <motion.div
             key="lil-us"
-            onClick={() => imageLoaded && setStage('menu')}
+            onClick={handleEnter}
             className="fixed inset-0 bg-[#260303] flex items-center justify-center z-40 cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
