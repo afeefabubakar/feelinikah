@@ -11,13 +11,13 @@ export default function Venue() {
   return (
     <div className="flex flex-col gap-1 sm:gap-2 text-white">
       {/* Top Banner / Venue Summary */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 sm:p-4 shadow-sm flex flex-col justify-between items-start">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col justify-between items-start">
         <div>
           <div className="flex items-center gap-1.5">
-            <MapPin className="w-6 h-6 mb-2 sm:mb-1" />
-            <h2 className="text-4xl sm:text-5xl text-white font-semibold">Carpe Diem</h2>
+            <MapPin className="w-6 h-6 mb-2 sm:mb-3" />
+            <h2 className="text-4xl sm:text-5xl text-white">Carpe Diem</h2>
           </div>
-          <p className="text-3xl sm:text-4xl text-white font-semibold">Orchard Home Serendah</p>
+          <p className="text-3xl sm:text-4xl text-white">Orchard Home Serendah</p>
         </div>
         <Button
           as="a"

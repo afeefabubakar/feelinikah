@@ -129,9 +129,9 @@ export default function RSVP({ onComplete }: RSVPProps) {
   return (
     <div className="relative text-white flex flex-col pb-4">
       {/* ── Form ── */}
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <h3 className="font-semibold mb-1 whitespace-nowrap">Join Our Celebration</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <h3 className="font-semibold mt-4 whitespace-nowrap">Join Our Celebration</h3>
           <p className="text-white">Please RSVP by 1st July 2026</p>
         </div>
 
@@ -142,7 +142,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
         )}
 
         {/* Full Name */}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1.25 mb-3">
           <label className="font-sans font-medium text-white/95" htmlFor="name">
             Your Name
           </label>
@@ -152,17 +152,17 @@ export default function RSVP({ onComplete }: RSVPProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-900 transition-all"
+            className="px-4 py-2 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-900 transition-all"
             required
           />
         </div>
 
         {/* Attendance */}
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col gap-1.25 ${isAttending === true ? 'mb-3' : 'mb-2'}`}>
           <label className="text-white/95" htmlFor="attending">
             Will you be attending?
           </label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2">
             {[
               { value: true, label: 'Yes, happily!' },
               { value: false, label: 'Regretfully, no...' },
@@ -172,8 +172,8 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 type="button"
                 onClick={() => setIsAttending(value)}
                 variant={isAttending === value ? 'primary' : 'outline'}
-                className={`rounded-2xl border transition-all normal-case ${
-                  isAttending === value ? 'border-amber-600' : 'text-white/90 hover:text-white'
+                className={`transition-all normal-case border ${
+                  isAttending === value ? '' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {label}
@@ -187,7 +187,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
           {isAttending === true && (
             <motion.div
               key="attendees"
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-1.25 mb-2"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}

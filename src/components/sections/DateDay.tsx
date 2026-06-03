@@ -141,7 +141,9 @@ export default function DateDay() {
         <div className="bg-white px-4 py-6 rounded-xl max-w-sm w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 mb-2 sm:mb-4">
-            <h5 className="font-semibold text-[#260303] tracking-wide">September 2026</h5>
+            <h5 className="font-semibold text-[#260303] tracking-wide text-[34px]">
+              September 2026
+            </h5>
           </div>
 
           {/* Weekday Initials */}
@@ -173,10 +175,10 @@ export default function DateDay() {
                       <div className="absolute w-fit h-fit top-[45%] left-[49%] -translate-x-1/2 -translate-y-1/2 inset-0 flex items-center justify-center animate-pulse duration-3000">
                         <Heart className="w-10 h-10 sm:w-11 sm:h-11 stroke-rose-500 drop-shadow-[0_2px_6px_rgba(225,29,72,0.4)]" />
                       </div>
-                      <span className="relative z-10 text-black font-bold text-3xl">{day}</span>
+                      <span className="relative z-10 text-black font-bold text-2xl">{day}</span>
                     </>
                   ) : (
-                    <span className="text-black hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
+                    <span className="text-black text-xl aspect-square sm:text-2xl hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
                       {day}
                     </span>
                   )}
@@ -243,7 +245,7 @@ export default function DateDay() {
           variant="outline"
           fullWidth
           onClick={() => setDropdownOpen((o) => !o)}
-          className="gap-3 text-2xl"
+          className="gap-3 text-2xl rounded-xl"
         >
           <CalendarPlus className="w-6 h-6 shrink-0" />
           <span className="-mb-2">Save the Date</span>

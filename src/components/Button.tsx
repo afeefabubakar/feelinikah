@@ -49,9 +49,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(
     }
 
     const sizes = {
-      sm: 'px-4 py-1 rounded-lg',
-      md: 'px-5 py-1.5 rounded-xl',
-      lg: 'px-6 py-2 rounded-2xl',
+      sm: 'px-4 py-1 rounded-md',
+      md: 'px-5 py-1.5 rounded-md',
+      lg: 'px-6 py-2 rounded-md',
       icon: 'p-1.5 rounded-full',
     }
 

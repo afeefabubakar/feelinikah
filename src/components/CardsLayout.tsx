@@ -110,7 +110,7 @@ export function CardsLayout() {
 
   const [measuredHeight, setMeasuredHeight] = useState<number | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
-  const sectionContainerRef = useRef<HTMLDivElement | null>(null)
+  const sectionContentRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -147,14 +147,14 @@ export function CardsLayout() {
     if (!selectedId) return
 
     const titleEl = titleRef.current
-    const sectionEl = sectionContainerRef.current
-    if (!titleEl || !sectionEl) return
+    const sectionContentEl = sectionContentRef.current
+    if (!titleEl || !sectionContentEl) return
 
     const isMobile = window.innerWidth < 640 // 'sm' breakpoint is 640px
     const padding = isMobile ? 64 : 96 // pt-8 pb-8 = 64px, pt-12 pb-12 = 96px
 
-    // Add title offsetHeight + section scrollHeight + padding
-    const totalHeight = titleEl.offsetHeight + sectionEl.scrollHeight + padding
+    // Add title offsetHeight + section content offsetHeight + padding
+    const totalHeight = titleEl.offsetHeight + sectionContentEl.offsetHeight + padding
 
     setMeasuredHeight((prev) => (prev === totalHeight ? prev : totalHeight))
   }, [selectedId])
@@ -171,15 +171,10 @@ export function CardsLayout() {
     })
 
     const titleEl = titleRef.current
-    const sectionEl = sectionContainerRef.current
+    const sectionContentEl = sectionContentRef.current
 
     if (titleEl) observer.observe(titleEl)
-    if (sectionEl) observer.observe(sectionEl)
-
-    // Also observe the first child of the section container if it exists, to catch internal content resize
-    if (sectionEl && sectionEl.firstElementChild) {
-      observer.observe(sectionEl.firstElementChild)
-    }
+    if (sectionContentEl) observer.observe(sectionContentEl)
 
     return () => {
       observer.disconnect()
@@ -217,7 +212,7 @@ export function CardsLayout() {
         maxWidth = 608
       } else if (id === 'date' || id === 'dresscode') {
         // Fits the calendar + padding
-        maxWidth = 512
+        maxWidth = 480
       }
 
       const w = Math.min(vw * 0.92, maxWidth)
@@ -358,17 +353,18 @@ export function CardsLayout() {
 
                 {/* Dynamically Render Componentized Section Contents */}
                 <div
-                  ref={sectionContainerRef}
                   className="overflow-y-auto pr-7 sm:pr-11"
                   style={{ scrollbarGutter: 'stable' }}
                 >
-                  {selectedId === 'about' && <About />}
-                  {selectedId === 'date' && <DateDay />}
-                  {selectedId === 'venue' && <Venue />}
-                  {selectedId === 'rsvp' && <RSVP onComplete={handleRsvpComplete} />}
-                  {selectedId === 'dresscode' && <Dresscode />}
-                  {selectedId === 'tentative' && <Tentative />}
-                  {selectedId === 'wishlist' && <Wishlist />}
+                  <div ref={sectionContentRef} className="h-auto w-full">
+                    {selectedId === 'about' && <About />}
+                    {selectedId === 'date' && <DateDay />}
+                    {selectedId === 'venue' && <Venue />}
+                    {selectedId === 'rsvp' && <RSVP onComplete={handleRsvpComplete} />}
+                    {selectedId === 'dresscode' && <Dresscode />}
+                    {selectedId === 'tentative' && <Tentative />}
+                    {selectedId === 'wishlist' && <Wishlist />}
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
