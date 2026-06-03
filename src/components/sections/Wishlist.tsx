@@ -320,8 +320,8 @@ export default function Wishlist() {
             >
               <h3 className="text-black font-bold">Gift Received!</h3>
               <p className="text-black/80 max-w-[280px]">
-                We are incredibly grateful for your warm generosity.{' '}
-                <strong>{claimedItemName}</strong> has been received on our list and locked!
+                <strong>{claimedItemName}</strong> has been received and locked! We are incredibly
+                grateful for your warm generosity.
               </p>
 
               <Button
