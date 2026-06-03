@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react'
-import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'lucide-react'
+import { Gift, Loader2, Upload, Check, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Image from 'next/image'
 import { storage } from '@/lib/storage'
@@ -28,6 +28,7 @@ type RegistryItem = {
     | null
   position?: number
   unclaimable?: boolean
+  hide?: boolean
 }
 
 export default function Wishlist() {
@@ -42,7 +43,9 @@ export default function Wishlist() {
   const { data, isLoading } = useQuery({
     queryKey: ['wishlist'],
     queryFn: async () => {
-      const res = await fetch('/api/wishlist?limit=50&sort=position,createdAt')
+      const res = await fetch(
+        '/api/wishlist?limit=50&sort=position,createdAt&where[hide][not_equals]=true',
+      )
       if (!res.ok) throw new Error('Failed to load wishlist')
       const result = await res.json()
       return result?.docs || []
@@ -75,40 +78,40 @@ export default function Wishlist() {
     })
   }, [items])
 
-  // ── handleLooking PATCH request (Toggles track/untrack locally & updates DB) ──
-  async function handleLooking(id: string) {
-    const item = items.find((i) => i.id === id)
-    if (!item || item.isClaimed) return
+  // // ── handleLooking PATCH request (Toggles track/untrack locally & updates DB) ──
+  // async function handleLooking(id: string) {
+  //   const item = items.find((i) => i.id === id)
+  //   if (!item || item.isClaimed) return
 
-    setLoadingLookingId(id)
+  //   setLoadingLookingId(id)
 
-    const isTracking = trackedGiftIds.includes(id)
-    const newCount = isTracking
-      ? Math.max(0, (item.interested || 0) - 1)
-      : (item.interested || 0) + 1
+  //   const isTracking = trackedGiftIds.includes(id)
+  //   const newCount = isTracking
+  //     ? Math.max(0, (item.interested || 0) - 1)
+  //     : (item.interested || 0) + 1
 
-    try {
-      const res = await fetch(`/api/wishlist/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ interested: newCount }),
-      })
-      if (res.ok) {
-        setItems((prev) => prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i)))
-        if (isTracking) {
-          storage.untrackGift(id)
-          setTrackedGiftIds((prev) => prev.filter((x) => x !== id))
-        } else {
-          storage.trackGift(id)
-          setTrackedGiftIds((prev) => [...prev, id])
-        }
-      }
-    } catch (err) {
-      console.error('Failed to update interest:', err)
-    } finally {
-      setLoadingLookingId(null)
-    }
-  }
+  //   try {
+  //     const res = await fetch(`/api/wishlist/${id}`, {
+  //       method: 'PATCH',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ interested: newCount }),
+  //     })
+  //     if (res.ok) {
+  //       setItems((prev) => prev.map((i) => (i.id === id ? { ...i, interested: newCount } : i)))
+  //       if (isTracking) {
+  //         storage.untrackGift(id)
+  //         setTrackedGiftIds((prev) => prev.filter((x) => x !== id))
+  //       } else {
+  //         storage.trackGift(id)
+  //         setTrackedGiftIds((prev) => [...prev, id])
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.error('Failed to update interest:', err)
+  //   } finally {
+  //     setLoadingLookingId(null)
+  //   }
+  // }
 
   // ── handleFileUpload PATCH request ────────────────────────────────────────
   async function handleFileUpload(id: string, file: File) {
@@ -191,7 +194,7 @@ export default function Wishlist() {
           IKEA, Muji, NITORI, Uniqlo, Parkson, or other similar stores.
         </p>
         {/* Wishlist Items List */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           {sortedItems.map((item) => {
             const imageUrl = getImageUrl(item.image)
             return (

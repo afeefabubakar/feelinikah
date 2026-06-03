@@ -188,6 +188,7 @@ export interface Wishlist {
    * Order position of this item (smaller numbers appear first).
    */
   position?: number | null;
+  hide?: boolean | null;
   title: string;
   /**
    * URL of the wishlist item.
@@ -347,6 +348,7 @@ export interface RsvpSelect<T extends boolean = true> {
  */
 export interface WishlistSelect<T extends boolean = true> {
   position?: T;
+  hide?: T;
   title?: T;
   link?: T;
   image?: T;

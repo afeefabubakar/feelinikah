@@ -25,6 +25,12 @@ export const Wishlist: CollectionConfig = {
       },
     },
     {
+      name: 'hide',
+      label: 'Hide from wishlist',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
