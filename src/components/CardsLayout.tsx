@@ -26,42 +26,42 @@ const sections = [
     id: 'date',
     number: '02',
     title: 'Date & Day',
-    color: '#4A3932', // Dark Brown
+    color: '#260303', // Burgundy
     text: '#fff',
   },
   {
     id: 'venue',
     number: '03',
     title: 'Venue',
-    color: '#4a3932', // Dark Brown
+    color: '#260303', // Burgundy
     text: '#fff',
   },
   {
     id: 'rsvp',
     number: '04',
     title: 'RSVP',
-    color: '#4a3932', // Dark Brown
+    color: '#260303', // Burgundy
     text: '#fff',
   },
   {
     id: 'dresscode',
     number: '05',
     title: 'Dresscode',
-    color: 'white', // Pastel Terracotta
+    color: 'white', // White
     text: '#4a3c36',
   },
   {
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#4a3932', // Dark Brown
+    color: '#260303', // Burgundy
     text: '#fff',
   },
   {
     id: 'wishlist',
     number: '07',
     title: 'Our Wishlist',
-    color: '#4a3932', // Dark Brown
+    color: '#260303', // Burgundy
     text: '#fff',
   },
 ]
@@ -345,7 +345,7 @@ export function CardsLayout() {
                 {/* Header Title */}
                 <h2
                   ref={titleRef}
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-7 sm:pr-11"
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-7 sm:pr-11 text-center"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
