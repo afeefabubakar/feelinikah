@@ -89,21 +89,25 @@ export default function Dresscode() {
   }
 
   return (
-    <div className="flex flex-col gap-6 text-[#260303] pb-4">
+    <div className="flex flex-col text-[#260303] pb-4">
       {variation !== 'friends' && (
-        <div className="flex gap-4 items-center justify-center">
-          <h3 className="text-center">{theme.colors?.title} </h3>
+        <div className="flex gap-4 items-center justify-center mt-4">
           {theme.colors?.hex && (
             <span
-              className="h-10 w-10 rounded-full aspect-square mb-3"
+              className="h-8 w-8 rounded-full aspect-square mb-3"
               style={{ backgroundColor: theme.colors?.hex }}
             ></span>
           )}
+          <h4 className="text-center">{theme.colors?.title} </h4>
         </div>
       )}
 
       {/* Premium Swipeable Tab Switcher */}
-      <div className="flex border-b border-[#260303]/10 relative shrink-0">
+      <div
+        className={`flex border-b border-[#260303]/10 relative shrink-0 ${
+          variation !== 'friends' ? 'mt-4' : 'mt-2'
+        }`}
+      >
         {(['Him', 'Her'] as const).map((tab) => {
           const isActive = activeTab === tab
           return (
@@ -155,7 +159,7 @@ export default function Dresscode() {
                         alt={`${theme.colors?.title} — ${label} option ${i + 1}`}
                         width={400}
                         height={600}
-                        className="w-full h-auto object-contain max-h-[52dvh]"
+                        className="h-[300px] sm:h-[400px] w-auto max-w-full object-contain mx-auto mt-4"
                         priority
                       />
                     ))}
