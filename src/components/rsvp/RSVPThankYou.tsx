@@ -1,7 +1,8 @@
 'use client'
 
+import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { CalendarPlus } from 'lucide-react'
+import { CalendarPlus, ChevronUp } from 'lucide-react'
 import { Button } from '@/components/Button'
 
 interface RSVPThankYouProps {
@@ -11,10 +12,36 @@ interface RSVPThankYouProps {
 }
 
 export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) {
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const icsApiPath = '/api/calendar'
   const webcalUrl =
     typeof window !== 'undefined'
-      ? `webcal://${window.location.host}/api/calendar`
-      : 'webcal://feelinikah.com/api/calendar'
+      ? `webcal://${window.location.host}${icsApiPath}`
+      : `webcal://feelinikah.com${icsApiPath}`
+
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding 💍")}&dates=20260926T080000%2F20260926T120000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
+
+  const outlookDownload = () => {
+    const a = document.createElement('a')
+    a.href = icsApiPath
+    a.download = 'feelinikah-save-the-date.ics'
+    a.click()
+    setDropdownOpen(false)
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <div className="fixed inset-0 z-70 flex items-center justify-center p-6">
       {/* Backdrop */}
@@ -45,17 +72,64 @@ export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) 
 
         <div className="w-full space-y-2">
           {isAttending && (
-            <Button
-              as="a"
-              href={webcalUrl}
-              variant="blue-gradient"
-              size="lg"
-              className="mt-2 flex items-center gap-2"
-              fullWidth
-            >
-              <CalendarPlus className="mb-2 w-4 h-4" />
-              Save the Date
-            </Button>
+            <div ref={dropdownRef} className="relative w-full">
+              {/* Dropdown Options */}
+              <div
+                className={`absolute z-10 bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-black/10 bg-white shadow-xl transition-all duration-200 origin-bottom ${
+                  dropdownOpen
+                    ? 'opacity-100 scale-y-100 pointer-events-auto'
+                    : 'opacity-0 scale-y-95 pointer-events-none'
+                }`}
+              >
+                {/* Google Calendar */}
+                <Button
+                  as="a"
+                  variant="ghost"
+                  size="lg"
+                  href={googleCalendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setDropdownOpen(false)}
+                  className="w-full justify-start gap-4 text-black hover:bg-black/5 rounded-none border-b border-black/5"
+                >
+                  <span className="text-lg font-sans">Google Calendar</span>
+                </Button>
+
+                {/* Apple Calendar */}
+                <Button
+                  as="a"
+                  variant="ghost"
+                  size="lg"
+                  href={webcalUrl}
+                  onClick={() => setDropdownOpen(false)}
+                  className="w-full justify-start gap-4 text-black hover:bg-black/5 rounded-none border-b border-black/5"
+                >
+                  <span className="text-lg font-sans">Apple Calendar</span>
+                </Button>
+
+                {/* Outlook */}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={outlookDownload}
+                  className="w-full justify-start gap-4 text-black hover:bg-black/5 rounded-none"
+                >
+                  <span className="text-lg font-sans">Outlook</span>
+                </Button>
+              </div>
+
+              {/* Main Save the Date Trigger Button */}
+              <Button
+                onClick={() => setDropdownOpen((o) => !o)}
+                variant="blue-gradient"
+                size="lg"
+                className="mt-2 flex items-center justify-center gap-2"
+                fullWidth
+              >
+                <CalendarPlus className="mb-2 w-4 h-4" />
+                <span>Save the Date</span>
+              </Button>
+            </div>
           )}
 
           <Button

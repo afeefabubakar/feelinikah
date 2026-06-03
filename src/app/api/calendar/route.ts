@@ -13,6 +13,11 @@ const icsContent = [
   'DESCRIPTION:Join us to celebrate our wedding day!',
   'LOCATION:Carpe Diem Orchard Home\\, Serendah',
   'STATUS:CONFIRMED',
+  'BEGIN:VALARM',
+  'TRIGGER:-P2D',
+  'ACTION:DISPLAY',
+  "DESCRIPTION:Alin and Afeef's Wedding is in 2 days! 💍",
+  'END:VALARM',
   'END:VEVENT',
   'END:VCALENDAR',
 ].join('\r\n')
