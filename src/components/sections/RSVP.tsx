@@ -241,7 +241,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
       </form>
 
       {/* ── Guest messages board ── */}
-      <MessageBoard />
+      {/* <MessageBoard /> */}
 
       {/* ── Confirm modal (both flows) ── */}
       {stage === 'confirm' && isAttending !== null && (
