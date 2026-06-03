@@ -51,7 +51,8 @@ export function RSVPConfirmModal({
               {isAttending ? `See you there, ${name}! 🎉` : `We'll miss you, ${name} 🥹`}
             </h5>
             <p className="text-black mt-2">
-              Would you like to leave a heartfelt message for the couple?
+              Would you like to leave a message for us? Your message will be kept private so feel
+              free to be as heartfelt as you like!
             </p>
           </motion.div>
 
