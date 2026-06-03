@@ -185,11 +185,11 @@ export default function Wishlist() {
     <div className="relative text-white flex flex-col justify-between pb-4">
       <div className="space-y-6">
         {/* Header — title removed, keeping the 'if you wish' text */}
-        <p className="font-sans">
+        <p className="text-[26px] sm:text-[28px] text-justify">
           If you wish to bless us with a wedding gift, here are some things we are currently looking
-          into.
+          into. We would also be incredibly grateful for gift cards or vouchers from brands like
+          IKEA, Muji, NITORI, Uniqlo, Parkson, or other similar stores.
         </p>
-
         {/* Wishlist Items List */}
         <div className="space-y-4">
           {sortedItems.map((item) => {
@@ -198,7 +198,9 @@ export default function Wishlist() {
               <div
                 key={item.id}
                 className={`border rounded-3xl p-5 flex flex-col gap-4 transition-all duration-300 bg-white/5 border-white/10 ${
-                  item.isClaimed && !item.unclaimable ? 'opacity-40 grayscale shadow-sm' : 'hover:border-amber-700/30'
+                  item.isClaimed && !item.unclaimable
+                    ? 'opacity-40 grayscale shadow-sm'
+                    : 'hover:border-amber-700/30'
                 }`}
               >
                 {/* Row 1: Image + Title + Status */}
@@ -244,10 +246,13 @@ export default function Wishlist() {
                       <div className="flex flex-col gap-1">
                         <p className="font-sans flex items-center gap-1 text-2xl">
                           {item.interested || 0}{' '}
-                          {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
+                          {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into
+                          this
                         </p>
                         {item.unclaimable && (
-                          <span className="text-xl text-amber-500 font-sans font-semibold">Multiple purchases allowed</span>
+                          <span className="text-xl text-amber-500 font-sans font-semibold">
+                            Multiple purchases allowed
+                          </span>
                         )}
                       </div>
                     )}
