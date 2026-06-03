@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Gift, Loader2, Upload, Lock, Check, ExternalLink, Sparkles } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Image from 'next/image'
@@ -11,7 +11,6 @@ import { useQuery } from '@tanstack/react-query'
 type RegistryItem = {
   id: string
   title: string
-  description?: string
   link?: string
   image?:
     | {
@@ -27,6 +26,8 @@ type RegistryItem = {
       }
     | string
     | null
+  position?: number
+  unclaimable?: boolean
 }
 
 export default function Wishlist() {
@@ -41,7 +42,7 @@ export default function Wishlist() {
   const { data, isLoading } = useQuery({
     queryKey: ['wishlist'],
     queryFn: async () => {
-      const res = await fetch('/api/wishlist?limit=50&sort=createdAt')
+      const res = await fetch('/api/wishlist?limit=50&sort=position,createdAt')
       if (!res.ok) throw new Error('Failed to load wishlist')
       const result = await res.json()
       return result?.docs || []
@@ -65,6 +66,14 @@ export default function Wishlist() {
     if (typeof imageField === 'object' && imageField.url) return imageField.url
     return null
   }
+
+  const sortedItems = useMemo(() => {
+    return [...items].sort((a, b) => {
+      const posA = a.position !== undefined && a.position !== null ? a.position : 999999
+      const posB = b.position !== undefined && b.position !== null ? b.position : 999999
+      return posA - posB
+    })
+  }, [items])
 
   // ── handleLooking PATCH request (Toggles track/untrack locally & updates DB) ──
   async function handleLooking(id: string) {
@@ -183,13 +192,13 @@ export default function Wishlist() {
 
         {/* Wishlist Items List */}
         <div className="space-y-4">
-          {items.map((item) => {
+          {sortedItems.map((item) => {
             const imageUrl = getImageUrl(item.image)
             return (
               <div
                 key={item.id}
                 className={`border rounded-3xl p-5 flex flex-col gap-4 transition-all duration-300 bg-white/5 border-white/10 ${
-                  item.isClaimed ? 'opacity-40 grayscale shadow-sm' : 'hover:border-amber-700/30'
+                  item.isClaimed && !item.unclaimable ? 'opacity-40 grayscale shadow-sm' : 'hover:border-amber-700/30'
                 }`}
               >
                 {/* Row 1: Image + Title + Status */}
@@ -229,20 +238,25 @@ export default function Wishlist() {
                     )}
 
                     {/* Bought / Viewing status */}
-                    {item.isClaimed ? (
+                    {item.isClaimed && !item.unclaimable ? (
                       <span className="font-sans text-white/50">Gift has been bought</span>
                     ) : (
-                      <p className="font-sans flex items-center gap-1 text-2xl">
-                        {item.interested || 0}{' '}
-                        {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
-                      </p>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-sans flex items-center gap-1 text-2xl">
+                          {item.interested || 0}{' '}
+                          {(item.interested || 0) === 1 ? 'guest is' : 'guests are'} looking into this
+                        </p>
+                        {item.unclaimable && (
+                          <span className="text-xl text-amber-500 font-sans font-semibold">Multiple purchases allowed</span>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
 
                 {/* Row 2: Buttons / Thank You */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
-                  {!item.isClaimed ? (
+                  {!item.isClaimed || item.unclaimable ? (
                     <>
                       <Button
                         onClick={() => handleLooking(item.id)}

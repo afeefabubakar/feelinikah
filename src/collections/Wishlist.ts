@@ -16,17 +16,18 @@ export const Wishlist: CollectionConfig = {
   },
   fields: [
     {
+      name: 'position',
+      label: 'Sort Position',
+      type: 'number',
+      defaultValue: 1,
+      admin: {
+        description: 'Order position of this item (smaller numbers appear first).',
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      type: 'textarea',
-      admin: {
-        description: 'A short note explaining why you are looking for this item.',
-      },
     },
     {
       name: 'link',
@@ -51,15 +52,35 @@ export const Wishlist: CollectionConfig = {
       },
     },
     {
+      name: 'unclaimable',
+      label: 'Unclaimable (Multiple purchases allowed)',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'If checked, multiple guests can claim/purchase this item and it will not be greyed out.',
+      },
+    },
+    {
       name: 'isClaimed',
       label: 'Has been Purchased',
       type: 'checkbox',
       defaultValue: false,
+      admin: {
+        condition: ({ unclaimable }) => {
+          return !unclaimable
+        },
+      },
     },
     {
       name: 'proofOfPurchase',
       type: 'upload',
       relationTo: 'media',
+      admin: {
+        condition: ({ unclaimable }) => {
+          return !unclaimable
+        },
+      },
     },
   ],
 }

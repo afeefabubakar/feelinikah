@@ -184,11 +184,11 @@ export interface Rsvp {
  */
 export interface Wishlist {
   id: number;
-  title: string;
   /**
-   * A short note explaining why you are looking for this item.
+   * Order position of this item (smaller numbers appear first).
    */
-  description?: string | null;
+  position?: number | null;
+  title: string;
   /**
    * URL of the wishlist item.
    */
@@ -198,6 +198,10 @@ export interface Wishlist {
    * How many guests have expressed interest in getting this item.
    */
   interested?: number | null;
+  /**
+   * If checked, multiple guests can claim/purchase this item and it will not be greyed out.
+   */
+  unclaimable?: boolean | null;
   isClaimed?: boolean | null;
   proofOfPurchase?: (number | null) | Media;
   updatedAt: string;
@@ -342,11 +346,12 @@ export interface RsvpSelect<T extends boolean = true> {
  * via the `definition` "wishlist_select".
  */
 export interface WishlistSelect<T extends boolean = true> {
+  position?: T;
   title?: T;
-  description?: T;
   link?: T;
   image?: T;
   interested?: T;
+  unclaimable?: T;
   isClaimed?: T;
   proofOfPurchase?: T;
   updatedAt?: T;
