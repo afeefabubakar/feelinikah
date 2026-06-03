@@ -63,11 +63,11 @@ export function RSVPThankYou({ name, isAttending, onClose }: RSVPThankYouProps) 
       >
         <div className="relative mb-2"></div>
 
-        <h3 className="text-black font-bold">Thank You, {name}</h3>
+        <h3 className="text-black font-bold">Thank you, {name}!</h3>
         <p className="text-black max-w-[280px]">
           {isAttending
-            ? 'We are absolutely thrilled that you will be celebrating with us! Your wishes mean the world to us.'
-            : 'We will truly miss you on our special day, but we are so grateful for your thoughts and love!'}
+            ? 'We are absolutely thrilled that you will be there! Your wishes mean the world to us✨'
+            : 'We will truly miss you on our special day, but we are so grateful for your thoughts and love✨'}
         </p>
 
         <div className="w-full space-y-2">
