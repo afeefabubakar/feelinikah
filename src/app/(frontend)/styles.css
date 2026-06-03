@@ -31,7 +31,18 @@
     scrollbar-color: rgba(255, 255, 255, 0.85) transparent;
     scrollbar-width: thin;
     scrollbar-gutter: stable;
+    /* -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
   }
+
+  /* Safari-specific scaling correction to visually match Chrome font size */
+  /* @supports (background: -webkit-named-image(i)) {
+    html {
+      font-size: 92%;
+    }
+  } */
 
   body {
     background-image: url('/image/background.png');
@@ -136,7 +147,11 @@
   }
 
   .menu-text {
-    font-size: clamp(2rem, 6.2vh, 4.5rem); /* Beautiful dynamic calligraphic font scale based on height */
+    font-size: clamp(
+      2rem,
+      6.2vh,
+      4.5rem
+    ); /* Beautiful dynamic calligraphic font scale based on width */
     line-height: 1.1;
     text-align: center;
   }

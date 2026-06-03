@@ -17,7 +17,7 @@ export default function Venue() {
             <MapPin className="w-6 h-6 mb-2 sm:mb-3" />
             <h2 className="text-4xl sm:text-5xl text-white">Carpe Diem</h2>
           </div>
-          <p className="text-3xl sm:text-4xl text-white">Orchard Home Serendah</p>
+          <p className="text-3xl sm:text-4xl text-white leading-[32px]">Orchard Home Serendah</p>
         </div>
         <Button
           as="a"

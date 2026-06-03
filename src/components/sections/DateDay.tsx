@@ -54,7 +54,7 @@ export default function DateDay() {
       ? `webcal://${window.location.host}${icsApiPath}`
       : `webcal://feelinikah.com${icsApiPath}`
 
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding")}&dates=20260926T080000%2F20260926T120000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Alin and Afeef's Solemnization & Intimate Breakfast Wedding 💍")}&dates=20260926T080000%2F20260926T120000&details=${encodeURIComponent('Join us to celebrate our wedding day!')}&location=${encodeURIComponent('Carpe Diem Orchard Home, Serendah')}`
 
   // Outlook / Windows: direct HTTPS download of the ICS file from the API route
   const outlookDownload = () => {
@@ -138,10 +138,10 @@ export default function DateDay() {
 
       {/* Calendar Grid Container */}
       <div className="flex w-full justify-center">
-        <div className="bg-white px-4 py-6 rounded-xl max-w-sm w-full">
+        <div className="bg-white px-4 py-5 rounded-xl max-w-sm w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 mb-2 sm:mb-4">
-            <h5 className="font-semibold text-[#260303] tracking-wide text-[34px]">
+            <h5 className="font-semibold text-[#260303] tracking-wide text-[34px] leading-tight">
               September 2026
             </h5>
           </div>
@@ -172,10 +172,10 @@ export default function DateDay() {
                   {isWeddingDay ? (
                     <>
                       {/* Pulsing Love Shaped Heart behind the number 26 */}
-                      <div className="absolute w-fit h-fit top-[45%] left-[49%] -translate-x-1/2 -translate-y-1/2 inset-0 flex items-center justify-center animate-pulse duration-3000">
+                      <div className="absolute z-1 w-fit h-fit top-[45%] left-[49%] -translate-x-1/2 -translate-y-1/2 inset-0 flex items-center justify-center animate-pulse duration-3000">
                         <Heart className="w-10 h-10 sm:w-11 sm:h-11 stroke-rose-500 drop-shadow-[0_2px_6px_rgba(225,29,72,0.4)]" />
                       </div>
-                      <span className="relative z-10 text-black font-bold text-2xl">{day}</span>
+                      <span className="relative z-1  text-black font-bold text-2xl">{day}</span>
                     </>
                   ) : (
                     <span className="text-black text-xl aspect-square sm:text-2xl hover:bg-amber-900/5 hover:rounded-full cursor-default w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200">
@@ -193,7 +193,7 @@ export default function DateDay() {
       <div ref={dropdownRef} className="relative w-full mt-3">
         {/* Dropdown options — rendered above the button */}
         <div
-          className={`absolute bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
+          className={`absolute z-10 bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
             dropdownOpen
               ? 'opacity-100 scale-y-100 pointer-events-auto'
               : 'opacity-0 scale-y-95 pointer-events-none'
