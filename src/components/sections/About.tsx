@@ -4,14 +4,14 @@ import Image from 'next/image'
 
 export default function About() {
   return (
-    <div className="flex flex-col gap-8 items-center text-white">
+    <div className="flex flex-col gap-8 items-center text-white text-justify">
       {/* Clip-masked Image Container */}
       <Image
         src="/image/lil-us.png"
         alt="Picture of little Alin and Afeef"
         width={700}
         height={875}
-        className="h-auto sm:max-w-lg"
+        className="h-auto sm:max-w-lg mt-6"
       />
 
       <div className="flex-1 space-y-6 text-lg leading-relaxed text-white/85">
@@ -25,10 +25,7 @@ export default function About() {
           <li>Alin is more outdoorsy and Afeef is more homebody.</li>
           <li>Alin is a deep thinker and Afeef is a what-makes-sense-for-me thinker.</li>
           <li>Alin loves her personal space and Afeef also loves Alin's personal space.</li>
-          <li>
-            Alin knows how to navigate underwater, and doesn’t need to use use Waze when driving
-            while Afeef is always so impressed by that.
-          </li>
+          <li>Alin knows how to navigate underwater and Afeef is always so impressed by that.</li>
           <li>
             Alin is more operational-business minded and Afeef is more software-developing minded.
           </li>
@@ -40,7 +37,7 @@ export default function About() {
         <p>
           Ultimate fact?
           <br />
-          Afeef is in love with Alin.
+          We are deeply in love with each other.
         </p>
         <p>See you at our solemnization!</p>
         <p>Love, FEELIN.</p>
