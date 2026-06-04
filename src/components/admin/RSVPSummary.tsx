@@ -250,17 +250,17 @@ export async function RSVPSummary() {
       >
         <StatCard label="Total Submissions" value={rsvps.length} />
         <StatCard
-          label="Total Adults (Guests)"
-          value={totalAttendingGuests}
-          color="var(--theme-primary-500)"
-        />
-        <StatCard label="Total Kids" value={totalChildren} />
-        <StatCard
           label="Accepted RSVPs"
           value={attendingRSVPs.length}
           color="var(--theme-success-500)"
         />
         <StatCard label="Declined RSVPs" value={declinedRSVPs} color="var(--theme-error-500)" />
+        <StatCard
+          label="Total Adults (Guests)"
+          value={totalAttendingGuests}
+          color="var(--theme-primary-500)"
+        />
+        <StatCard label="Total Kids" value={totalChildren} />
       </div>
 
       {/* ── Per-side breakdown ── */}
