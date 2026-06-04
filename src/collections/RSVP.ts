@@ -31,9 +31,21 @@ export const RSVP: CollectionConfig = {
     },
     {
       name: 'attendeesCount',
-      label: 'Number of Attendees',
+      label: 'Number of Attendees (adults)',
       type: 'number',
       defaultValue: 1,
+      admin: {
+        condition: ({ isAttending }) => {
+          return isAttending
+        },
+      },
+      required: true,
+    },
+    {
+      name: 'childrenCount',
+      label: 'Number of Children (below 18)',
+      type: 'number',
+      defaultValue: 0,
       admin: {
         condition: ({ isAttending }) => {
           return isAttending

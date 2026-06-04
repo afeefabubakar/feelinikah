@@ -174,6 +174,7 @@ export interface Rsvp {
   name: string;
   isAttending: boolean;
   attendeesCount?: number | null;
+  childrenCount?: number | null;
   message?: string | null;
   side?: ('groom' | 'bride' | 'friends') | null;
   updatedAt: string;
@@ -339,6 +340,7 @@ export interface RsvpSelect<T extends boolean = true> {
   name?: T;
   isAttending?: T;
   attendeesCount?: T;
+  childrenCount?: T;
   message?: T;
   side?: T;
   updatedAt?: T;
