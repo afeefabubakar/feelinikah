@@ -3,6 +3,7 @@ import * as migration_20260601_112219_add_wishlist_description from './20260601_
 import * as migration_20260601_151840_alter_media_alt_optional from './20260601_151840_alter_media_alt_optional';
 import * as migration_20260603_090600_update_wishlist from './20260603_090600_update_wishlist';
 import * as migration_20260603_130400_add_wishlist_hide from './20260603_130400_add_wishlist_hide';
+import * as migration_20260604_025826_add_side_to_rsvp from './20260604_025826_add_side_to_rsvp';
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20260603_130400_add_wishlist_hide.up,
     down: migration_20260603_130400_add_wishlist_hide.down,
     name: '20260603_130400_add_wishlist_hide'
+  },
+  {
+    up: migration_20260604_025826_add_side_to_rsvp.up,
+    down: migration_20260604_025826_add_side_to_rsvp.down,
+    name: '20260604_025826_add_side_to_rsvp'
   },
 ];
