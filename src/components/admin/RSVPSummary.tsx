@@ -55,6 +55,7 @@ function SideBreakdown({
   const attending = rsvps.filter((r) => r.isAttending)
   const adults = attending.reduce((sum, r) => sum + (r.attendeesCount || 1), 0)
   const children = attending.reduce((sum, r) => sum + (r.childrenCount || 0), 0)
+  const totalAttendees = adults + children
   const declined = rsvps.length - attending.length
 
   return (
@@ -80,7 +81,7 @@ function SideBreakdown({
         {label}
       </h4>
 
-      {/* ── Submissions / Accepted / Declined row ── */}
+      {/* ── Submissions / Total Attendees / Accepted / Declined row ── */}
       <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
         <div>
           <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
@@ -88,6 +89,21 @@ function SideBreakdown({
           </p>
           <p style={{ margin: '0.2rem 0 0', fontSize: '1.4rem', fontWeight: 'bold' }}>
             {rsvps.length}
+          </p>
+        </div>
+        <div>
+          <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
+            Total Attendees
+          </p>
+          <p
+            style={{
+              margin: '0.2rem 0 0',
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
+              color: 'var(--theme-primary-500)',
+            }}
+          >
+            {totalAttendees}
           </p>
         </div>
         <div>
@@ -143,7 +159,6 @@ function SideBreakdown({
             gap: '0.5rem',
           }}
         >
-          <span style={{ fontSize: '1.1rem' }}>🧑</span>
           <div>
             <p
               style={{
@@ -179,7 +194,6 @@ function SideBreakdown({
             gap: '0.5rem',
           }}
         >
-          <span style={{ fontSize: '1.1rem' }}>🧒</span>
           <div>
             <p
               style={{
@@ -189,14 +203,13 @@ function SideBreakdown({
                 lineHeight: 1,
               }}
             >
-              Children
+              Kids
             </p>
             <p
               style={{
                 margin: '0.15rem 0 0',
                 fontSize: '1.2rem',
                 fontWeight: 'bold',
-                color: '#f59e0b',
                 lineHeight: 1,
               }}
             >
@@ -241,11 +254,7 @@ export async function RSVPSummary() {
           value={totalAttendingGuests}
           color="var(--theme-primary-500)"
         />
-        <StatCard
-          label="Total Children"
-          value={totalChildren}
-          color="#f59e0b"
-        />
+        <StatCard label="Total Kids" value={totalChildren} />
         <StatCard
           label="Accepted RSVPs"
           value={attendingRSVPs.length}

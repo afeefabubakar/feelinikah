@@ -43,7 +43,7 @@ export const RSVP: CollectionConfig = {
     },
     {
       name: 'childrenCount',
-      label: 'Number of Children (below 18)',
+      label: 'Number of Kids (below 18)',
       type: 'number',
       defaultValue: 0,
       admin: {
