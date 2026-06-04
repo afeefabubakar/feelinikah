@@ -33,6 +33,12 @@ export default function RSVP({ onComplete }: RSVPProps) {
 
   useEffect(() => {
     setExistingRsvp(storage.getRSVP())
+
+    const handleCleared = () => {
+      setExistingRsvp(null)
+    }
+    window.addEventListener('rsvp-cleared', handleCleared)
+    return () => window.removeEventListener('rsvp-cleared', handleCleared)
   }, [])
 
   // ── Step 1: Submit RSVP ────────────────────────────────────────────────────
@@ -65,6 +71,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
       const newId = data.doc.id
       setRsvpId(newId)
       storage.setRSVP(newId, name)
+      window.dispatchEvent(new Event('rsvp-updated'))
       setStage('confirm')
     } catch (err: any) {
       setError(err.message || 'Something went wrong.')

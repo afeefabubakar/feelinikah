@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
+import { storage } from '@/lib/storage'
+import { useRSVPVerification } from '@/hooks/useRSVPVerification'
 
 let browserQueryClient: QueryClient | undefined = undefined
 
@@ -47,6 +49,30 @@ export const useAudio = () => {
   return context
 }
 
+function LayoutQueryManager() {
+  // 1. Run background RSVP verification
+  useRSVPVerification()
+
+  // 2. Pre-fetch wishlist immediately on load
+  useQuery({
+    queryKey: ['wishlist'],
+    queryFn: async () => {
+      const res = await fetch(
+        '/api/wishlist?limit=50&sort=position,createdAt&where[hide][not_equals]=true',
+      )
+      if (!res.ok) throw new Error('Failed to load wishlist')
+      const result = await res.json()
+      return result?.docs || []
+    },
+    refetchOnWindowFocus: true,
+    refetchInterval: 1000 * 60 * 1, // Refetch every 1 minute
+    staleTime: 0,
+    retry: 1,
+  })
+
+  return null
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   // Retrieve the stable, singleton-safe query client
   const queryClient = getQueryClient()
@@ -78,6 +104,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <LayoutQueryManager />
       <AudioContext.Provider value={{ play, pause, isPlaying }}>
         <audio ref={audioRef} src={'/audio/eternal-flame.mp3'} loop />
         {children}
