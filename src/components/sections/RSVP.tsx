@@ -18,11 +18,13 @@ interface RSVPProps {
 
 export default function RSVP({ onComplete }: RSVPProps) {
   const variation = useWeddingVariation()
-  const maxAttendees = variation === 'bride' || variation === 'groom' ? 10 : 2
+  const maxAdults = variation === 'friends' ? 2 : 8
+  const maxKids = variation === 'friends' ? 0 : 5
 
   const [name, setName] = useState('')
   const [isAttending, setIsAttending] = useState<boolean | null>(null)
   const [attendeesCount, setAttendeesCount] = useState(1)
+  const [childrenCount, setChildrenCount] = useState(0)
 
   const [stage, setStage] = useState<Stage>('form')
   const [rsvpId, setRsvpId] = useState<string | null>(null)
@@ -64,6 +66,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
           name,
           isAttending,
           attendeesCount: isAttending ? attendeesCount : 0,
+          childrenCount: isAttending ? childrenCount : 0,
           side: variation ?? 'friends',
         }),
       })
@@ -176,41 +179,77 @@ export default function RSVP({ onComplete }: RSVPProps) {
           </div>
         </div>
 
-        {/* Attendees count — only when attending */}
+        {/* Attendees count & children count — only when attending */}
         <AnimatePresence>
           {isAttending === true && (
             <motion.div
               key="attendees"
-              className="flex flex-col gap-1.25 mb-2"
+              className="flex flex-col gap-3 mb-2"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25 }}
             >
-              <label className="font-sans font-medium text-white/95" htmlFor="attendeesCount">
-                Number of attendees (including yourself)
-              </label>
-              <div className="flex items-center gap-3">
-                <Button
-                  type="button"
-                  onClick={() => setAttendeesCount((n) => Math.max(1, n - 1))}
-                  variant="counter"
-                  disabled={attendeesCount <= 1}
-                >
-                  −
-                </Button>
-                <span className="text-xl font-sans text-white w-6 text-center tabular-nums">
-                  {attendeesCount}
-                </span>
-                <Button
-                  type="button"
-                  onClick={() => setAttendeesCount((n) => Math.min(maxAttendees, n + 1))}
-                  variant="counter"
-                  disabled={attendeesCount >= maxAttendees}
-                >
-                  +
-                </Button>
+              {/* Adults */}
+              <div className="flex flex-col gap-1.25">
+                <label className="font-sans font-medium text-white/95" htmlFor="attendeesCount">
+                  Number of{' '}
+                  {variation === 'friends'
+                    ? 'attendees (including yourself)'
+                    : 'adults (per family)'}
+                </label>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    onClick={() => setAttendeesCount((n) => Math.max(1, n - 1))}
+                    variant="counter"
+                    disabled={attendeesCount <= 1}
+                  >
+                    −
+                  </Button>
+                  <span className="text-xl font-sans text-white w-6 text-center tabular-nums">
+                    {attendeesCount}
+                  </span>
+                  <Button
+                    type="button"
+                    onClick={() => setAttendeesCount((n) => Math.min(maxAdults, n + 1))}
+                    variant="counter"
+                    disabled={attendeesCount >= maxAdults}
+                  >
+                    +
+                  </Button>
+                </div>
               </div>
+
+              {/* Children */}
+              {variation !== 'friends' && (
+                <div className="flex flex-col gap-1.25">
+                  <label className="font-sans font-medium text-white/95" htmlFor="childrenCount">
+                    Number of kids (under 18)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      type="button"
+                      onClick={() => setChildrenCount((n) => Math.max(0, n - 1))}
+                      variant="counter"
+                      disabled={childrenCount <= 0}
+                    >
+                      −
+                    </Button>
+                    <span className="text-xl font-sans text-white w-6 text-center tabular-nums">
+                      {childrenCount}
+                    </span>
+                    <Button
+                      type="button"
+                      onClick={() => setChildrenCount((n) => n + 1)}
+                      variant="counter"
+                      disabled={childrenCount >= maxKids}
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

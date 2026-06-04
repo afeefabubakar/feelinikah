@@ -45,11 +45,12 @@ function SideBreakdown({
   color,
 }: {
   label: string
-  rsvps: { isAttending: boolean | null | undefined; attendeesCount?: number | null | undefined }[]
+  rsvps: { isAttending: boolean | null | undefined; attendeesCount?: number | null | undefined; childrenCount?: number | null | undefined }[]
   color: string
 }) {
   const attending = rsvps.filter((r) => r.isAttending)
   const guests = attending.reduce((sum, r) => sum + (r.attendeesCount || 1), 0)
+  const children = attending.reduce((sum, r) => sum + (r.childrenCount || 0), 0)
   const declined = rsvps.length - attending.length
 
   return (
@@ -85,7 +86,7 @@ function SideBreakdown({
         </div>
         <div>
           <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
-            Total Attendees (Guests)
+            Total Attendees (Adults)
           </p>
           <p
             style={{
@@ -96,6 +97,21 @@ function SideBreakdown({
             }}
           >
             {guests}
+          </p>
+        </div>
+        <div>
+          <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
+            Total Children
+          </p>
+          <p
+            style={{
+              margin: '0.2rem 0 0',
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
+              color: '#f59e0b',
+            }}
+          >
+            {children}
           </p>
         </div>
         <div>
@@ -143,6 +159,7 @@ export async function RSVPSummary() {
 
   const attendingRSVPs = rsvps.filter((r) => r.isAttending)
   const totalAttendingGuests = attendingRSVPs.reduce((sum, r) => sum + (r.attendeesCount || 1), 0)
+  const totalChildren = attendingRSVPs.reduce((sum, r) => sum + (r.childrenCount || 0), 0)
   const declinedRSVPs = rsvps.length - attendingRSVPs.length
 
   const bySide = (side: Side) => rsvps.filter((r) => (r.side as Side) === side)
@@ -160,9 +177,14 @@ export async function RSVPSummary() {
       >
         <StatCard label="Total Submissions" value={rsvps.length} />
         <StatCard
-          label="Total Attendees (Guests)"
+          label="Total Adults (Guests)"
           value={totalAttendingGuests}
           color="var(--theme-primary-500)"
+        />
+        <StatCard
+          label="Total Children"
+          value={totalChildren}
+          color="#f59e0b"
         />
         <StatCard
           label="Accepted RSVPs"
