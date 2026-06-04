@@ -9,6 +9,9 @@ export const RSVP: CollectionConfig = {
   admin: {
     group: 'Content',
     useAsTitle: 'name',
+    components: {
+      beforeListTable: ['@/components/admin/RSVPSummary#RSVPSummary'],
+    },
   },
   access: {
     create: () => true, // Allow public submissions
@@ -41,6 +44,16 @@ export const RSVP: CollectionConfig = {
     {
       name: 'message',
       type: 'textarea',
+    },
+    {
+      name: 'side',
+      type: 'select',
+      options: [
+        { label: 'Groom', value: 'groom' },
+        { label: 'Bride', value: 'bride' },
+        { label: 'Friends', value: 'friends' },
+      ],
+      required: false,
     },
   ],
 }
