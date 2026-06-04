@@ -45,11 +45,15 @@ function SideBreakdown({
   color,
 }: {
   label: string
-  rsvps: { isAttending: boolean | null | undefined; attendeesCount?: number | null | undefined; childrenCount?: number | null | undefined }[]
+  rsvps: {
+    isAttending: boolean | null | undefined
+    attendeesCount?: number | null | undefined
+    childrenCount?: number | null | undefined
+  }[]
   color: string
 }) {
   const attending = rsvps.filter((r) => r.isAttending)
-  const guests = attending.reduce((sum, r) => sum + (r.attendeesCount || 1), 0)
+  const adults = attending.reduce((sum, r) => sum + (r.attendeesCount || 1), 0)
   const children = attending.reduce((sum, r) => sum + (r.childrenCount || 0), 0)
   const declined = rsvps.length - attending.length
 
@@ -75,43 +79,15 @@ function SideBreakdown({
       >
         {label}
       </h4>
+
+      {/* ── Submissions / Accepted / Declined row ── */}
       <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
         <div>
           <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
-            Total Submissions
+            Submissions
           </p>
           <p style={{ margin: '0.2rem 0 0', fontSize: '1.4rem', fontWeight: 'bold' }}>
             {rsvps.length}
-          </p>
-        </div>
-        <div>
-          <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
-            Total Attendees (Adults)
-          </p>
-          <p
-            style={{
-              margin: '0.2rem 0 0',
-              fontSize: '1.4rem',
-              fontWeight: 'bold',
-              color: 'var(--theme-primary-500)',
-            }}
-          >
-            {guests}
-          </p>
-        </div>
-        <div>
-          <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--theme-text-muted)' }}>
-            Total Children
-          </p>
-          <p
-            style={{
-              margin: '0.2rem 0 0',
-              fontSize: '1.4rem',
-              fontWeight: 'bold',
-              color: '#f59e0b',
-            }}
-          >
-            {children}
           </p>
         </div>
         <div>
@@ -143,6 +119,90 @@ function SideBreakdown({
           >
             {declined}
           </p>
+        </div>
+      </div>
+
+      {/* ── Adults / Children breakdown ── */}
+      <div
+        style={{
+          marginTop: '1rem',
+          paddingTop: '0.75rem',
+          borderTop: '1px solid var(--theme-border-color)',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0.5rem',
+        }}
+      >
+        <div
+          style={{
+            padding: '0.6rem 0.85rem',
+            borderRadius: '6px',
+            backgroundColor: 'var(--theme-bg-elevation-200, rgba(0,0,0,0.08))',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <span style={{ fontSize: '1.1rem' }}>🧑</span>
+          <div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.7rem',
+                color: 'var(--theme-text-muted)',
+                lineHeight: 1,
+              }}
+            >
+              Adults
+            </p>
+            <p
+              style={{
+                margin: '0.15rem 0 0',
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                color: 'var(--theme-primary-500)',
+                lineHeight: 1,
+              }}
+            >
+              {adults}
+            </p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: '0.6rem 0.85rem',
+            borderRadius: '6px',
+            backgroundColor: 'var(--theme-bg-elevation-200, rgba(0,0,0,0.08))',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <span style={{ fontSize: '1.1rem' }}>🧒</span>
+          <div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.7rem',
+                color: 'var(--theme-text-muted)',
+                lineHeight: 1,
+              }}
+            >
+              Children
+            </p>
+            <p
+              style={{
+                margin: '0.15rem 0 0',
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                color: '#f59e0b',
+                lineHeight: 1,
+              }}
+            >
+              {children}
+            </p>
+          </div>
         </div>
       </div>
     </div>
