@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { RSVPConfirmModal } from '@/components/rsvp/RSVPConfirmModal'
@@ -8,7 +8,6 @@ import { LetterModal } from '@/components/rsvp/LetterModal'
 import { MessageBoard } from '@/components/rsvp/MessageBoard'
 import { Button } from '@/components/Button'
 import { useWeddingVariation } from '@/hooks/useWeddingVariation'
-import { storage } from '@/lib/storage'
 
 type Stage = 'form' | 'confirm' | 'letter'
 
@@ -30,18 +29,6 @@ export default function RSVP({ onComplete }: RSVPProps) {
   const [rsvpId, setRsvpId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  const [existingRsvp, setExistingRsvp] = useState<{ id: string; name: string | null } | null>(null)
-
-  useEffect(() => {
-    setExistingRsvp(storage.getRSVP())
-
-    const handleCleared = () => {
-      setExistingRsvp(null)
-    }
-    window.addEventListener('rsvp-cleared', handleCleared)
-    return () => window.removeEventListener('rsvp-cleared', handleCleared)
-  }, [])
 
   // ── Step 1: Submit RSVP ────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
@@ -74,7 +61,6 @@ export default function RSVP({ onComplete }: RSVPProps) {
       const data = await res.json()
       const newId = data.doc.id
       setRsvpId(newId)
-      storage.setRSVP(newId, name)
       window.dispatchEvent(new Event('rsvp-updated'))
       setStage('confirm')
     } catch (err: any) {
@@ -97,7 +83,10 @@ export default function RSVP({ onComplete }: RSVPProps) {
         })
         if (!res.ok) throw new Error('Failed to send message.')
       }
-      onComplete(name, isAttending ?? false)
+      const completedName = name
+      const completedAttending = isAttending ?? false
+      resetForm()
+      onComplete(completedName, completedAttending)
     } catch (err: any) {
       setError(err.message || 'Something went wrong.')
     } finally {
@@ -106,21 +95,18 @@ export default function RSVP({ onComplete }: RSVPProps) {
   }
 
   function handleSkip() {
+    resetForm()
     onComplete(name, isAttending ?? false)
   }
 
-  if (existingRsvp) {
-    return (
-      <div className="flex flex-col items-center justify-center p-6 text-center bg-white/5 border border-white/10 rounded-3xl gap-6 mx-auto">
-        <div>
-          <h3 className="font-sans font-semibold text-white">You're all set!</h3>
-          <p className="text-white font-sans mt-3">
-            We have registered your RSVP, <strong>{existingRsvp.name?.trim()}</strong>. <br />
-            See you soon!
-          </p>
-        </div>
-      </div>
-    )
+  function resetForm() {
+    setName('')
+    setIsAttending(null)
+    setAttendeesCount(1)
+    setChildrenCount(0)
+    setStage('form')
+    setRsvpId(null)
+    setError(null)
   }
 
   return (
