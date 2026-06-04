@@ -64,6 +64,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
           name,
           isAttending,
           attendeesCount: isAttending ? attendeesCount : 0,
+          side: variation ?? 'friends',
         }),
       })
       if (!res.ok) throw new Error('Failed to submit RSVP.')
