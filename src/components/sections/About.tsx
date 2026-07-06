@@ -7,11 +7,11 @@ export default function About() {
     <div className="flex flex-col gap-8 items-center text-white text-justify">
       {/* Clip-masked Image Container */}
       <Image
-        src="/image/lil-us.png"
-        alt="Picture of little Alin and Afeef"
+        src="/image/us.jpeg"
+        alt="Picture of Alin and Afeef"
         width={700}
         height={875}
-        className="h-auto sm:max-w-lg mt-6"
+        className="h-auto sm:max-w-md mt-6 rounded-2xl"
       />
 
       <div className="flex-1 space-y-6 text-lg leading-relaxed text-white/85">
