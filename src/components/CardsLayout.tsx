@@ -54,7 +54,7 @@ const sections = [
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#260303', // Burgundy
+    color: '#000', // Burgundy
     text: '#fff',
   },
   {
