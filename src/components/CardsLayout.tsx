@@ -153,10 +153,13 @@ export function CardsLayout() {
     const isMobile = window.innerWidth < 640 // 'sm' breakpoint is 640px
     const padding = isMobile ? 64 : 96 // pt-8 pb-8 = 64px, pt-12 pb-12 = 96px
 
-    // Add title offsetHeight + section content offsetHeight + padding + 2px buffer for subpixel accuracy
-    const totalHeight = Math.ceil(
-      titleEl.offsetHeight + sectionContentEl.offsetHeight + padding + 2,
-    )
+    const titleStyle = window.getComputedStyle(titleEl)
+    const titleMarginTop = parseFloat(titleStyle.marginTop) || 0
+    const titleMarginBottom = parseFloat(titleStyle.marginBottom) || 0
+    const titleTotalHeight = titleEl.offsetHeight + titleMarginTop + titleMarginBottom
+
+    // Add title height + section content offsetHeight + padding + 16px buffer
+    const totalHeight = Math.ceil(titleTotalHeight + sectionContentEl.offsetHeight + padding + 16)
 
     setMeasuredHeight((prev) => (prev === totalHeight ? prev : totalHeight))
   }, [selectedId])
@@ -212,12 +215,16 @@ export function CardsLayout() {
       const CARD_MAX_WIDTH = 480
 
       const w = Math.min(vw * 0.92, CARD_MAX_WIDTH)
-      const maxHeight = vh * 0.88
+      const maxHeight = vh * 0.9
       const h = measuredHeight !== null ? Math.min(measuredHeight, maxHeight) : maxHeight
       return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
     },
     [windowSize, measuredHeight],
   )
+
+  const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
+  const maxHeight = vh * 0.9
+  const isClamped = measuredHeight !== null && measuredHeight > maxHeight
 
   return (
     <div className="flex items-center min-h-dvh justify-center font-sans overflow-hidden py-4 px-6 md:py-6 md:px-12">
@@ -341,7 +348,7 @@ export function CardsLayout() {
                 {/* Header Title */}
                 <h2
                   ref={titleRef}
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-4 sm:pr-6 text-center"
+                  className="m-0 mb-3 text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-4 sm:pr-6 text-center shrink-0"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
@@ -349,7 +356,7 @@ export function CardsLayout() {
 
                 {/* Dynamically Render Componentized Section Contents */}
                 <div
-                  className="overflow-y-auto pr-4 sm:pr-6"
+                  className={`flex-1 pr-4 sm:pr-6 ${isClamped ? 'overflow-y-auto' : 'overflow-hidden'}`}
                   style={{ scrollbarGutter: 'stable' }}
                 >
                   <div ref={sectionContentRef} className="h-auto w-full">

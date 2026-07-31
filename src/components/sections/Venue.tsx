@@ -9,15 +9,15 @@ export default function Venue() {
   const mapsUrl = `https://maps.app.goo.gl/AH7XjQerzDpo7kTN7`
 
   return (
-    <div className="flex flex-col gap-1 sm:gap-2 text-white">
+    <div className="flex flex-col gap-3 items-center text-white w-full">
       {/* Top Banner / Venue Summary */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col justify-between items-start">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col justify-between items-start text-left w-full">
         <div>
-          <div className="flex items-center gap-1.5">
-            <MapPin className="w-6 h-6 mb-2 sm:mb-3" />
-            <h2 className="text-4xl sm:text-5xl text-white">Carpe Diem</h2>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-6 h-6 shrink-0 text-white mb-1.5" />
+            <h2 className="text-4xl sm:text-5xl text-white font-semibold tracking-wide leading-none">Carpe Diem</h2>
           </div>
-          <p className="text-3xl sm:text-4xl text-white leading-[32px]">Orchard Home Serendah</p>
+          <p className="text-3xl sm:text-4xl text-white/90 font-semibold leading-none mt-0">Orchard Home Serendah</p>
         </div>
         <Button
           as="a"
@@ -25,24 +25,31 @@ export default function Venue() {
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="self-stretch gap-2 text-xl whitespace-nowrap mt-2 "
+          className="self-stretch gap-2 text-base sm:text-lg whitespace-nowrap mt-2.5 py-1.5"
         >
-          <Navigation className="w-4 h-4 mb-1" />
+          <Navigation className="w-4 h-4 mb-0.5" />
           Navigate with Maps
         </Button>
       </div>
 
-      <div>
+      <div className="flex flex-col items-center w-full">
         <Image
           src="/image/carpe-diem-pavilion-v2.png"
           alt="Carpe Diem Orchard Home pavilion"
           width={1280}
           height={914}
-          className="w-full h-auto object-contain rounded-2xl sm:rounded-2xl border-2 border-white/10"
+          className="w-full h-auto object-contain rounded-2xl border-2 border-white/10"
+          onLoad={() => {
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('resize'))
+            }
+          }}
           priority
         />
-        <p className="mt-2 text-center">Solemnization - Pavillion Hall</p>
-        <p className="text-center">Breakfast Wedding - Garden</p>
+        <div className="mt-2 text-center text-sm sm:text-base text-white/90 space-y-0.5">
+          <p>Solemnization - Pavillion Hall</p>
+          <p>Breakfast Wedding - Garden</p>
+        </div>
       </div>
 
       {/* Details Grid */}

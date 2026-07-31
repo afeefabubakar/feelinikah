@@ -11,7 +11,7 @@ export default function About() {
         alt="Picture of Alin and Afeef"
         width={700}
         height={875}
-        className="w-[90%] h-auto mt-4 sm:mt-6 rounded-2xl"
+        className="w-[85%] h-auto mt-4 sm:mt-6 rounded-2xl"
       />
 
       {/* About Us Text Image */}

@@ -108,7 +108,7 @@ export default function DateDay() {
 
       {/* Countdown */}
       {hasMounted && (
-        <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-2 mb-3 w-full max-w-sm">
+        <div className="grid grid-cols-4 gap-4 text-center border-b border-white pb-2 mb-3 w-full">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-white tabular-nums">{timeLeft.days}</span>
             <span className="text-lg tracking-widest text-white/70 font-semibold uppercase font-sans -mt-1">
@@ -138,7 +138,7 @@ export default function DateDay() {
 
       {/* Calendar Grid Container */}
       <div className="flex w-full justify-center">
-        <div className="bg-white px-4 py-5 rounded-xl max-w-sm w-full">
+        <div className="bg-white px-4 py-5 rounded-xl w-full">
           {/* Header */}
           <div className="flex items-center justify-center gap-2 mb-2 sm:mb-4">
             <h5 className="font-semibold text-[#260303] tracking-wide text-[34px] leading-tight">
@@ -190,7 +190,7 @@ export default function DateDay() {
       </div>
 
       {/* Save the Date — dropdown button */}
-      <div ref={dropdownRef} className="relative w-full max-w-sm mt-3">
+      <div ref={dropdownRef} className="relative w-full mt-3">
         {/* Dropdown options — rendered above the button */}
         <div
           className={`absolute z-10 bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${
