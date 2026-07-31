@@ -82,7 +82,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.06
+      audioRef.current.volume = 1
     }
   }, [])
 
@@ -106,7 +106,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <LayoutQueryManager />
       <AudioContext.Provider value={{ play, pause, isPlaying }}>
-        <audio ref={audioRef} src={'/audio/eternal-flame.mp3'} loop />
+        <audio ref={audioRef} src={'/audio/pengingat.mp3'} loop />
         {children}
       </AudioContext.Provider>
     </QueryClientProvider>

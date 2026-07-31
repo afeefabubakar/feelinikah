@@ -22,13 +22,13 @@ export function LandingPage() {
           <motion.div
             key="lil-us"
             onClick={handleEnter}
-            className="fixed inset-0 bg-[#21140f] flex items-center justify-center z-40 cursor-pointer"
+            className="fixed inset-0 bg-black flex items-center justify-center z-40 cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
-            <div className="relative w-[95%] h-[95%] sm:w-[80%] sm:h-[80%]">
+            <div className="relative w-[95%] h-[95%] sm:w-[80%] sm:h-[95%]">
               <Image
                 src="/image/welcome.png"
                 alt="Welcome"
@@ -55,5 +55,3 @@ export function LandingPage() {
     </div>
   )
 }
-
-
