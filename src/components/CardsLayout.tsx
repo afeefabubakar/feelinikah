@@ -206,6 +206,23 @@ export function CardsLayout() {
       const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
       const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
 
+      if (id === 'tentative') {
+        const isMobile = vw < 640
+        const padding = isMobile ? 64 : 96
+        const py = isMobile ? 140 : 210
+        const r = 2067 / 2338 // actual aspect ratio of tentative-v4.png (2067x2338)
+
+        const maxImgW = Math.min(vw * 0.92, 608) - padding
+        const maxImgH = vh * 0.85 - py
+
+        const imgW = Math.max(0, Math.min(maxImgW, maxImgH * r))
+        const imgH = imgW / r
+
+        const w = imgW + padding
+        const h = imgH + py
+        return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
+      }
+
       let maxWidth = 608
       if (id === 'about') {
         // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
@@ -353,7 +370,7 @@ export function CardsLayout() {
 
                 {/* Dynamically Render Componentized Section Contents */}
                 <div
-                  className="overflow-y-auto pr-7 sm:pr-11"
+                  className={`${selectedId === 'tentative' ? 'overflow-hidden' : 'overflow-y-auto'} pr-7 sm:pr-11`}
                   style={{ scrollbarGutter: 'stable' }}
                 >
                   <div ref={sectionContentRef} className="h-auto w-full">
