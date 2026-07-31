@@ -190,7 +190,7 @@ export default function DateDay() {
       </div>
 
       {/* Save the Date — dropdown button */}
-      <div ref={dropdownRef} className="relative w-full mt-3">
+      <div ref={dropdownRef} className="relative w-full max-w-sm mt-3">
         {/* Dropdown options — rendered above the button */}
         <div
           className={`absolute z-10 bottom-full left-0 right-0 mb-2 rounded-xl overflow-hidden border border-white/20 bg-black/80 backdrop-blur-md shadow-xl transition-all duration-200 origin-bottom ${

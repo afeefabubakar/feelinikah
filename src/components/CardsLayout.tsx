@@ -153,8 +153,10 @@ export function CardsLayout() {
     const isMobile = window.innerWidth < 640 // 'sm' breakpoint is 640px
     const padding = isMobile ? 64 : 96 // pt-8 pb-8 = 64px, pt-12 pb-12 = 96px
 
-    // Add title offsetHeight + section content offsetHeight + padding
-    const totalHeight = titleEl.offsetHeight + sectionContentEl.offsetHeight + padding
+    // Add title offsetHeight + section content offsetHeight + padding + 2px buffer for subpixel accuracy
+    const totalHeight = Math.ceil(
+      titleEl.offsetHeight + sectionContentEl.offsetHeight + padding + 2,
+    )
 
     setMeasuredHeight((prev) => (prev === totalHeight ? prev : totalHeight))
   }, [selectedId])
@@ -206,34 +208,11 @@ export function CardsLayout() {
       const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
       const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
 
-      if (id === 'tentative') {
-        const isMobile = vw < 640
-        const padding = isMobile ? 64 : 96
-        const py = isMobile ? 140 : 210
-        const r = 2067 / 2338 // actual aspect ratio of tentative-v4.png (2067x2338)
+      // Standardized card max-width across all sections
+      const CARD_MAX_WIDTH = 480
 
-        const maxImgW = Math.min(vw * 0.92, 608) - padding
-        const maxImgH = vh * 0.85 - py
-
-        const imgW = Math.max(0, Math.min(maxImgW, maxImgH * r))
-        const imgH = imgW / r
-
-        const w = imgW + padding
-        const h = imgH + py
-        return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
-      }
-
-      let maxWidth = 608
-      if (id === 'about') {
-        // Fits the image max-w-lg (512px) + card padding (sm:p-12 => 96px)
-        maxWidth = 608
-      } else if (id === 'date' || id === 'dresscode') {
-        // Fits the calendar + padding
-        maxWidth = 480
-      }
-
-      const w = Math.min(vw * 0.92, maxWidth)
-      const maxHeight = vh * 0.85
+      const w = Math.min(vw * 0.92, CARD_MAX_WIDTH)
+      const maxHeight = vh * 0.88
       const h = measuredHeight !== null ? Math.min(measuredHeight, maxHeight) : maxHeight
       return { top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h }
     },
@@ -352,7 +331,7 @@ export function CardsLayout() {
 
               {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
               <motion.div
-                className="pt-8 pb-8 pl-8 pr-1 sm:pt-12 sm:pb-12 sm:pl-12 sm:pr-1 h-full flex flex-col justify-start z-10 relative scrollbar-none"
+                className="pt-8 pb-8 pl-5 pr-1 sm:pt-12 sm:pb-12 sm:pl-7 sm:pr-1 h-full flex flex-col justify-start z-10 relative scrollbar-none"
                 style={{ transform: 'rotateY(180deg)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -362,7 +341,7 @@ export function CardsLayout() {
                 {/* Header Title */}
                 <h2
                   ref={titleRef}
-                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-7 sm:pr-11 text-center"
+                  className="text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-4 sm:pr-6 text-center"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
@@ -370,7 +349,7 @@ export function CardsLayout() {
 
                 {/* Dynamically Render Componentized Section Contents */}
                 <div
-                  className={`${selectedId === 'tentative' ? 'overflow-hidden' : 'overflow-y-auto'} pr-7 sm:pr-11`}
+                  className="overflow-y-auto pr-4 sm:pr-6"
                   style={{ scrollbarGutter: 'stable' }}
                 >
                   <div ref={sectionContentRef} className="h-auto w-full">

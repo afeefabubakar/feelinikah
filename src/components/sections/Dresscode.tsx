@@ -89,7 +89,7 @@ export default function Dresscode() {
   }
 
   return (
-    <div className="flex flex-col text-[#260303] pb-4">
+    <div className="flex flex-col text-[#260303]">
       {variation !== 'friends' && (
         <div className="flex gap-4 items-center justify-center mt-4">
           {theme.colors?.hex && (
@@ -159,7 +159,7 @@ export default function Dresscode() {
                         alt={`${theme.colors?.title} — ${label} option ${i + 1}`}
                         width={400}
                         height={600}
-                        className="h-[300px] sm:h-[400px] w-auto max-w-full object-contain mx-auto mt-4"
+                        className="h-75 sm:h-100 w-auto max-w-full object-contain mx-auto mt-4"
                         priority
                       />
                     ))}
