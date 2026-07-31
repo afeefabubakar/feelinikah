@@ -161,7 +161,7 @@ export default function Wishlist() {
 
   if (isLoading && items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] gap-3">
+      <div className="flex flex-col items-center justify-center min-h-75 gap-3">
         <Loader2 className="w-10 h-10 text-white/30 animate-spin" />
         <p className="tracking-widest text-white/50 font-sans uppercase animate-pulse">
           Loading Registry…
@@ -172,7 +172,7 @@ export default function Wishlist() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] text-center p-8 bg-white/5 border border-white/10 rounded-3xl gap-4 max-w-md mx-auto">
+      <div className="flex flex-col items-center justify-center min-h-75 text-center p-8 bg-white/5 border border-white/10 rounded-3xl gap-4 max-w-md mx-auto">
         <Gift className="w-12 h-12 text-white/20" />
         <div>
           <h3 className="font-sans font-semibold text-white">Registry is being prepared</h3>
@@ -187,12 +187,17 @@ export default function Wishlist() {
   return (
     <div className="relative text-white flex flex-col justify-between pb-4">
       <div className="space-y-6">
-        {/* Header — title removed, keeping the 'if you wish' text */}
-        <p className="text-[26px] sm:text-[28px] text-justify">
-          If you wish to bless us with a wedding gift, here are some things we are currently looking
-          into. We would also be incredibly grateful for gift cards or vouchers from brands like
-          IKEA, Muji, NITORI, Uniqlo, Parkson, or other similar stores.
-        </p>
+        {/* Header Image */}
+        <div className="w-full flex justify-center mb-6">
+          <Image
+            src="/image/wishlist-text.png"
+            alt="Wishlist message"
+            width={2114}
+            height={3000}
+            className="w-full h-auto object-contain rounded-2xl"
+            priority
+          />
+        </div>
         {/* Wishlist Items List */}
         <div className="space-y-2">
           {sortedItems.map((item) => {
@@ -319,7 +324,7 @@ export default function Wishlist() {
               transition={{ type: 'spring', damping: 22, stiffness: 180 }}
             >
               <h3 className="text-black font-bold">Gift Received!</h3>
-              <p className="text-black/80 max-w-[280px]">
+              <p className="text-black/80 max-w-70">
                 <strong>{claimedItemName}</strong> has been received and locked! We are incredibly
                 grateful for your warm generosity.
               </p>
