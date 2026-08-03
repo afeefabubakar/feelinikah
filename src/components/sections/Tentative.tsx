@@ -8,7 +8,7 @@ export default function Tentative() {
       {/* Schedule overview image */}
       <div className="mt-3 sm:mt-4 flex justify-center">
         <Image
-          src="/image/tentative-v4.png"
+          src="/image/tentative.png"
           alt="Wedding day schedule overview"
           width={2067}
           height={2338}
