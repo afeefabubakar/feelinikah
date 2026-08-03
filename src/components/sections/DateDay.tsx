@@ -104,7 +104,7 @@ export default function DateDay() {
 
   return (
     <div className="flex flex-col items-center text-white h-full select-none overflow-hidden">
-      <h2 className="mb-3 mt-4 max-sm:text-[2.6rem] text-[3.5rem]">26 September 2026</h2>
+      <h2 className="mb-3 mt-4 text-3xl sm:text-4xl">26 September 2026</h2>
 
       {/* Countdown */}
       {hasMounted && (

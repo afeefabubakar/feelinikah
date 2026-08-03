@@ -15,9 +15,9 @@ export default function Venue() {
         <div>
           <div className="flex items-center gap-2">
             <MapPin className="w-6 h-6 shrink-0 text-white mb-1.5" />
-            <h2 className="text-4xl sm:text-5xl text-white font-semibold tracking-wide leading-none">Carpe Diem</h2>
+            <h2 className="text-3xl text-white tracking-wide leading-none">Carpe Diem</h2>
           </div>
-          <p className="text-3xl sm:text-4xl text-white/90 font-semibold leading-none mt-0">Orchard Home Serendah</p>
+          <p className="text-2xl text-white/90 leading-none mt-0">Orchard Home Serendah</p>
         </div>
         <Button
           as="a"
@@ -25,10 +25,10 @@ export default function Venue() {
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="self-stretch gap-2 text-base sm:text-lg whitespace-nowrap mt-2.5 py-1.5"
+          className="self-stretch gap-2 whitespace-nowrap mt-2.5 py-1.5"
         >
-          <Navigation className="w-4 h-4 mb-0.5" />
-          Navigate with Maps
+          <Navigation className="w-4 h-4 mb-1" />
+          <span className="text-lg sm:text-xl">Navigate with Maps</span>
         </Button>
       </div>
 
@@ -46,9 +46,9 @@ export default function Venue() {
           }}
           priority
         />
-        <div className="mt-2 text-center text-sm sm:text-base text-white/90 space-y-0.5">
-          <p>Solemnization - Pavillion Hall</p>
-          <p>Breakfast Wedding - Garden</p>
+        <div className="mt-2 text-center text-white/90">
+          <p className="text-xl">Solemnization - Pavillion Hall</p>
+          <p className="text-xl">Breakfast Wedding - Garden</p>
         </div>
       </div>
 

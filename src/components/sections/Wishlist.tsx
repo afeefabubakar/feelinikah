@@ -163,7 +163,7 @@ export default function Wishlist() {
     return (
       <div className="flex flex-col items-center justify-center min-h-75 gap-3">
         <Loader2 className="w-10 h-10 text-white/30 animate-spin" />
-        <p className="tracking-widest text-white/50 font-sans uppercase animate-pulse">
+        <p className="text-xl sm:text-2xl tracking-widest text-white/50 font-sans uppercase animate-pulse">
           Loading Registry…
         </p>
       </div>

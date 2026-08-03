@@ -114,8 +114,10 @@ export default function RSVP({ onComplete }: RSVPProps) {
       {/* ── Form ── */}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <h3 className="font-semibold mt-4 whitespace-nowrap">Join Our Celebration</h3>
-          <p className="text-white">Please RSVP by 1st July 2026</p>
+          <h3 className="text-3xl sm:text-4xl font-semibold mt-4 whitespace-nowrap">
+            Join Our Celebration
+          </h3>
+          <p className="text-lg sm:text-xl text-white">Please RSVP by 1st July 2026</p>
         </div>
 
         {error && (
@@ -126,7 +128,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
 
         {/* Full Name */}
         <div className="flex flex-col gap-1.25 mb-3">
-          <label className="font-sans font-medium text-white/95" htmlFor="name">
+          <label className="font-sans font-medium text-white/95 text-lg sm:text-xl" htmlFor="name">
             Your Name
           </label>
           <input
@@ -135,14 +137,14 @@ export default function RSVP({ onComplete }: RSVPProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="px-4 py-2 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-900 transition-all"
+            className="px-4 py-2 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-900 transition-all text-lg sm:text-xl"
             required
           />
         </div>
 
         {/* Attendance */}
         <div className={`flex flex-col gap-1.25 ${isAttending === true ? 'mb-3' : 'mb-2'}`}>
-          <label className="text-white/95" htmlFor="attending">
+          <label className="text-white/95 text-lg sm:text-xl" htmlFor="attending">
             Will you be attending?
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -155,7 +157,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
                 type="button"
                 onClick={() => setIsAttending(value)}
                 variant={isAttending === value ? 'primary' : 'outline'}
-                className={`transition-all normal-case border ${
+                className={`transition-all normal-case border text-lg sm:text-xl ${
                   isAttending === value ? '' : 'text-white/90 hover:text-white'
                 }`}
               >
@@ -178,7 +180,10 @@ export default function RSVP({ onComplete }: RSVPProps) {
             >
               {/* Adults */}
               <div className="flex flex-col gap-1.25">
-                <label className="font-sans font-medium text-white/95" htmlFor="attendeesCount">
+                <label
+                  className="font-sans font-medium text-white/95 text-lg sm:text-xl"
+                  htmlFor="attendeesCount"
+                >
                   Number of{' '}
                   {variation === 'friends'
                     ? 'attendees (including yourself)'
@@ -246,7 +251,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
           disabled={submitting}
           variant="primary"
           fullWidth
-          className="flex items-center justify-center gap-2"
+          className="flex items-center justify-center gap-2 text-lg sm:text-xl"
         >
           {submitting ? (
             <>
