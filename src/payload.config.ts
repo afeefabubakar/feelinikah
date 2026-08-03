@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { RSVP } from './collections/RSVP'
 import { Wishlist } from './collections/Wishlist'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,6 +46,7 @@ export default buildConfig({
     pool: {
       connectionString,
     },
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [
