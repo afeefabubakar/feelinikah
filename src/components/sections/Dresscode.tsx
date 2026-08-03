@@ -159,7 +159,7 @@ export default function Dresscode() {
                         alt={`${theme.colors?.title} — ${label} option ${i + 1}`}
                         width={400}
                         height={600}
-                        className="h-75 sm:h-100 w-auto max-w-full object-contain mx-auto mt-4"
+                        className="h-64 sm:h-80 w-auto max-w-full object-contain mx-auto mt-3"
                         priority
                       />
                     ))}

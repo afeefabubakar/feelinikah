@@ -185,7 +185,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="relative text-white flex flex-col justify-between pb-4">
+    <div className="relative text-white flex flex-col justify-between">
       <div className="space-y-6">
         {/* Header Image */}
         <div className="w-full flex justify-center mb-6">

@@ -110,7 +110,7 @@ export default function RSVP({ onComplete }: RSVPProps) {
   }
 
   return (
-    <div className="relative text-white flex flex-col pb-4">
+    <div className="relative text-white flex flex-col">
       {/* ── Form ── */}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

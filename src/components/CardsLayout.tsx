@@ -150,16 +150,21 @@ export function CardsLayout() {
     const sectionContentEl = sectionContentRef.current
     if (!titleEl || !sectionContentEl) return
 
-    const isMobile = window.innerWidth < 640 // 'sm' breakpoint is 640px
-    const padding = isMobile ? 64 : 96 // pt-8 pb-8 = 64px, pt-12 pb-12 = 96px
-
     const titleStyle = window.getComputedStyle(titleEl)
     const titleMarginTop = parseFloat(titleStyle.marginTop) || 0
     const titleMarginBottom = parseFloat(titleStyle.marginBottom) || 0
-    const titleTotalHeight = titleEl.offsetHeight + titleMarginTop + titleMarginBottom
+    const titleRect = titleEl.getBoundingClientRect()
+    const titleTotalHeight = titleRect.height + titleMarginTop + titleMarginBottom
 
-    // Add title height + section content offsetHeight + padding + 16px buffer
-    const totalHeight = Math.ceil(titleTotalHeight + sectionContentEl.offsetHeight + padding + 16)
+    const contentRect = sectionContentEl.getBoundingClientRect()
+    const contentHeight = Math.max(
+      contentRect.height,
+      sectionContentEl.scrollHeight,
+      sectionContentEl.offsetHeight,
+    )
+
+    // Add title height + exact content height
+    const totalHeight = Math.ceil(titleTotalHeight + contentHeight)
 
     setMeasuredHeight((prev) => (prev === totalHeight ? prev : totalHeight))
   }, [selectedId])
@@ -211,8 +216,8 @@ export function CardsLayout() {
       const vw = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024)
       const vh = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768)
 
-      // Standardized card max-width across all sections
-      const CARD_MAX_WIDTH = 480
+      // Standardized card max-width (slightly slimmer 390px for dresscode)
+      const CARD_MAX_WIDTH = id === 'dresscode' ? 390 : 480
 
       const w = Math.min(vw * 0.92, CARD_MAX_WIDTH)
       const maxHeight = vh * 0.9
@@ -338,7 +343,7 @@ export function CardsLayout() {
 
               {/* Inner Content - Fades in post-flip, Rotated 180deg to adjust for the Y-axis card rotation */}
               <motion.div
-                className="pt-8 pb-8 pl-5 pr-1 sm:pt-12 sm:pb-12 sm:pl-7 sm:pr-1 h-full flex flex-col justify-start z-10 relative scrollbar-none"
+                className="pt-0 pl-5 pr-1 sm:pl-7 sm:pr-1 h-full flex flex-col justify-start z-10 relative scrollbar-none"
                 style={{ transform: 'rotateY(180deg)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -348,7 +353,7 @@ export function CardsLayout() {
                 {/* Header Title */}
                 <h2
                   ref={titleRef}
-                  className="m-0 mb-3 text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-4 sm:pr-6 text-center shrink-0"
+                  className="mt-6 mb-3 text-4xl sm:text-5xl font-sans font-medium tracking-wide pr-4 sm:pr-6 text-center shrink-0"
                   style={{ color: selected.text, fontFamily: 'var(--font-sans), serif' }}
                 >
                   {selected.title}
@@ -356,10 +361,10 @@ export function CardsLayout() {
 
                 {/* Dynamically Render Componentized Section Contents */}
                 <div
-                  className={`flex-1 pr-4 sm:pr-6 ${isClamped ? 'overflow-y-auto' : 'overflow-hidden'}`}
+                  className={`flex-1 pr-4 sm:pr-6 ${isClamped ? 'overflow-y-auto' : 'overflow-visible'}`}
                   style={{ scrollbarGutter: 'stable' }}
                 >
-                  <div ref={sectionContentRef} className="h-auto w-full">
+                  <div ref={sectionContentRef} className="flow-root w-full pb-6">
                     {selectedId === 'about' && <About />}
                     {selectedId === 'date' && <DateDay />}
                     {selectedId === 'venue' && <Venue />}
