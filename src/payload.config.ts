@@ -47,6 +47,7 @@ export default buildConfig({
       connectionString,
     },
     prodMigrations: migrations,
+    push: false,
   }),
   sharp,
   plugins: [
