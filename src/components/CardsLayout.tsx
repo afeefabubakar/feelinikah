@@ -19,28 +19,28 @@ const sections = [
     id: 'about',
     number: '01',
     title: 'About Us',
-    color: '#260303', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
   {
     id: 'date',
     number: '02',
     title: 'Date & Day',
-    color: '#260303', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
   {
     id: 'venue',
     number: '03',
     title: 'Venue',
-    color: '#260303', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
   {
     id: 'rsvp',
     number: '04',
     title: 'RSVP',
-    color: '#260303', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
   {
@@ -54,14 +54,14 @@ const sections = [
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#000', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
   {
     id: 'wishlist',
     number: '07',
     title: 'Our Wishlist',
-    color: '#260303', // Burgundy
+    color: '#083335', // evergreen
     text: '#fff',
   },
 ]
