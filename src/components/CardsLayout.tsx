@@ -26,21 +26,21 @@ const sections = [
     id: 'date',
     number: '02',
     title: 'Date & Day',
-    color: '#083335', // evergreen
+    color: '#072c2e', // dark cyan
     text: '#fff',
   },
   {
     id: 'venue',
     number: '03',
     title: 'Venue',
-    color: '#083335', // evergreen
+    color: '#072c2e', // dark cyan
     text: '#fff',
   },
   {
     id: 'rsvp',
     number: '04',
     title: 'RSVP',
-    color: '#083335', // evergreen
+    color: '#072c2e', // dark cyan
     text: '#fff',
   },
   {
@@ -54,14 +54,14 @@ const sections = [
     id: 'tentative',
     number: '06',
     title: 'Tentative',
-    color: '#083335', // evergreen
+    color: '#072c2e', // dark cyan
     text: '#fff',
   },
   {
     id: 'wishlist',
     number: '07',
     title: 'Our Wishlist',
-    color: '#083335', // evergreen
+    color: '#072c2e', // dark cyan
     text: '#fff',
   },
 ]
