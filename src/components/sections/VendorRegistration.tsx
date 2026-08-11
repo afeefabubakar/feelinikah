@@ -227,7 +227,7 @@ export default function VendorRegistration({
         <div className="bg-[#072c2e] border border-white/20 rounded-3xl p-6 sm:p-8 space-y-4 text-white shadow-2xl overflow-hidden relative">
           <div className="card-grain opacity-80" />
           <div className="border-b border-white/15 pb-4 text-center z-10 relative">
-            <div className="flex justify-center items-center w-full mb-3">
+            <div className="flex justify-center items-center w-full mb-3 sm:mb-5">
               <Image
                 src="/image/writing-logo.svg"
                 alt="Fee & Nikah Logo"
@@ -236,64 +236,62 @@ export default function VendorRegistration({
                 className="w-[65%] max-w-sm sm:max-w-md h-auto mx-auto"
               />
             </div>
-            <h3 className="text-xl font-semibold text-white">Registration Submitted</h3>
+            <h3 className="text-2xl sm:text-3xl font-semibold text-white">
+              Registration Submitted
+            </h3>
             <p className="text-sm text-white/80 mt-1">
               Your vendor collection details have been recorded.
             </p>
           </div>
 
-          <div className="space-y-2 text-sm text-white z-10 relative">
+          <div className="space-y-2 text-base text-white z-10 relative">
             <div className="flex justify-between py-1.5 border-b border-white/15">
-              <span className="text-white/70">Service</span>
-              <span className="font-semibold text-white">
+              <span className="text-white/70 text-base">Service</span>
+              <span className="font-semibold text-white text-base">
                 {getServiceLabel(submittedData.service)}
               </span>
             </div>
-            {submittedData.companyName && (
+            {submittedData?.companyName && (
               <div className="flex justify-between py-1.5 border-b border-white/15">
-                <span className="text-white/70">Company</span>
-                <span className="font-medium text-white">{submittedData.companyName}</span>
+                <span className="text-white/70 text-base">Company</span>
+                <span className="font-medium text-white text-base">
+                  {submittedData.companyName}
+                </span>
               </div>
             )}
             <div className="flex justify-between py-1.5 border-b border-white/15">
-              <span className="text-white/70">PIC Contact</span>
-              <span className="font-medium text-white">
+              <span className="text-white/70 text-base">PIC Contact</span>
+              <span className="font-medium text-white text-base">
                 {submittedData.picName} ({submittedData.picPhone})
               </span>
             </div>
             <div className="flex justify-between py-1.5 border-b border-white/15">
-              <span className="text-white/70">Arrival Date & Time</span>
-              <span className="font-medium text-white">
+              <span className="text-white/70 text-base">Arrival Date & Time</span>
+              <span className="font-medium text-white text-base">
                 {formatMalaysianDate(submittedData.arrivalDate)} at {submittedData.arrivalTime}
               </span>
             </div>
             <div className="flex justify-between py-1.5 border-b border-white/15">
-              <span className="text-white/70">Service Time & Duration</span>
-              <span className="font-medium text-white">
+              <span className="text-white/70 text-base">Service Time & Duration</span>
+              <span className="font-medium text-white text-base">
                 {submittedData.serviceTime} ({submittedData.serviceDuration})
               </span>
             </div>
             <div className="flex justify-between py-1.5 border-b border-white/15">
-              <span className="text-white/70">Vehicle</span>
-              <span className="font-medium text-white">
+              <span className="text-white/70 text-base">Vehicle</span>
+              <span className="font-medium text-white text-base">
                 {getVehicleLabel(submittedData.vehicleType)}
                 {submittedData.vehicleBrand ? ` (${submittedData.vehicleBrand})` : ''} -{' '}
                 {submittedData.plateNumber || 'N/A'}
               </span>
             </div>
             <div className="flex justify-between py-1.5">
-              <span className="text-white/70">Workers Count</span>
-              <span className="font-semibold text-white">{submittedData.numberOfWorkers}</span>
+              <span className="text-white/70 text-base">Workers Count</span>
+              <span className="font-semibold text-white text-base">
+                {submittedData.numberOfWorkers}
+              </span>
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setSubmittedData(null)}
-            className="w-full mt-4 py-2.5 px-4 bg-[#fdf8f0] hover:bg-[#f5ede0] text-[#260303] font-semibold rounded-lg text-sm transition-colors cursor-pointer shadow-sm z-10 relative"
-          >
-            Submit Another Entry
-          </button>
         </div>
       ) : (
         <form
@@ -302,7 +300,7 @@ export default function VendorRegistration({
         >
           <div className="card-grain opacity-80" />
           <div className="border-b border-white/15 pb-5 text-center z-10 relative">
-            <div className="flex justify-center items-center w-full mb-4">
+            <div className="flex justify-center items-center w-full mb-3 sm:mb-5">
               <Image
                 src="/image/writing-logo.svg"
                 alt="Fee & Nikah Logo"
@@ -432,7 +430,9 @@ export default function VendorRegistration({
                     onClick={(e) => {
                       const hiddenInput = e.currentTarget.nextElementSibling as HTMLInputElement
                       if (hiddenInput && 'showPicker' in hiddenInput) {
-                        try { hiddenInput.showPicker() } catch {}
+                        try {
+                          hiddenInput.showPicker()
+                        } catch {}
                       }
                     }}
                     className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
