@@ -218,7 +218,19 @@ export interface Wishlist {
  */
 export interface Vendor {
   id: number;
-  service: 'makeup' | 'pelamin' | 'food' | 'tent' | 'other';
+  service:
+    | 'bridal_bouquet'
+    | 'bride_assistant'
+    | 'emcee'
+    | 'food'
+    | 'groom_stylist'
+    | 'henna'
+    | 'makeup'
+    | 'pelamin'
+    | 'photo_video'
+    | 'rela'
+    | 'tent'
+    | 'other';
   customService?: string | null;
   companyName: string;
   vehicleType: 'lorry' | 'van' | 'car' | 'pickup' | 'motorcycle' | 'none' | 'other';
