@@ -1,11 +1,18 @@
 import React from 'react'
 import './styles.css'
 import localFont from 'next/font/local'
+import { Inter } from 'next/font/google'
 
 export const metadata = {
   title: '#FEELIN',
   description: 'A wedding website for Alin and Afeef',
 }
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 const belmoneBallpoint = localFont({
   src: '../../../public/fonts/BelmoneBallpoint.otf',
@@ -31,7 +38,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${belmoneBallpoint.variable} ${littleNima.variable} ${betrisDaniel.variable}`}
+      className={`${inter.variable} ${belmoneBallpoint.variable} ${littleNima.variable} ${betrisDaniel.variable}`}
       suppressHydrationWarning
     >
       <link rel="icon" href="/favicon.ico" />
