@@ -2,8 +2,9 @@ import React from 'react'
 import VendorRegistration from '@/components/sections/VendorRegistration'
 
 export const metadata = {
-  title: 'Vendor Registration | Fee & Nikah',
-  description: 'Vendor registration form for wedding logistics, vehicle details, schedule and PIC contact.',
+  title: 'Vendor Registration | FEELIN',
+  description:
+    'Vendor registration form for wedding logistics, vehicle details, schedule and PIC contact.',
 }
 
 export default function VendorPage() {
