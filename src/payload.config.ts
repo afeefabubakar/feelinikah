@@ -9,6 +9,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { RSVP } from './collections/RSVP'
 import { Wishlist } from './collections/Wishlist'
+import { Vendors } from './collections/Vendors'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { migrations } from './migrations'
 
@@ -36,7 +37,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, RSVP, Wishlist],
+  collections: [Users, Media, RSVP, Wishlist, Vendors],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

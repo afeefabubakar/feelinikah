@@ -6,6 +6,7 @@ import * as migration_20260603_130400_add_wishlist_hide from './20260603_130400_
 import * as migration_20260604_025826_add_side_to_rsvp from './20260604_025826_add_side_to_rsvp'
 import * as migration_20260604_143000_add_children_count_to_rsvp from './20260604_143000_add_children_count_to_rsvp'
 import * as migration_20260803_151729_update_wishlist from './20260803_151729_update_wishlist'
+import * as migration_20260811_150000_add_vendors_collection from './20260811_150000_add_vendors_collection'
 
 export const migrations = [
   {
@@ -47,5 +48,10 @@ export const migrations = [
     up: migration_20260803_151729_update_wishlist.up,
     down: migration_20260803_151729_update_wishlist.down,
     name: '20260803_151729_update_wishlist',
+  },
+  {
+    up: migration_20260811_150000_add_vendors_collection.up,
+    down: migration_20260811_150000_add_vendors_collection.down,
+    name: '20260811_150000_add_vendors_collection',
   },
 ]
