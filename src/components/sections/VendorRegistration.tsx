@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Image from 'next/image'
 
 interface VendorRegistrationProps {
@@ -9,10 +9,17 @@ interface VendorRegistrationProps {
 }
 
 const SERVICE_OPTIONS = [
-  { id: 'makeup', label: 'Makeup' },
-  { id: 'pelamin', label: 'Pelamin' },
+  { id: 'bridal_bouquet', label: 'Bridal Bouquet' },
+  { id: 'bride_assistant', label: 'Bride Assistant' },
+  { id: 'emcee', label: 'Emcee' },
   { id: 'food', label: 'Food / Catering' },
-  { id: 'tent', label: 'Tent / Canopy' },
+  { id: 'groom_stylist', label: 'Groom Stylist' },
+  { id: 'henna', label: 'Henna' },
+  { id: 'makeup', label: 'Makeup Artist' },
+  { id: 'pelamin', label: 'Pelamin' },
+  { id: 'photo_video', label: 'Photographer & Videographer' },
+  { id: 'rela', label: 'RELA' },
+  { id: 'tent', label: 'Tent' },
   { id: 'other', label: 'Other Service' },
 ]
 
@@ -26,11 +33,72 @@ const VEHICLE_TYPES = [
   { value: 'other', label: 'Other' },
 ]
 
+function formatTime12Hour(time24: string): string {
+  if (!time24) return ''
+  const [h, m] = time24.split(':')
+  let hours = parseInt(h, 10)
+  if (isNaN(hours)) return time24
+  const period = hours >= 12 ? 'PM' : 'AM'
+  hours = hours % 12 || 12
+  const formattedHours = hours < 10 ? `0${hours}` : `${hours}`
+  return `${formattedHours}:${m} ${period}`
+}
+
+function formatMalaysianDate(dateStr: string): string {
+  if (!dateStr) return ''
+  const cleanDate = dateStr.split('T')[0]
+  const parts = cleanDate.split('-')
+  if (parts.length === 3) {
+    const [year, month, day] = parts
+    const d = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))
+    if (!isNaN(d.getTime())) {
+      return new Intl.DateTimeFormat('en-MY', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(d)
+    }
+  }
+  return dateStr
+}
+
+function calculateDuration(start24: string, end24: string): string {
+  if (!start24 || !end24) return ''
+  const [sh, sm] = start24.split(':').map(Number)
+  const [eh, em] = end24.split(':').map(Number)
+  if (isNaN(sh) || isNaN(sm) || isNaN(eh) || isNaN(em)) return ''
+  let startMinutes = sh * 60 + sm
+  let endMinutes = eh * 60 + em
+  if (endMinutes < startMinutes) endMinutes += 24 * 60 // midnight wrap
+  const diffMinutes = endMinutes - startMinutes
+  const hours = Math.floor(diffMinutes / 60)
+  const mins = diffMinutes % 60
+  if (hours === 0 && mins === 0) return '0 hours'
+  if (mins === 0) return `${hours} hour${hours !== 1 ? 's' : ''}`
+  if (hours === 0) return `${mins} min${mins !== 1 ? 's' : ''}`
+  return `${hours} hr${hours !== 1 ? 's' : ''} ${mins} min${mins !== 1 ? 's' : ''}`
+}
+
+function getMalaysianTodayDateString(): string {
+  const now = new Date()
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'Asia/Kuala_Lumpur',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }
+  const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(now)
+  const year = parts.find((p) => p.type === 'year')?.value || '2026'
+  const month = parts.find((p) => p.type === 'month')?.value || '08'
+  const day = parts.find((p) => p.type === 'day')?.value || '15'
+  return `${year}-${month}-${day}`
+}
+
 export default function VendorRegistration({
   onSuccess,
   isCardView = false,
 }: VendorRegistrationProps) {
-  const [service, setService] = useState<string>('makeup')
+  const [service, setService] = useState<string>('')
   const [customService, setCustomService] = useState('')
   const [companyName, setCompanyName] = useState('')
 
@@ -38,10 +106,11 @@ export default function VendorRegistration({
   const [vehicleBrand, setVehicleBrand] = useState('')
   const [plateNumber, setPlateNumber] = useState('')
 
-  const [arrivalDate, setArrivalDate] = useState('2026-08-15')
-  const [arrivalTime, setArrivalTime] = useState('08:00 AM')
-  const [serviceTime, setServiceTime] = useState('10:00 AM - 02:00 PM')
-  const [serviceDuration, setServiceDuration] = useState('4 hours')
+  const [arrivalDate, setArrivalDate] = useState('2026-09-26')
+  const [arrivalTime, setArrivalTime] = useState('08:30') // HH:MM time picker format
+
+  const [serviceStartTime, setServiceStartTime] = useState('10:00') // HH:MM time picker format
+  const [serviceEndTime, setServiceEndTime] = useState('14:00') // HH:MM time picker format
 
   const [numberOfWorkers, setNumberOfWorkers] = useState(2)
   const [picName, setPicName] = useState('')
@@ -51,6 +120,17 @@ export default function VendorRegistration({
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [submittedData, setSubmittedData] = useState<any | null>(null)
+
+  // Compute formatted strings for API payload and summary pass
+  const formattedArrivalTime = useMemo(() => formatTime12Hour(arrivalTime), [arrivalTime])
+  const formattedServiceTime = useMemo(
+    () => `${formatTime12Hour(serviceStartTime)} - ${formatTime12Hour(serviceEndTime)}`,
+    [serviceStartTime, serviceEndTime],
+  )
+  const computedDuration = useMemo(
+    () => calculateDuration(serviceStartTime, serviceEndTime),
+    [serviceStartTime, serviceEndTime],
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -72,16 +152,12 @@ export default function VendorRegistration({
       setError('Please provide the arrival date.')
       return
     }
-    if (!arrivalTime.trim()) {
-      setError('Please provide the arrival time.')
+    if (!arrivalTime) {
+      setError('Please select the arrival time.')
       return
     }
-    if (!serviceTime.trim()) {
-      setError('Please specify the service time.')
-      return
-    }
-    if (!serviceDuration.trim()) {
-      setError('Please specify the service duration.')
+    if (!serviceStartTime || !serviceEndTime) {
+      setError('Please select the service start and end times.')
       return
     }
     if (!picName.trim()) {
@@ -107,9 +183,9 @@ export default function VendorRegistration({
           vehicleBrand,
           plateNumber,
           arrivalDate,
-          arrivalTime,
-          serviceTime,
-          serviceDuration,
+          arrivalTime: formattedArrivalTime,
+          serviceTime: formattedServiceTime,
+          serviceDuration: computedDuration,
           numberOfWorkers,
           picName,
           picPhone,
@@ -188,7 +264,7 @@ export default function VendorRegistration({
             <div className="flex justify-between py-1.5 border-b border-white/15">
               <span className="text-white/70">Arrival Date & Time</span>
               <span className="font-medium text-white">
-                {submittedData.arrivalDate} at {submittedData.arrivalTime}
+                {formatMalaysianDate(submittedData.arrivalDate)} at {submittedData.arrivalTime}
               </span>
             </div>
             <div className="flex justify-between py-1.5 border-b border-white/15">
@@ -246,35 +322,34 @@ export default function VendorRegistration({
           </div>
 
           {error && (
-            <div className="p-3.5 bg-[#260303] border border-rose-600/50 rounded-lg text-sm text-white">
+            <div className="p-3.5 bg-[#260303] border border-rose-600/50 rounded-lg text-sm text-white z-10 relative">
               {error}
             </div>
           )}
 
           {/* Service Section */}
-          <div className="space-y-3">
+          <div className="space-y-3 z-10 relative">
             <label className="block text-sm font-medium text-white">Service Provided *</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
+              required
+            >
+              <option value="" disabled className="bg-[#072c2e] text-white/50">
+                -- Select a Service --
+              </option>
               {SERVICE_OPTIONS.map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => setService(opt.id)}
-                  className={`py-2.5 px-3 text-sm rounded-lg border text-left transition-all font-sans cursor-pointer ${
-                    service === opt.id
-                      ? 'bg-[#fdf8f0] text-[#260303] font-semibold border-transparent shadow-sm'
-                      : 'bg-white/25 text-white border-white/10 hover:bg-white/10'
-                  }`}
-                >
+                <option key={opt.id} value={opt.id} className="bg-[#072c2e] text-white">
                   {opt.label}
-                </button>
+                </option>
               ))}
-            </div>
+            </select>
 
             {service === 'other' && (
               <div className="pt-2">
                 <label className="block text-xs font-medium text-white/80 mb-1">
-                  Specify Service Type *
+                  Specify Service Name *
                 </label>
                 <input
                   type="text"
@@ -303,7 +378,7 @@ export default function VendorRegistration({
           </div>
 
           {/* Vehicle Section */}
-          <div className="space-y-3 border-t border-white/15 pt-5">
+          <div className="space-y-3 border-t border-white/15 pt-5 z-10 relative">
             <h3 className="text-sm font-semibold text-white">Vehicle Details</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
@@ -343,58 +418,81 @@ export default function VendorRegistration({
             </div>
           </div>
 
-          {/* Schedule Section */}
-          <div className="space-y-3 border-t border-white/15 pt-5">
+          {/* Schedule Section with Time Pickers */}
+          <div className="space-y-3 border-t border-white/15 pt-5 z-10 relative">
             <h3 className="text-sm font-semibold text-white">Schedule & Timing</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs text-white/80 mb-1">Arrival Date *</label>
-                <input
-                  type="date"
-                  value={arrivalDate}
-                  onChange={(e) => setArrivalDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    readOnly
+                    value={formatMalaysianDate(arrivalDate)}
+                    onClick={(e) => {
+                      const hiddenInput = e.currentTarget.nextElementSibling as HTMLInputElement
+                      if (hiddenInput && 'showPicker' in hiddenInput) {
+                        try { hiddenInput.showPicker() } catch {}
+                      }
+                    }}
+                    className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
+                    placeholder="e.g. 26 September 2026"
+                    required
+                  />
+                  <input
+                    type="date"
+                    value={arrivalDate}
+                    onChange={(e) => setArrivalDate(e.target.value)}
+                    className="absolute inset-0 opacity-0 w-0 h-0 pointer-events-none"
+                    tabIndex={-1}
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-xs text-white/80 mb-1">Arrival Time *</label>
                 <input
-                  type="text"
+                  type="time"
                   value={arrivalTime}
                   onChange={(e) => setArrivalTime(e.target.value)}
-                  placeholder="e.g. 08:30 AM"
-                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50"
+                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs text-white/80 mb-1">Service Time *</label>
+                <label className="block text-xs text-white/80 mb-1">Service Start Time *</label>
                 <input
-                  type="text"
-                  value={serviceTime}
-                  onChange={(e) => setServiceTime(e.target.value)}
-                  placeholder="e.g. 10:00 AM - 02:00 PM"
-                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50"
+                  type="time"
+                  value={serviceStartTime}
+                  onChange={(e) => setServiceStartTime(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs text-white/80 mb-1">Service Duration *</label>
+                <label className="block text-xs text-white/80 mb-1">Service End Time *</label>
                 <input
-                  type="text"
-                  value={serviceDuration}
-                  onChange={(e) => setServiceDuration(e.target.value)}
-                  placeholder="e.g. 4 hours"
-                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50"
+                  type="time"
+                  value={serviceEndTime}
+                  onChange={(e) => setServiceEndTime(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 cursor-pointer"
                   required
                 />
               </div>
             </div>
+
+            {/* Calculated Service Summary helper */}
+            <div className="bg-white/5 border border-white/10 rounded-lg p-2.5 text-xs text-white/80">
+              <p className="text-base">
+                Service Schedule: <strong className="text-white">{formattedServiceTime}</strong>
+              </p>
+              <p className="text-base">
+                Estimated Duration: <strong className="text-white">{computedDuration}</strong>
+              </p>
+            </div>
           </div>
 
           {/* Workers & Contact Section */}
-          <div className="space-y-3 border-t border-white/15 pt-5">
+          <div className="space-y-3 border-t border-white/15 pt-5 z-10 relative">
             <h3 className="text-sm font-semibold text-white">PIC & Staff Details</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
@@ -434,7 +532,7 @@ export default function VendorRegistration({
           </div>
 
           {/* Notes Section */}
-          <div className="space-y-1 border-t border-white/15 pt-5">
+          <div className="space-y-1 border-t border-white/15 pt-5 z-10 relative">
             <label className="block text-xs text-white/80 mb-1">
               Special Instructions / Notes (Optional)
             </label>
@@ -450,7 +548,7 @@ export default function VendorRegistration({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 px-4 bg-[#fdf8f0] hover:bg-[#f5ede0] text-[#260303] font-semibold text-sm rounded-lg transition-all cursor-pointer shadow-sm disabled:opacity-50"
+            className="w-full py-3 px-4 bg-[#fdf8f0] hover:bg-[#f5ede0] text-[#260303] font-semibold text-sm rounded-lg transition-all cursor-pointer shadow-sm disabled:opacity-50 z-10 relative"
           >
             {submitting ? 'Submitting...' : 'Submit Vendor Registration'}
           </button>
