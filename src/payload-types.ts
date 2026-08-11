@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     rsvp: Rsvp;
     wishlist: Wishlist;
+    vendors: Vendor;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     rsvp: RsvpSelect<false> | RsvpSelect<true>;
     wishlist: WishlistSelect<false> | WishlistSelect<true>;
+    vendors: VendorsSelect<false> | VendorsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -212,6 +214,29 @@ export interface Wishlist {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vendors".
+ */
+export interface Vendor {
+  id: number;
+  service: 'makeup' | 'pelamin' | 'food' | 'tent' | 'other';
+  customService?: string | null;
+  companyName: string;
+  vehicleType: 'lorry' | 'van' | 'car' | 'pickup' | 'motorcycle' | 'none' | 'other';
+  vehicleBrand?: string | null;
+  plateNumber?: string | null;
+  arrivalDate: string;
+  arrivalTime: string;
+  serviceTime: string;
+  serviceDuration: string;
+  numberOfWorkers: number;
+  picName: string;
+  picPhone: string;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -249,6 +274,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'wishlist';
         value: number | Wishlist;
+      } | null)
+    | ({
+        relationTo: 'vendors';
+        value: number | Vendor;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -360,6 +389,28 @@ export interface WishlistSelect<T extends boolean = true> {
   unclaimable?: T;
   isClaimed?: T;
   proofOfPurchase?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vendors_select".
+ */
+export interface VendorsSelect<T extends boolean = true> {
+  service?: T;
+  customService?: T;
+  companyName?: T;
+  vehicleType?: T;
+  vehicleBrand?: T;
+  plateNumber?: T;
+  arrivalDate?: T;
+  arrivalTime?: T;
+  serviceTime?: T;
+  serviceDuration?: T;
+  numberOfWorkers?: T;
+  picName?: T;
+  picPhone?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }
