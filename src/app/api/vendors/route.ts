@@ -57,6 +57,12 @@ export async function POST(req: Request) {
 
     const payload = await getPayload({ config })
 
+    // Formats date with explicit Malaysian Timezone (+08:00) offset
+    const mytArrivalDate =
+      typeof arrivalDate === 'string' && arrivalDate.length === 10
+        ? `${arrivalDate}T00:00:00+08:00`
+        : arrivalDate
+
     const newVendor = await payload.create({
       collection: 'vendors',
       data: {
@@ -66,7 +72,7 @@ export async function POST(req: Request) {
         vehicleType,
         vehicleBrand: vehicleBrand || '',
         plateNumber: plateNumber || '',
-        arrivalDate,
+        arrivalDate: mytArrivalDate,
         arrivalTime,
         serviceTime,
         serviceDuration,
