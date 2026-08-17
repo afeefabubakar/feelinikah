@@ -7,6 +7,7 @@ import * as migration_20260604_025826_add_side_to_rsvp from './20260604_025826_a
 import * as migration_20260604_143000_add_children_count_to_rsvp from './20260604_143000_add_children_count_to_rsvp'
 import * as migration_20260803_151729_update_wishlist from './20260803_151729_update_wishlist'
 import * as migration_20260811_150000_add_vendors_collection from './20260811_150000_add_vendors_collection'
+import * as migration_20260817_150000_add_vendors_id_to_locked_documents_rels from './20260817_150000_add_vendors_id_to_locked_documents_rels'
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20260811_150000_add_vendors_collection.up,
     down: migration_20260811_150000_add_vendors_collection.down,
     name: '20260811_150000_add_vendors_collection',
+  },
+  {
+    up: migration_20260817_150000_add_vendors_id_to_locked_documents_rels.up,
+    down: migration_20260817_150000_add_vendors_id_to_locked_documents_rels.down,
+    name: '20260817_150000_add_vendors_id_to_locked_documents_rels',
   },
 ]
